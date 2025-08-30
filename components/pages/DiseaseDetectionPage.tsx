@@ -1,9 +1,23 @@
 
-import React, { useState, useCallback, ChangeEvent } from 'react';
+import React, { useState, useCallback, ChangeEvent, useRef, useEffect } from 'react';
 import Card from '../ui/Card';
 import Button from '../ui/Button';
 import { analyzeCropImage } from '../../services/geminiService';
 import { DiseaseResult } from '../../types';
+
+const CameraIcon: React.FC = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+  </svg>
+);
+
+const UploadIcon: React.FC = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+    </svg>
+);
+
 
 const DiseaseDetectionPage: React.FC = () => {
   const [image, setImage] = useState<string | null>(null);
@@ -11,20 +25,98 @@ const DiseaseDetectionPage: React.FC = () => {
   const [result, setResult] = useState<DiseaseResult | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isCameraOpen, setIsCameraOpen] = useState(false);
+  const [stream, setStream] = useState<MediaStream | null>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  const dataURLtoFile = (dataurl: string, filename: string): File => {
+    const arr = dataurl.split(',');
+    const mimeMatch = arr[0].match(/:(.*?);/);
+    if (!mimeMatch) throw new Error('Invalid data URL');
+    const mime = mimeMatch[1];
+    const bstr = atob(arr[1]);
+    let n = bstr.length;
+    const u8arr = new Uint8Array(n);
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new File([u8arr], filename, { type: mime });
+  };
+  
+  const resetState = useCallback(() => {
+    setImage(null);
+    setFile(null);
+    setResult(null);
+    setError(null);
+    setIsLoading(false);
+  }, []);
 
   const handleImageUpload = useCallback((event: ChangeEvent<HTMLInputElement>) => {
     const uploadedFile = event.target.files?.[0];
     if (uploadedFile) {
+      resetState();
       setFile(uploadedFile);
       const reader = new FileReader();
       reader.onloadend = () => {
         setImage(reader.result as string);
       };
       reader.readAsDataURL(uploadedFile);
-      setResult(null);
-      setError(null);
     }
-  }, []);
+  }, [resetState]);
+
+  const startCamera = async () => {
+    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+        resetState();
+        setIsCameraOpen(true);
+        setStream(stream);
+      } catch (err) {
+        console.error("Error accessing camera: ", err);
+        setError("Could not access camera. Please ensure you have a camera and have granted permission.");
+      }
+    } else {
+      setError("Your browser does not support camera access.");
+    }
+  };
+
+  useEffect(() => {
+    if (stream && videoRef.current) {
+      videoRef.current.srcObject = stream;
+    }
+  }, [stream]);
+
+  const stopCamera = useCallback(() => {
+    if (stream) {
+      stream.getTracks().forEach(track => track.stop());
+    }
+    setIsCameraOpen(false);
+    setStream(null);
+  }, [stream]);
+  
+  useEffect(() => {
+    return () => {
+      if (stream) {
+        stream.getTracks().forEach(track => track.stop());
+      }
+    };
+  }, [stream]);
+
+  const captureImage = useCallback(() => {
+    if (videoRef.current) {
+      const canvas = document.createElement('canvas');
+      canvas.width = videoRef.current.videoWidth;
+      canvas.height = videoRef.current.videoHeight;
+      const context = canvas.getContext('2d');
+      if (context) {
+        context.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
+        const dataUrl = canvas.toDataURL('image/jpeg');
+        setImage(dataUrl);
+        setFile(dataURLtoFile(dataUrl, `capture-${Date.now()}.jpg`));
+      }
+      stopCamera();
+    }
+  }, [videoRef, stopCamera]);
 
   const handleAnalyze = useCallback(async () => {
     if (!file) {
@@ -35,25 +127,36 @@ const DiseaseDetectionPage: React.FC = () => {
     setError(null);
     setResult(null);
     try {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onloadend = async () => {
-        const base64String = (reader.result as string).split(',')[1];
+        const base64String = image!.split(',')[1];
         const analysisResult = await analyzeCropImage(base64String, file.type);
         setResult(analysisResult);
-        setIsLoading(false);
-      };
     } catch (err: any) {
       setError(err.message || "An unknown error occurred.");
-      setIsLoading(false);
+    } finally {
+        setIsLoading(false);
     }
-  }, [file]);
+  }, [file, image]);
+
+  if (isCameraOpen) {
+    return (
+      <div className="fixed inset-0 bg-gray-900 z-50 flex flex-col items-center justify-center p-4">
+        <p className="text-white text-lg absolute top-4 animate-pulse">Point your camera at a crop leaf</p>
+        <div className="relative w-full max-w-4xl aspect-video overflow-hidden rounded-lg shadow-2xl">
+            <video ref={videoRef} autoPlay playsInline className="w-full h-full object-cover"></video>
+        </div>
+        <div className="absolute bottom-0 left-0 right-0 p-4 bg-black bg-opacity-50 flex justify-center items-center space-x-6">
+          <Button onClick={stopCamera} variant="outline" className="bg-white/20 border-white text-white hover:bg-white/30">Cancel</Button>
+          <button onClick={captureImage} className="w-20 h-20 rounded-full bg-white ring-4 ring-white/50 focus:outline-none focus:ring-white transition-transform transform hover:scale-105" aria-label="Take Picture"></button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-8">
       <h1 className="text-3xl font-bold text-center text-gray-900 dark:text-white">Crop Disease Detection</h1>
       <p className="text-lg text-center text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-        Upload a clear photo of a crop leaf, and our AI will analyze it for common diseases and suggest treatments.
+        Upload or take a photo of a crop leaf, and our AI will analyze it for diseases and suggest treatments.
       </p>
 
       <Card className="max-w-2xl mx-auto">
@@ -68,21 +171,35 @@ const DiseaseDetectionPage: React.FC = () => {
               </div>
             )}
           </div>
-          <div className="flex flex-col sm:flex-row w-full gap-4">
-            <label htmlFor="file-upload" className="flex-1 cursor-pointer">
-              <div className="w-full text-center px-6 py-3 font-semibold rounded-lg shadow-sm focus:outline-none transition-transform transform hover:scale-105 duration-300 ease-in-out bg-transparent border border-primary-600 text-primary-600 dark:text-primary-400 dark:border-primary-400 hover:bg-primary-50 dark:hover:bg-primary-900/20">
-                Choose Image
-              </div>
-              <input id="file-upload" name="file-upload" type="file" className="sr-only" accept="image/*" onChange={handleImageUpload} />
-            </label>
-            <Button onClick={handleAnalyze} disabled={!image || isLoading} className="flex-1">
-              {isLoading ? 'Analyzing...' : 'Analyze Image'}
-            </Button>
-          </div>
+          
+          {image ? (
+             <div className="flex flex-col sm:flex-row w-full gap-4">
+                 <Button onClick={handleAnalyze} disabled={isLoading} className="flex-1">
+                    {isLoading ? 'Analyzing...' : 'Analyze Image'}
+                 </Button>
+                 <Button onClick={resetState} variant="outline" className="flex-1">
+                    Try Another
+                 </Button>
+            </div>
+          ) : (
+            <div className="flex flex-col sm:flex-row w-full gap-4">
+                <label htmlFor="file-upload" className="flex-1 cursor-pointer">
+                  <div className="w-full text-center px-6 py-3 font-semibold rounded-lg shadow-sm focus:outline-none transition-transform transform hover:scale-105 duration-300 ease-in-out bg-transparent border border-primary-600 text-primary-600 dark:text-primary-400 dark:border-primary-400 hover:bg-primary-50 dark:hover:bg-primary-900/20 flex items-center justify-center">
+                    <UploadIcon />
+                    Upload from Device
+                  </div>
+                  <input id="file-upload" name="file-upload" type="file" className="sr-only" accept="image/*" onChange={handleImageUpload} />
+                </label>
+                <Button onClick={startCamera} variant="secondary" className="flex-1 flex items-center justify-center">
+                    <CameraIcon />
+                    Use Camera
+                </Button>
+            </div>
+          )}
         </div>
       </Card>
       
-      {error && (
+      {error && !isCameraOpen && (
         <Card className="max-w-2xl mx-auto border-l-4 border-red-500">
             <p className="text-red-700 dark:text-red-400 font-semibold">Error:</p>
             <p className="text-red-600 dark:text-red-300">{error}</p>

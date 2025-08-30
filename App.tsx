@@ -5,6 +5,7 @@ import HomePage from './components/pages/HomePage';
 import DashboardPage from './components/pages/DashboardPage';
 import DiseaseDetectionPage from './components/pages/DiseaseDetectionPage';
 import SchemesPage from './components/pages/SchemesPage';
+import SatellitePage from './components/pages/SatellitePage';
 import AboutPage from './components/pages/AboutPage';
 import ContactPage from './components/pages/ContactPage';
 import LoginPage from './components/pages/LoginPage';
@@ -68,7 +69,7 @@ const App: React.FC = () => {
             setCurrentPage(targetPage);
             setPageBeforeLogin(null);
         } else if (!session) {
-            const protectedPages: Page[] = [Page.Dashboard, Page.DiseaseDetection, Page.Schemes];
+            const protectedPages: Page[] = [Page.Dashboard, Page.DiseaseDetection, Page.Schemes, Page.Satellite];
             if (protectedPages.includes(currentPage)) {
                 setCurrentPage(Page.Home);
             }
@@ -81,7 +82,7 @@ const App: React.FC = () => {
   }, []);
 
   const handleNavigation = useCallback((page: Page) => {
-    const protectedPages: Page[] = [Page.Dashboard, Page.DiseaseDetection, Page.Schemes];
+    const protectedPages: Page[] = [Page.Dashboard, Page.DiseaseDetection, Page.Schemes, Page.Satellite];
     if (protectedPages.includes(page) && !session) {
       setPageBeforeLogin(page);
       setCurrentPage(Page.Login);
@@ -105,6 +106,8 @@ const App: React.FC = () => {
         return <DiseaseDetectionPage />;
       case Page.Schemes:
         return <SchemesPage />;
+      case Page.Satellite:
+        return <SatellitePage />;
       case Page.About:
         return <AboutPage />;
       case Page.Contact:

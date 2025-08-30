@@ -4,6 +4,7 @@ export enum Page {
   Dashboard = 'Dashboard',
   DiseaseDetection = 'Disease Detection',
   Schemes = 'Schemes & Benefits',
+  Satellite = 'Satellite Imagery',
   About = 'About Us',
   Contact = 'Contact Us',
   Login = 'Login',
