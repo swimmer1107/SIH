@@ -1,6 +1,6 @@
-
 import React from 'react';
 import { Page } from '../types';
+import { useLanguage } from './LanguageProvider';
 
 interface SidebarProps {
   currentPage: Page;
@@ -17,6 +17,7 @@ const LeafIcon: React.FC<{className?: string}> = ({className}) => (
 );
 const DashboardIcon: React.FC = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg>;
 const DiseaseIcon: React.FC = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M12 6a2 2 0 100-4 2 2 0 000 4zm0 14a2 2 0 100-4 2 2 0 000 4zm6-8a2 2 0 100-4 2 2 0 000 4zm-12 0a2 2 0 100-4 2 2 0 000 4z" /></svg>;
+const RecommendationIcon: React.FC = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" /></svg>;
 const SchemeIcon: React.FC = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /></svg>;
 const SatelliteIcon: React.FC = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2h1a2 2 0 002-2v-1a2 2 0 012-2h1.945M7.758 4.586a10.001 10.001 0 00-4.697 3.31M19.945 11c.05.32.055.644.055.972 0 5.253-4.247 9.528-9.5 9.528S1 17.225 1 11.972c0-.328.005-.652.055-.972m18.89 0A10.001 10.001 0 0016.242 4.586" /></svg>;
 const AboutIcon: React.FC = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>;
@@ -31,7 +32,7 @@ interface NavLinkProps {
 }
 
 const NavLink: React.FC<NavLinkProps> = ({ icon, text, isActive, onClick }) => (
-    <a href="#" onClick={onClick} className={`flex items-center px-4 py-3 my-1 transition-colors duration-200 transform rounded-lg mx-2 ${isActive ? 'bg-primary-100 dark:bg-primary-900/40 text-primary-700 dark:text-primary-200' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'}`}>
+    <a href="#" onClick={onClick} className={`flex items-center px-4 py-3 my-1 transition-colors duration-200 transform rounded-lg mx-2 ${isActive ? 'bg-primary-100 text-primary-700 dark:bg-gray-700 dark:text-white' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'}`}>
         {icon}
         <span className="mx-4 font-medium">{text}</span>
     </a>
@@ -39,9 +40,11 @@ const NavLink: React.FC<NavLinkProps> = ({ icon, text, isActive, onClick }) => (
 
 
 const Sidebar: React.FC<SidebarProps> = ({ currentPage, setCurrentPage, handleLogout, isSidebarOpen, setSidebarOpen }) => {
+    const { t } = useLanguage();
     const navLinks = [
         { name: Page.Dashboard, icon: <DashboardIcon /> },
         { name: Page.DiseaseDetection, icon: <DiseaseIcon /> },
+        { name: Page.CropRecommendation, icon: <RecommendationIcon /> },
         { name: Page.Schemes, icon: <SchemeIcon /> },
         { name: Page.Satellite, icon: <SatelliteIcon /> },
         { name: Page.About, icon: <AboutIcon /> },
@@ -62,14 +65,14 @@ const Sidebar: React.FC<SidebarProps> = ({ currentPage, setCurrentPage, handleLo
                 <div className="flex items-center justify-center h-16 border-b border-gray-200 dark:border-gray-700 flex-shrink-0">
                    <a href="#" onClick={(e) => { e.preventDefault(); setCurrentPage(Page.Home); }} className="flex items-center space-x-2">
                      <LeafIcon className="h-8 w-8 text-primary-600" />
-                     <span className="text-2xl font-bold text-gray-800 dark:text-white">CropGuru</span>
+                     <span className="text-2xl font-bold text-gray-800 dark:text-white">{t('header.title')}</span>
                    </a>
                 </div>
                 <nav className="flex-grow py-4">
                     {navLinks.map(link => (
                         <NavLink 
                             key={link.name} 
-                            text={link.name} 
+                            text={t(link.name)} 
                             icon={link.icon} 
                             isActive={currentPage === link.name}
                             onClick={(e) => { e.preventDefault(); setCurrentPage(link.name); }}
@@ -77,9 +80,9 @@ const Sidebar: React.FC<SidebarProps> = ({ currentPage, setCurrentPage, handleLo
                     ))}
                 </nav>
                 <div className="border-t border-gray-200 dark:border-gray-700 p-2">
-                   <a href="#" onClick={(e) => { e.preventDefault(); handleLogout(); }} className="flex items-center px-4 py-3 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg">
+                   <a href="#" onClick={(e) => { e.preventDefault(); handleLogout(); }} className="flex items-center px-4 py-3 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg">
                         <LogoutIcon />
-                        <span className="mx-4 font-medium">Logout</span>
+                        <span className="mx-4 font-medium">{t('logout')}</span>
                    </a>
                 </div>
             </aside>

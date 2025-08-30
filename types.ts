@@ -3,6 +3,7 @@ export enum Page {
   Home = 'Home',
   Dashboard = 'Dashboard',
   DiseaseDetection = 'Disease Detection',
+  CropRecommendation = 'Crop Recommendation',
   Schemes = 'Schemes & Benefits',
   Satellite = 'Satellite Imagery',
   About = 'About Us',
@@ -36,4 +37,15 @@ export interface WeatherData {
   temp: string;
   icon: string;
   condition: string;
+}
+
+// FIX: Added CropRecommendationResult to be used in CropRecommendationPage.
+export interface CropRecommendationResult {
+  recommendedCrop: string;
+  reasoning: string;
+  alternativeCrops: {
+    name: string;
+    reason: string;
+  }[];
+  soilManagementTips: string[];
 }

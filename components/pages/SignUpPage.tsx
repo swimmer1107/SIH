@@ -3,6 +3,7 @@ import Button from '../ui/Button';
 import Card from '../ui/Card';
 import { Page } from '../../types';
 import { supabase } from '../../services/supabaseClient';
+import { useLanguage } from '../LanguageProvider';
 
 interface SignUpPageProps {
   setCurrentPage: (page: Page) => void;
@@ -15,6 +16,7 @@ const LeafIcon: React.FC<{className?: string}> = ({className}) => (
 );
 
 const SignUpPage: React.FC<SignUpPageProps> = ({ setCurrentPage }) => {
+    const { t } = useLanguage();
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -43,7 +45,7 @@ const SignUpPage: React.FC<SignUpPageProps> = ({ setCurrentPage }) => {
 
             if (data.user && !data.session) {
                 setSuccess(true);
-                setError("Account created! Please check your email to confirm your sign up.");
+                setError(t('signup.success.message'));
             }
             // If there's a session, the onAuthStateChange listener in App.tsx will handle navigation.
         } catch (error: any) {
@@ -58,20 +60,20 @@ const SignUpPage: React.FC<SignUpPageProps> = ({ setCurrentPage }) => {
             <Card className="max-w-md w-full">
                 <div className="text-center mb-8">
                     <LeafIcon className="h-12 w-12 text-primary-600 mx-auto" />
-                    <h1 className="text-3xl font-bold text-gray-900 dark:text-white mt-4">Create an Account</h1>
-                    <p className="text-gray-600 dark:text-gray-400">Join CropGuru to get started.</p>
+                    <h1 className="text-3xl font-bold text-gray-900 dark:text-white mt-4">{t('signup.title')}</h1>
+                    <p className="text-gray-600 dark:text-gray-300">{t('signup.subtitle')}</p>
                 </div>
                 
                 {success ? (
                     <div className="text-center">
-                        <h2 className="text-2xl font-bold text-primary-600">Success!</h2>
-                        <p className="mt-2 text-gray-600 dark:text-gray-400">{error || "Please check your email to verify your account."}</p>
+                        <h2 className="text-2xl font-bold text-primary-600 dark:text-primary-400">{t('success')}</h2>
+                        <p className="mt-2 text-gray-600 dark:text-gray-300">{error || t('signup.success.message')}</p>
                     </div>
                 ) : (
                     <form onSubmit={handleSubmit} className="space-y-6">
                         <div>
                             <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                                Full Name
+                                {t('signup.form.name')}
                             </label>
                             <div className="mt-1">
                                 <input
@@ -82,13 +84,13 @@ const SignUpPage: React.FC<SignUpPageProps> = ({ setCurrentPage }) => {
                                     required
                                     value={name}
                                     onChange={(e) => setName(e.target.value)}
-                                    className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm bg-white dark:bg-gray-700"
+                                    className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm bg-white dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                                 />
                             </div>
                         </div>
                         <div>
                             <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                                Email Address
+                                {t('login.form.email')}
                             </label>
                             <div className="mt-1">
                                 <input
@@ -99,13 +101,13 @@ const SignUpPage: React.FC<SignUpPageProps> = ({ setCurrentPage }) => {
                                     required
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
-                                    className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm bg-white dark:bg-gray-700"
+                                    className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm bg-white dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                                 />
                             </div>
                         </div>
                         <div>
                             <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                                Password
+                                {t('login.form.password')}
                             </label>
                             <div className="mt-1">
                                 <input
@@ -116,29 +118,29 @@ const SignUpPage: React.FC<SignUpPageProps> = ({ setCurrentPage }) => {
                                     required
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
-                                    className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm bg-white dark:bg-gray-700"
+                                    className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm bg-white dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                                 />
                             </div>
                         </div>
 
-                        {error && (
-                            <p className="text-center text-sm text-red-600 dark:text-red-400">
+                        {error && !success && (
+                            <p className="text-center text-sm text-red-600">
                                 {error}
                             </p>
                         )}
 
                         <div>
                             <Button type="submit" className="w-full" disabled={loading}>
-                                {loading ? 'Creating Account...' : 'Create Account'}
+                                {loading ? t('signup.button.loading') : t('signup.button.submit')}
                             </Button>
                         </div>
                     </form>
                 )}
 
-                <p className="mt-6 text-center text-sm text-gray-600 dark:text-gray-400">
-                    Already have an account?{' '}
+                <p className="mt-6 text-center text-sm text-gray-600 dark:text-gray-300">
+                    {t('signup.link.prompt')}{' '}
                     <button onClick={() => setCurrentPage(Page.Login)} className="font-medium text-primary-600 hover:text-primary-500 dark:text-primary-400 dark:hover:text-primary-300">
-                        Sign In
+                        {t('signup.link.action')}
                     </button>
                 </p>
             </Card>

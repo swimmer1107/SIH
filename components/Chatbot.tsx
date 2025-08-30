@@ -1,16 +1,24 @@
-
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { getChatbotResponse } from '../services/geminiService';
 import { ChatMessage } from '../types';
+import { useLanguage } from './LanguageProvider';
 
 const Chatbot: React.FC = () => {
+  const { t } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([
-    { sender: 'ai', text: "Hello! I'm CropGuru's AI assistant. How can I help you with your farming questions today?" }
+    { sender: 'ai', text: t('chatbot.greeting') }
   ]);
   const [userInput, setUserInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  
+  // Update initial message if language changes while chatbot is closed
+  useEffect(() => {
+    if (!isOpen) {
+        setMessages([{ sender: 'ai', text: t('chatbot.greeting') }]);
+    }
+  }, [t, isOpen]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -29,14 +37,15 @@ const Chatbot: React.FC = () => {
     setIsLoading(true);
 
     try {
-        const aiResponse = await getChatbotResponse(messages, userInput);
-        setMessages(prev => [...prev, { sender: 'ai', text: aiResponse }]);
+        const aiResponseKey = await getChatbotResponse(messages, userInput);
+        const aiResponseText = t(aiResponseKey);
+        setMessages(prev => [...prev, { sender: 'ai', text: aiResponseText }]);
     } catch (error) {
-        setMessages(prev => [...prev, { sender: 'ai', text: 'Sorry, something went wrong. Please try again.' }]);
+        setMessages(prev => [...prev, { sender: 'ai', text: t('chatbot.error') }]);
     } finally {
         setIsLoading(false);
     }
-  }, [userInput, isLoading, messages]);
+  }, [userInput, isLoading, messages, t]);
 
 
   return (
@@ -59,7 +68,7 @@ const Chatbot: React.FC = () => {
         }`}
       >
         <div className="p-4 bg-primary-600 text-white rounded-t-xl flex justify-between items-center">
-          <h3 className="text-lg font-bold">CropGuru AI Assistant</h3>
+          <h3 className="text-lg font-bold">{t('chatbot.title')}</h3>
           <button onClick={() => setIsOpen(false)} className="hover:text-gray-200">&times;</button>
         </div>
 
@@ -67,7 +76,7 @@ const Chatbot: React.FC = () => {
           <div className="space-y-4">
             {messages.map((msg, index) => (
               <div key={index} className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
-                <div className={`max-w-xs lg:max-w-md px-4 py-2 rounded-2xl ${msg.sender === 'user' ? 'bg-primary-500 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200'}`}>
+                <div className={`max-w-xs lg:max-w-md px-4 py-2 rounded-2xl ${msg.sender === 'user' ? 'bg-primary-500 text-white' : 'bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-gray-200'}`}>
                   <p className="text-sm" dangerouslySetInnerHTML={{ __html: msg.text.replace(/\n/g, '<br />') }} />
                 </div>
               </div>
@@ -76,9 +85,9 @@ const Chatbot: React.FC = () => {
               <div className="flex justify-start">
                 <div className="max-w-xs lg:max-w-md px-4 py-3 rounded-2xl bg-gray-200 dark:bg-gray-700">
                   <div className="flex items-center space-x-2">
-                    <div className="w-2 h-2 rounded-full bg-gray-500 animate-bounce"></div>
-                    <div className="w-2 h-2 rounded-full bg-gray-500 animate-bounce delay-75"></div>
-                    <div className="w-2 h-2 rounded-full bg-gray-500 animate-bounce delay-150"></div>
+                    <div className="w-2 h-2 rounded-full bg-gray-500 dark:bg-gray-400 animate-bounce"></div>
+                    <div className="w-2 h-2 rounded-full bg-gray-500 dark:bg-gray-400 animate-bounce delay-75"></div>
+                    <div className="w-2 h-2 rounded-full bg-gray-500 dark:bg-gray-400 animate-bounce delay-150"></div>
                   </div>
                 </div>
               </div>
@@ -94,14 +103,14 @@ const Chatbot: React.FC = () => {
               value={userInput}
               onChange={(e) => setUserInput(e.target.value)}
               onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
-              placeholder="Ask about crops..."
-              className="flex-1 w-full px-4 py-2 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-full focus:outline-none focus:ring-2 focus:ring-primary-500"
+              placeholder={t('chatbot.placeholder')}
+              className="flex-1 w-full px-4 py-2 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-200 rounded-full focus:outline-none focus:ring-2 focus:ring-primary-500"
               disabled={isLoading}
             />
             <button
               onClick={handleSendMessage}
               disabled={isLoading}
-              className="p-3 bg-primary-600 text-white rounded-full hover:bg-primary-700 disabled:bg-primary-300 disabled:cursor-not-allowed transition-colors"
+              className="p-3 bg-primary-600 text-white rounded-full hover:bg-primary-700 disabled:bg-primary-300 dark:disabled:bg-primary-800 disabled:cursor-not-allowed transition-colors"
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>

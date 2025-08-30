@@ -4,6 +4,7 @@ import Footer from './components/Footer';
 import HomePage from './components/pages/HomePage';
 import DashboardPage from './components/pages/DashboardPage';
 import DiseaseDetectionPage from './components/pages/DiseaseDetectionPage';
+import CropRecommendationPage from './components/pages/CropRecommendationPage';
 import SchemesPage from './components/pages/SchemesPage';
 import SatellitePage from './components/pages/SatellitePage';
 import AboutPage from './components/pages/AboutPage';
@@ -23,29 +24,7 @@ const App: React.FC = () => {
   const isAuthenticated = !!session;
   const [pageBeforeLogin, setPageBeforeLogin] = useState<Page | null>(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [theme, setTheme] = useState<'light' | 'dark'>(() => {
-    if (typeof window !== 'undefined' && window.localStorage) {
-      const storedTheme = window.localStorage.getItem('theme');
-      if (storedTheme === 'dark' || storedTheme === 'light') {
-        return storedTheme;
-      }
-      if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        return 'dark';
-      }
-    }
-    return 'light';
-  });
-
-  useEffect(() => {
-    const root = window.document.documentElement;
-    if (theme === 'dark') {
-      root.classList.add('dark');
-    } else {
-      root.classList.remove('dark');
-    }
-    localStorage.setItem('theme', theme);
-  }, [theme]);
-
+  
   useEffect(() => {
     const fetchSession = async () => {
         const { data: { session } } = await supabase.auth.getSession();
@@ -69,7 +48,7 @@ const App: React.FC = () => {
             setCurrentPage(targetPage);
             setPageBeforeLogin(null);
         } else if (!session) {
-            const protectedPages: Page[] = [Page.Dashboard, Page.DiseaseDetection, Page.Schemes, Page.Satellite];
+            const protectedPages: Page[] = [Page.Dashboard, Page.DiseaseDetection, Page.CropRecommendation, Page.Schemes, Page.Satellite];
             if (protectedPages.includes(currentPage)) {
                 setCurrentPage(Page.Home);
             }
@@ -77,12 +56,8 @@ const App: React.FC = () => {
     }
   }, [session, checkingSession, currentPage, pageBeforeLogin]);
 
-  const toggleTheme = useCallback(() => {
-    setTheme((prevTheme) => (prevTheme === 'light' ? 'dark' : 'light'));
-  }, []);
-
   const handleNavigation = useCallback((page: Page) => {
-    const protectedPages: Page[] = [Page.Dashboard, Page.DiseaseDetection, Page.Schemes, Page.Satellite];
+    const protectedPages: Page[] = [Page.Dashboard, Page.DiseaseDetection, Page.CropRecommendation, Page.Schemes, Page.Satellite];
     if (protectedPages.includes(page) && !session) {
       setPageBeforeLogin(page);
       setCurrentPage(Page.Login);
@@ -104,6 +79,8 @@ const App: React.FC = () => {
         return <DashboardPage />;
       case Page.DiseaseDetection:
         return <DiseaseDetectionPage />;
+      case Page.CropRecommendation:
+        return <CropRecommendationPage />;
       case Page.Schemes:
         return <SchemesPage />;
       case Page.Satellite:
@@ -149,8 +126,6 @@ const App: React.FC = () => {
         <Header
           currentPage={currentPage}
           setCurrentPage={handleNavigation}
-          theme={theme}
-          toggleTheme={toggleTheme}
           isAuthenticated={isAuthenticated}
           handleLogout={handleLogout}
           setSidebarOpen={setIsSidebarOpen}

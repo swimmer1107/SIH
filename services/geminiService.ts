@@ -1,5 +1,6 @@
 import { GoogleGenAI, GenerateContentResponse, Type, Modality } from "@google/genai";
-import { DiseaseResult, ChatMessage, Scheme } from '../types';
+// FIX: Added CropRecommendationResult to imports to support the new crop recommendation feature.
+import { DiseaseResult, ChatMessage, Scheme, CropRecommendationResult } from '../types';
 import { supabase } from './supabaseClient';
 
 // --- VERY IMPORTANT SECURITY WARNING ---
@@ -56,9 +57,9 @@ export const getChatbotResponse = async (history: ChatMessage[], message: string
     } catch (error) {
         console.error("Error getting chatbot response:", error);
         if (error instanceof Error && error.message.includes("API key")) {
-            return "The AI assistant is not configured. The API key might be invalid or missing in the source code.";
+            return "service.gemini.apiKeyError";
         }
-        return "Sorry, I'm having trouble connecting to my knowledge base. Please try again later.";
+        return "service.gemini.connectError";
     }
 };
 
@@ -99,9 +100,9 @@ export const analyzeCropImage = async (base64Image: string, mimeType: string): P
     } catch (error) {
         console.error("Error analyzing crop image:", error);
         if (error instanceof Error && error.message.includes("API key")) {
-             throw new Error("AI image analysis is not configured. The API key is missing or invalid in the source code.");
+             throw new Error("service.gemini.imageAnalysisConfigError");
         }
-        throw new Error("Failed to analyze image. The AI model might be unavailable or the image could not be processed.");
+        throw new Error("service.gemini.imageAnalysisGeneralError");
     }
 };
 
@@ -194,8 +195,78 @@ export const getGovernmentSchemes = async (): Promise<Scheme[]> => {
     } catch (error) {
         console.error("Error fetching government schemes from AI:", error);
         if (error instanceof Error && error.message.includes("API key")) {
-            throw new Error("AI scheme fetcher is not configured. The API key is missing or invalid in the source code.");
+            throw new Error("service.gemini.schemesConfigError");
         }
-        throw new Error("Failed to fetch government schemes. The AI model might be unavailable or there was a network issue.");
+        throw new Error("service.gemini.schemesGeneralError");
+    }
+};
+
+export interface CropRecommendationParams {
+    state: string;
+    district: string;
+    soilColor: string;
+    soilTexture: string;
+    rainfall: string;
+}
+
+export const getCropRecommendation = async (params: CropRecommendationParams): Promise<CropRecommendationResult> => {
+    try {
+        const aiInstance = getAI();
+        const prompt = `As an expert agronomist for Indian farming conditions, recommend the best crop to plant based on the following information provided by a farmer.
+- Location: ${params.district}, ${params.state}, India
+- Soil Color: ${params.soilColor}
+- Soil Texture: ${params.soilTexture} (how it feels)
+- Annual Rainfall Pattern: ${params.rainfall}
+
+From this information, infer the likely soil nutrient profile (Nitrogen, Phosphorus, Potassium levels), soil pH, average temperature, and humidity typical for that region and soil type. Use this inferred data to make your recommendation.
+For example, black, sticky soil in a high rainfall area like Maharashtra is likely rich in nutrients and good for cotton or sugarcane. Red, gritty soil in a low rainfall area of Rajasthan would be better for millets or pulses.
+
+Provide one primary recommendation, detailed reasoning for why it's suitable, 2-3 alternative crops with brief reasons, and actionable soil management tips based on the described soil type. Respond only in the requested JSON format.`;
+
+        const response = await aiInstance.models.generateContent({
+            model: 'gemini-2.5-flash',
+            contents: prompt,
+            config: {
+                responseMimeType: 'application/json',
+                responseSchema: {
+                    type: Type.OBJECT,
+                    properties: {
+                        recommendedCrop: { type: Type.STRING, description: "The single best crop to plant based on the inputs." },
+                        reasoning: { type: Type.STRING, description: "A detailed explanation for why the recommended crop is suitable." },
+                        alternativeCrops: {
+                            type: Type.ARRAY,
+                            description: "A list of 2-3 alternative suitable crops.",
+                            items: {
+                                type: Type.OBJECT,
+                                properties: {
+                                    name: { type: Type.STRING, description: "The name of the alternative crop." },
+                                    reason: { type: Type.STRING, description: "A brief reason why this alternative is also suitable." }
+                                },
+                                required: ['name', 'reason']
+                            }
+                        },
+                        soilManagementTips: {
+                            type: Type.ARRAY,
+                            description: "A list of actionable tips for managing the soil based on the provided data.",
+                            items: {
+                                type: Type.STRING
+                            }
+                        }
+                    },
+                    required: ['recommendedCrop', 'reasoning', 'alternativeCrops', 'soilManagementTips']
+                }
+            }
+        });
+
+        const jsonText = response.text.trim();
+        const result = JSON.parse(jsonText) as CropRecommendationResult;
+        return result;
+
+    } catch (error) {
+        console.error("Error getting crop recommendation:", error);
+        if (error instanceof Error && error.message.includes("API key")) {
+             throw new Error("service.gemini.cropRecConfigError");
+        }
+        throw new Error("service.gemini.cropRecGeneralError");
     }
 };

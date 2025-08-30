@@ -1,4 +1,3 @@
-
 import React from 'react';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -9,7 +8,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const Button: React.FC<ButtonProps> = ({ children, variant = 'primary', size = 'default', className = '', ...props }) => {
-  const baseClasses = "font-semibold rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-offset-gray-900 transition-transform transform hover:scale-105 duration-300 ease-in-out";
+  const baseClasses = "font-semibold rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 transition-transform transform hover:scale-105 duration-300 ease-in-out";
   
   const sizeClasses = {
     default: 'px-6 py-3 text-base',
@@ -17,9 +16,9 @@ const Button: React.FC<ButtonProps> = ({ children, variant = 'primary', size = '
   };
 
   const variantClasses = {
-    primary: 'bg-primary-600 text-white hover:bg-primary-700 focus:ring-primary-500',
-    secondary: 'bg-secondary-500 text-white hover:bg-secondary-600 focus:ring-secondary-400',
-    outline: 'bg-transparent border border-primary-600 text-primary-600 dark:text-primary-400 dark:border-primary-400 hover:bg-primary-50 dark:hover:bg-primary-900/20 focus:ring-primary-500',
+    primary: 'bg-primary-600 text-white hover:bg-primary-700 focus:ring-primary-500 dark:focus:ring-offset-gray-800',
+    secondary: 'bg-secondary-500 text-white hover:bg-secondary-600 focus:ring-secondary-400 dark:focus:ring-offset-gray-800',
+    outline: 'bg-transparent border border-primary-600 text-primary-600 hover:bg-primary-50 dark:text-primary-400 dark:border-primary-400 dark:hover:bg-gray-700 focus:ring-primary-500 dark:focus:ring-offset-gray-800',
   };
 
   return (

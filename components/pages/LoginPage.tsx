@@ -3,6 +3,7 @@ import Button from '../ui/Button';
 import Card from '../ui/Card';
 import { Page } from '../../types';
 import { supabase } from '../../services/supabaseClient';
+import { useLanguage } from '../LanguageProvider';
 
 interface LoginPageProps {
   setCurrentPage: (page: Page) => void;
@@ -15,6 +16,7 @@ const LeafIcon: React.FC<{className?: string}> = ({className}) => (
 );
 
 const LoginPage: React.FC<LoginPageProps> = ({ setCurrentPage }) => {
+    const { t } = useLanguage();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState<string | null>(null);
@@ -46,13 +48,13 @@ const LoginPage: React.FC<LoginPageProps> = ({ setCurrentPage }) => {
             <Card className="max-w-md w-full">
                 <div className="text-center mb-8">
                     <LeafIcon className="h-12 w-12 text-primary-600 mx-auto" />
-                    <h1 className="text-3xl font-bold text-gray-900 dark:text-white mt-4">Welcome Back</h1>
-                    <p className="text-gray-600 dark:text-gray-400">Sign in to access your dashboard.</p>
+                    <h1 className="text-3xl font-bold text-gray-900 dark:text-white mt-4">{t('login.title')}</h1>
+                    <p className="text-gray-600 dark:text-gray-300">{t('login.subtitle')}</p>
                 </div>
                 <form onSubmit={handleSubmit} className="space-y-6">
                     <div>
                         <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                            Email Address
+                            {t('login.form.email')}
                         </label>
                         <div className="mt-1">
                             <input
@@ -63,14 +65,14 @@ const LoginPage: React.FC<LoginPageProps> = ({ setCurrentPage }) => {
                                 required
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
-                                className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm bg-white dark:bg-gray-700"
+                                className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm bg-white dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                             />
                         </div>
                     </div>
 
                     <div>
                         <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                            Password
+                            {t('login.form.password')}
                         </label>
                         <div className="mt-1">
                             <input
@@ -81,27 +83,27 @@ const LoginPage: React.FC<LoginPageProps> = ({ setCurrentPage }) => {
                                 required
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
-                                className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm bg-white dark:bg-gray-700"
+                                className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm bg-white dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                             />
                         </div>
                     </div>
 
                     {error && (
-                        <p className="text-center text-sm text-red-600 dark:text-red-400">
+                        <p className="text-center text-sm text-red-600">
                             {error}
                         </p>
                     )}
 
                     <div>
                         <Button type="submit" className="w-full" disabled={loading}>
-                            {loading ? 'Signing In...' : 'Sign In'}
+                            {loading ? t('login.button.loading') : t('login.button.submit')}
                         </Button>
                     </div>
                 </form>
-                <p className="mt-6 text-center text-sm text-gray-600 dark:text-gray-400">
-                    Don't have an account?{' '}
+                <p className="mt-6 text-center text-sm text-gray-600 dark:text-gray-300">
+                    {t('login.link.prompt')}{' '}
                     <button onClick={() => setCurrentPage(Page.SignUp)} className="font-medium text-primary-600 hover:text-primary-500 dark:text-primary-400 dark:hover:text-primary-300">
-                        Sign Up
+                        {t('login.link.action')}
                     </button>
                 </p>
             </Card>

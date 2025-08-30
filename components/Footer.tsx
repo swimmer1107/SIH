@@ -1,8 +1,8 @@
-
 import React from 'react';
+import { useLanguage } from './LanguageProvider';
 
 const SocialIcon: React.FC<{ href: string, path: string }> = ({ href, path }) => (
-    <a href={href} className="text-gray-500 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">
+    <a href={href} className="text-gray-500 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">
         <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
             <path fillRule="evenodd" d={path} clipRule="evenodd" />
         </svg>
@@ -10,6 +10,8 @@ const SocialIcon: React.FC<{ href: string, path: string }> = ({ href, path }) =>
 );
 
 const Footer: React.FC = () => {
+  const { t } = useLanguage();
+
   return (
     <footer className="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
       <div className="container mx-auto py-8 px-4 sm:px-6 lg:px-8">
@@ -20,8 +22,8 @@ const Footer: React.FC = () => {
             <SocialIcon href="#" path="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15H9v-8h2v8zm-1-9.5c-.69 0-1.25-.56-1.25-1.25S9.31 5 10 5s1.25.56 1.25 1.25S10.69 7.5 10 7.5zM15 17h-2v-4c0-1.1-.8-2-1.8-2-.9 0-1.2.7-1.2 1.4V17H8v-8h2v1c.5-.8 1.6-1.2 2.5-1.2C14.1 9 15 10.3 15 12v5z" />
           </div>
           <div className="mt-8 md:mt-0 md:order-1">
-            <p className="text-center text-base text-gray-500">
-              &copy; {new Date().getFullYear()} CropGuru. All rights reserved. Built for SIH 2025 by DEV10.
+            <p className="text-center text-base text-gray-500 dark:text-gray-400">
+              {t('footer.copyright')}
             </p>
           </div>
         </div>

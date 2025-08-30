@@ -1,9 +1,9 @@
-
 import React, { useState, useCallback, ChangeEvent, useRef, useEffect } from 'react';
 import Card from '../ui/Card';
 import Button from '../ui/Button';
 import { analyzeCropImage } from '../../services/geminiService';
 import { DiseaseResult } from '../../types';
+import { useLanguage } from '../LanguageProvider';
 
 const CameraIcon: React.FC = () => (
   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -20,6 +20,7 @@ const UploadIcon: React.FC = () => (
 
 
 const DiseaseDetectionPage: React.FC = () => {
+  const { t } = useLanguage();
   const [image, setImage] = useState<string | null>(null);
   const [file, setFile] = useState<File | null>(null);
   const [result, setResult] = useState<DiseaseResult | null>(null);
@@ -131,21 +132,21 @@ const DiseaseDetectionPage: React.FC = () => {
         const analysisResult = await analyzeCropImage(base64String, file.type);
         setResult(analysisResult);
     } catch (err: any) {
-      setError(err.message || "An unknown error occurred.");
+      setError(t(err.message) || "An unknown error occurred.");
     } finally {
         setIsLoading(false);
     }
-  }, [file, image]);
+  }, [file, image, t]);
 
   if (isCameraOpen) {
     return (
       <div className="fixed inset-0 bg-gray-900 z-50 flex flex-col items-center justify-center p-4">
-        <p className="text-white text-lg absolute top-4 animate-pulse">Point your camera at a crop leaf</p>
+        <p className="text-white text-lg absolute top-4 animate-pulse">{t('disease.camera.prompt')}</p>
         <div className="relative w-full max-w-4xl aspect-video overflow-hidden rounded-lg shadow-2xl">
             <video ref={videoRef} autoPlay playsInline className="w-full h-full object-cover"></video>
         </div>
         <div className="absolute bottom-0 left-0 right-0 p-4 bg-black bg-opacity-50 flex justify-center items-center space-x-6">
-          <Button onClick={stopCamera} variant="outline" className="bg-white/20 border-white text-white hover:bg-white/30">Cancel</Button>
+          <Button onClick={stopCamera} variant="outline" className="bg-white/20 border-white text-white hover:bg-white/30">{t('cancel')}</Button>
           <button onClick={captureImage} className="w-20 h-20 rounded-full bg-white ring-4 ring-white/50 focus:outline-none focus:ring-white transition-transform transform hover:scale-105" aria-label="Take Picture"></button>
         </div>
       </div>
@@ -154,9 +155,9 @@ const DiseaseDetectionPage: React.FC = () => {
 
   return (
     <div className="space-y-8">
-      <h1 className="text-3xl font-bold text-center text-gray-900 dark:text-white">Crop Disease Detection</h1>
-      <p className="text-lg text-center text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-        Upload or take a photo of a crop leaf, and our AI will analyze it for diseases and suggest treatments.
+      <h1 className="text-3xl font-bold text-center text-gray-900 dark:text-white">{t('disease.title')}</h1>
+      <p className="text-lg text-center text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+        {t('disease.subtitle')}
       </p>
 
       <Card className="max-w-2xl mx-auto">
@@ -167,7 +168,7 @@ const DiseaseDetectionPage: React.FC = () => {
             ) : (
               <div className="text-center text-gray-500 dark:text-gray-400">
                 <svg xmlns="http://www.w3.org/2000/svg" className="mx-auto h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
-                <p>Image preview will appear here</p>
+                <p>{t('disease.preview')}</p>
               </div>
             )}
           </div>
@@ -175,24 +176,24 @@ const DiseaseDetectionPage: React.FC = () => {
           {image ? (
              <div className="flex flex-col sm:flex-row w-full gap-4">
                  <Button onClick={handleAnalyze} disabled={isLoading} className="flex-1">
-                    {isLoading ? 'Analyzing...' : 'Analyze Image'}
+                    {isLoading ? t('disease.button.analyzing') : t('disease.button.analyze')}
                  </Button>
                  <Button onClick={resetState} variant="outline" className="flex-1">
-                    Try Another
+                    {t('disease.button.tryAnother')}
                  </Button>
             </div>
           ) : (
             <div className="flex flex-col sm:flex-row w-full gap-4">
                 <label htmlFor="file-upload" className="flex-1 cursor-pointer">
-                  <div className="w-full text-center px-6 py-3 font-semibold rounded-lg shadow-sm focus:outline-none transition-transform transform hover:scale-105 duration-300 ease-in-out bg-transparent border border-primary-600 text-primary-600 dark:text-primary-400 dark:border-primary-400 hover:bg-primary-50 dark:hover:bg-primary-900/20 flex items-center justify-center">
+                  <div className="w-full text-center px-6 py-3 font-semibold rounded-lg shadow-sm focus:outline-none transition-transform transform hover:scale-105 duration-300 ease-in-out bg-transparent border border-primary-600 text-primary-600 dark:text-primary-400 dark:border-primary-400 hover:bg-primary-50 dark:hover:bg-gray-700 flex items-center justify-center">
                     <UploadIcon />
-                    Upload from Device
+                    {t('disease.button.upload')}
                   </div>
                   <input id="file-upload" name="file-upload" type="file" className="sr-only" accept="image/*" onChange={handleImageUpload} />
                 </label>
                 <Button onClick={startCamera} variant="secondary" className="flex-1 flex items-center justify-center">
                     <CameraIcon />
-                    Use Camera
+                    {t('disease.button.camera')}
                 </Button>
             </div>
           )}
@@ -200,35 +201,35 @@ const DiseaseDetectionPage: React.FC = () => {
       </Card>
       
       {error && !isCameraOpen && (
-        <Card className="max-w-2xl mx-auto border-l-4 border-red-500">
-            <p className="text-red-700 dark:text-red-400 font-semibold">Error:</p>
-            <p className="text-red-600 dark:text-red-300">{error}</p>
+        <Card className="max-w-2xl mx-auto border-l-4 border-red-500 dark:bg-red-900/20">
+            <p className="text-red-700 dark:text-red-300 font-semibold">{t('error')}:</p>
+            <p className="text-red-600 dark:text-red-400">{error}</p>
         </Card>
       )}
 
       {result && (
         <Card className="max-w-2xl mx-auto">
-          <h2 className="text-2xl font-bold mb-4">Analysis Result</h2>
+          <h2 className="text-2xl font-bold mb-4 dark:text-white">{t('disease.result.title')}</h2>
           {result.isHealthy ? (
-            <div className="p-4 rounded-lg bg-green-50 dark:bg-green-900/30 text-green-800 dark:text-green-300 border border-green-200 dark:border-green-700">
-              <h3 className="text-lg font-semibold">Plant Appears Healthy</h3>
-              <p>No significant disease detected in the provided image.</p>
+            <div className="p-4 rounded-lg bg-green-50 dark:bg-green-900/30 text-green-800 dark:text-green-200 border border-green-200 dark:border-green-700">
+              <h3 className="text-lg font-semibold">{t('disease.result.healthy')}</h3>
+              <p>{t('disease.result.healthy.desc')}</p>
             </div>
           ) : (
             <div className="space-y-4">
               <div>
-                <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">Disease Name</h3>
-                <p className="text-lg font-semibold text-primary-700 dark:text-primary-300">{result.diseaseName}</p>
+                <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">{t('disease.result.name')}</h3>
+                <p className="text-lg font-semibold text-primary-700 dark:text-primary-400">{result.diseaseName}</p>
               </div>
               <div>
-                <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">Confidence</h3>
+                <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">{t('disease.result.confidence')}</h3>
                 <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
                   <div className="bg-secondary-500 h-2.5 rounded-full" style={{ width: `${result.confidence}%` }}></div>
                 </div>
                 <p className="text-right text-sm font-semibold">{result.confidence}%</p>
               </div>
               <div>
-                <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">Recommended Treatment</h3>
+                <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">{t('disease.result.treatment')}</h3>
                 <p className="text-base text-gray-700 dark:text-gray-300 whitespace-pre-wrap">{result.treatment}</p>
               </div>
             </div>
