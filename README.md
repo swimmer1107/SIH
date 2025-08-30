@@ -1,20 +1,47 @@
 <div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
+<img width="1200" height="475" alt="GHBanner" src="Sih.png" />
 </div>
 
-# Run and deploy your AI Studio app
+🌱 CropGuru – AI-Powered Crop Yield Prediction & Optimization
 
-This contains everything you need to run your app locally.
+📌 Overview
 
-View your app in AI Studio: https://ai.studio/apps/drive/1Bo3Seb7RpXtocyuDPx9EbWGXMlS_5w1_
+CropGuru is an AI-driven platform designed to help farmers maximize crop yield, predict production, and optimize agricultural practices. By combining machine learning, real-time weather data, and soil parameters, the platform provides actionable insights for smarter farming.
 
-## Run Locally
+👉 Live Demo: CropGuru on Vercel
 
-**Prerequisites:**  Node.js
+🚀 Features
 
+🌾 AI-Powered Predictions – Accurate yield forecasts based on soil, crop, and weather data.
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+☁️ Weather Integration – Real-time weather insights to optimize irrigation and crop protection.
+
+📊 Farmer Dashboard – Intuitive UI with yield charts, recommendations, and alerts.
+
+📱 Responsive Design – Works seamlessly on mobile and desktop.
+
+🔍 Data-Driven Insights – Suggests best crop choices for given conditions.
+
+🛠️ Tech Stack
+
+Frontend
+
+⚛️ React.js (Vite for fast builds)
+
+🎨 Tailwind CSS for modern, responsive UI
+
+📈 Chart.js / Recharts for data visualization
+
+Backend / AI
+
+🐍 Python (FastAPI / Flask)
+
+🤖 TensorFlow / Scikit-Learn (for ML models)
+
+🌦️ OpenWeather API for weather data
+
+🗄️ Supabase / PostgreSQL for database & auth
+
+Deployment
+
+▲ Vercel (Frontend)
