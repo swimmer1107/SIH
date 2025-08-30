@@ -8,7 +8,7 @@
 
 CropGuru is an AI-driven platform designed to help farmers maximize crop yield, predict production, and optimize agricultural practices. By combining machine learning, real-time weather data, and soil parameters, the platform provides actionable insights for smarter farming.
 
-👉 Live Demo: CropGuru on Vercel
+👉 Live Demo: <a href="https://sih-nine-beta.vercel.app/">CropGuru on Vercel</a>
 
 🚀 Features
 
@@ -19,8 +19,6 @@ CropGuru is an AI-driven platform designed to help farmers maximize crop yield, 
 📊 Farmer Dashboard – Intuitive UI with yield charts, recommendations, and alerts.
 
 📱 Responsive Design – Works seamlessly on mobile and desktop.
-
-🔍 Data-Driven Insights – Suggests best crop choices for given conditions.
 
 🛠️ Tech Stack
 
@@ -36,12 +34,10 @@ Backend / AI
 
 🐍 Python (FastAPI / Flask)
 
-🤖 TensorFlow / Scikit-Learn (for ML models)
-
 🌦️ OpenWeather API for weather data
 
-🗄️ Supabase / PostgreSQL for database & auth
+🗄️ Supabase 
 
 Deployment
 
-▲ Vercel (Frontend)
+▲ Vercel 
