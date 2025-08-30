@@ -1,7 +1,7 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Card from '../ui/Card';
-import { GOV_SCHEMES } from '../../constants';
+import { getGovernmentSchemes } from '../../services/geminiService';
 import { Scheme } from '../../types';
 
 const SchemeCard: React.FC<{ scheme: Scheme }> = ({ scheme }) => (
@@ -22,13 +22,53 @@ const SchemeCard: React.FC<{ scheme: Scheme }> = ({ scheme }) => (
   </Card>
 );
 
+const SkeletonCard = () => (
+    <Card className="flex flex-col h-full animate-pulse">
+        <div className="flex-grow">
+            <div className="h-5 bg-gray-300 dark:bg-gray-600 rounded w-1/3 mb-4"></div>
+            <div className="h-6 bg-gray-300 dark:bg-gray-600 rounded w-3/4 mb-2"></div>
+            <div className="space-y-2">
+                <div className="h-4 bg-gray-300 dark:bg-gray-600 rounded"></div>
+                <div className="h-4 bg-gray-300 dark:bg-gray-600 rounded"></div>
+                <div className="h-4 bg-gray-300 dark:bg-gray-600 rounded w-5/6"></div>
+            </div>
+             <div className="mt-4 h-4 bg-gray-300 dark:bg-gray-600 rounded w-full"></div>
+             <div className="mt-2 h-4 bg-gray-300 dark:bg-gray-600 rounded w-1/2"></div>
+        </div>
+        <div className="mt-6">
+            <div className="h-5 bg-gray-300 dark:bg-gray-600 rounded w-1/4"></div>
+        </div>
+    </Card>
+);
+
+
 const SchemesPage: React.FC = () => {
+  const [schemes, setSchemes] = useState<Scheme[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [filter, setFilter] = useState('All');
-  const categories = ['All', ...Array.from(new Set(GOV_SCHEMES.map(s => s.category)))];
+  
+  useEffect(() => {
+    const fetchSchemes = async () => {
+        try {
+            setIsLoading(true);
+            setError(null);
+            const fetchedSchemes = await getGovernmentSchemes();
+            setSchemes(fetchedSchemes);
+        } catch (err: any) {
+            setError(err.message || 'An unknown error occurred while fetching schemes.');
+        } finally {
+            setIsLoading(false);
+        }
+    };
+    fetchSchemes();
+  }, []);
+
+  const categories = ['All', ...Array.from(new Set(schemes.map(s => s.category)))];
   
   const filteredSchemes = filter === 'All' 
-    ? GOV_SCHEMES 
-    : GOV_SCHEMES.filter(scheme => scheme.category === filter);
+    ? schemes
+    : schemes.filter(scheme => scheme.category === filter);
 
   return (
     <div className="space-y-8">
@@ -39,27 +79,44 @@ const SchemesPage: React.FC = () => {
         </p>
       </div>
 
-      <div className="flex justify-center flex-wrap gap-2">
-        {categories.map(category => (
-          <button
-            key={category}
-            onClick={() => setFilter(category)}
-            className={`px-4 py-2 text-sm font-medium rounded-full transition-colors ${
-              filter === category
-                ? 'bg-primary-600 text-white'
-                : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600'
-            }`}
-          >
-            {category}
-          </button>
-        ))}
-      </div>
+      {!isLoading && schemes.length > 0 && (
+         <div className="flex justify-center flex-wrap gap-2">
+            {categories.map(category => (
+              <button
+                key={category}
+                onClick={() => setFilter(category)}
+                className={`px-4 py-2 text-sm font-medium rounded-full transition-colors ${
+                  filter === category
+                    ? 'bg-primary-600 text-white'
+                    : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600'
+                }`}
+              >
+                {category}
+              </button>
+            ))}
+        </div>
+      )}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {filteredSchemes.map((scheme, index) => (
-          <SchemeCard key={index} scheme={scheme} />
-        ))}
-      </div>
+      {isLoading && (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {Array.from({ length: 6 }).map((_, index) => <SkeletonCard key={index} />)}
+        </div>
+      )}
+
+      {error && !isLoading && (
+        <Card className="max-w-2xl mx-auto border-l-4 border-red-500">
+            <p className="text-red-700 dark:text-red-400 font-semibold">Error Fetching Schemes:</p>
+            <p className="text-red-600 dark:text-red-300">{error}</p>
+        </Card>
+      )}
+
+      {!isLoading && !error && (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {filteredSchemes.map((scheme, index) => (
+            <SchemeCard key={index} scheme={scheme} />
+            ))}
+        </div>
+      )}
     </div>
   );
 };

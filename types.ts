@@ -29,3 +29,10 @@ export interface ChatMessage {
   sender: 'user' | 'ai';
   text: string;
 }
+
+export interface WeatherData {
+  day: string;
+  temp: string;
+  icon: string;
+  condition: string;
+}
