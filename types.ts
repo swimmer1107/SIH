@@ -48,4 +48,11 @@ export interface CropRecommendationResult {
     reason: string;
   }[];
   soilManagementTips: string[];
+  comparativeAnalysis: {
+    cropName: string;
+    marketValue: 'High' | 'Moderate' | 'Low';
+    waterRequirement: 'High' | 'Moderate' | 'Low';
+    pestResistance: 'High' | 'Moderate' | 'Low';
+    notes: string;
+  }[];
 }

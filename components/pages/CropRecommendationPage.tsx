@@ -23,8 +23,95 @@ const ResultSkeleton: React.FC = () => (
             <div className="h-4 bg-gray-300 dark:bg-gray-600 rounded w-5/6 mb-2"></div>
             <div className="h-4 bg-gray-300 dark:bg-gray-600 rounded w-4/6"></div>
         </div>
+        <div className="mt-6 border-t border-gray-200 dark:border-gray-700 pt-6">
+            <div className="h-7 bg-gray-300 dark:bg-gray-600 rounded w-1/3 mb-4"></div>
+            <div className="h-32 bg-gray-300 dark:bg-gray-600 rounded w-full"></div>
+        </div>
     </Card>
 );
+
+type Rating = 'High' | 'Moderate' | 'Low';
+type Metric = 'marketValue' | 'waterRequirement' | 'pestResistance';
+
+const getRatingClass = (metric: Metric, value: Rating): string => {
+    const valueMap: { [key in Rating]: 'green' | 'yellow' | 'red' } = { High: 'green', Moderate: 'yellow', Low: 'red' };
+    const goodIsHigh: Metric[] = ['marketValue', 'pestResistance'];
+
+    let color: 'green' | 'yellow' | 'red' = 'yellow';
+    if (goodIsHigh.includes(metric)) {
+        color = valueMap[value];
+    } else { // goodIsLow, e.g., waterRequirement
+        const invertedMap: { [key in Rating]: 'green' | 'yellow' | 'red' } = { High: 'red', Moderate: 'yellow', Low: 'green' };
+        color = invertedMap[value];
+    }
+
+    const classes = {
+        green: 'bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-200',
+        yellow: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/50 dark:text-yellow-200',
+        red: 'bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-200',
+    };
+    return `px-2 py-0.5 text-xs font-semibold rounded-full inline-block text-center min-w-[70px] ${classes[color]}`;
+};
+
+
+const ComparisonView: React.FC<{ analysis: CropRecommendationResult['comparativeAnalysis'] }> = ({ analysis }) => {
+    const { t } = useLanguage();
+    return (
+        <div>
+            <h3 className="text-xl font-bold mb-4 dark:text-white">{t('crop.result.comparison')}</h3>
+            {/* Table for larger screens */}
+            <div className="hidden md:block">
+                <Card className="p-0 overflow-x-auto">
+                    <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                        <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-300">
+                            <tr>
+                                <th scope="col" className="px-6 py-3">{t('crop.comparison.crop')}</th>
+                                <th scope="col" className="px-6 py-3">{t('crop.comparison.marketValue')}</th>
+                                <th scope="col" className="px-6 py-3">{t('crop.comparison.water')}</th>
+                                <th scope="col" className="px-6 py-3">{t('crop.comparison.pest')}</th>
+                                <th scope="col" className="px-6 py-3">{t('crop.comparison.notes')}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {analysis.map(crop => (
+                                <tr key={crop.cropName} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                    <th scope="row" className="px-6 py-4 font-bold text-gray-900 whitespace-nowrap dark:text-white">{crop.cropName}</th>
+                                    <td className="px-6 py-4"><span className={getRatingClass('marketValue', crop.marketValue)}>{crop.marketValue}</span></td>
+                                    <td className="px-6 py-4"><span className={getRatingClass('waterRequirement', crop.waterRequirement)}>{crop.waterRequirement}</span></td>
+                                    <td className="px-6 py-4"><span className={getRatingClass('pestResistance', crop.pestResistance)}>{crop.pestResistance}</span></td>
+                                    <td className="px-6 py-4 text-gray-600 dark:text-gray-300">{crop.notes}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </Card>
+            </div>
+            {/* Cards for smaller screens */}
+            <div className="md:hidden space-y-4">
+                {analysis.map(crop => (
+                    <Card key={crop.cropName}>
+                        <h4 className="text-lg font-bold dark:text-white">{crop.cropName}</h4>
+                        <div className="mt-3 space-y-2">
+                            <div className="flex justify-between items-center">
+                                <span className="font-medium text-gray-600 dark:text-gray-300">{t('crop.comparison.marketValue')}</span>
+                                <span className={getRatingClass('marketValue', crop.marketValue)}>{crop.marketValue}</span>
+                            </div>
+                            <div className="flex justify-between items-center">
+                                <span className="font-medium text-gray-600 dark:text-gray-300">{t('crop.comparison.water')}</span>
+                                <span className={getRatingClass('waterRequirement', crop.waterRequirement)}>{crop.waterRequirement}</span>
+                            </div>
+                            <div className="flex justify-between items-center">
+                                <span className="font-medium text-gray-600 dark:text-gray-300">{t('crop.comparison.pest')}</span>
+                                <span className={getRatingClass('pestResistance', crop.pestResistance)}>{crop.pestResistance}</span>
+                            </div>
+                        </div>
+                        <p className="mt-4 text-sm text-gray-700 dark:text-gray-300 border-t pt-3 dark:border-gray-600">{crop.notes}</p>
+                    </Card>
+                ))}
+            </div>
+        </div>
+    );
+};
 
 const CropRecommendationPage: React.FC = () => {
     const { t } = useLanguage();
@@ -161,6 +248,12 @@ const CropRecommendationPage: React.FC = () => {
                            </ul>
                         </div>
                     </div>
+
+                    {result.comparativeAnalysis && result.comparativeAnalysis.length > 0 && (
+                        <div className="mt-8 border-t border-gray-200 dark:border-gray-700 pt-6">
+                            <ComparisonView analysis={result.comparativeAnalysis} />
+                        </div>
+                    )}
                 </Card>
             )}
         </div>

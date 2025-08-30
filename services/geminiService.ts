@@ -221,7 +221,9 @@ export const getCropRecommendation = async (params: CropRecommendationParams): P
 From this information, infer the likely soil nutrient profile (Nitrogen, Phosphorus, Potassium levels), soil pH, average temperature, and humidity typical for that region and soil type. Use this inferred data to make your recommendation.
 For example, black, sticky soil in a high rainfall area like Maharashtra is likely rich in nutrients and good for cotton or sugarcane. Red, gritty soil in a low rainfall area of Rajasthan would be better for millets or pulses.
 
-Provide one primary recommendation, detailed reasoning for why it's suitable, 2-3 alternative crops with brief reasons, and actionable soil management tips based on the described soil type. Respond only in the requested JSON format.`;
+Provide one primary recommendation, detailed reasoning for why it's suitable, 2-3 alternative crops with brief reasons, and actionable soil management tips based on the described soil type.
+Finally, provide a comparative analysis of all recommended crops (the primary one and the alternatives). For each crop, rate its Market Value, Water Requirement, and Pest Resistance on a scale of 'High', 'Moderate', or 'Low'. Also, include brief notes summarizing the pros and cons for each.
+Respond only in the requested JSON format.`;
 
         const response = await aiInstance.models.generateContent({
             model: 'gemini-2.5-flash',
@@ -251,9 +253,24 @@ Provide one primary recommendation, detailed reasoning for why it's suitable, 2-
                             items: {
                                 type: Type.STRING
                             }
+                        },
+                        comparativeAnalysis: {
+                            type: Type.ARRAY,
+                            description: "A comparative analysis of the recommended and alternative crops.",
+                            items: {
+                                type: Type.OBJECT,
+                                properties: {
+                                    cropName: { type: Type.STRING, description: "The name of the crop being analyzed." },
+                                    marketValue: { type: Type.STRING, description: "The potential market value or profitability.", enum: ['High', 'Moderate', 'Low'] },
+                                    waterRequirement: { type: Type.STRING, description: "The amount of water required.", enum: ['High', 'Moderate', 'Low'] },
+                                    pestResistance: { type: Type.STRING, description: "The natural resistance to common pests and diseases.", enum: ['High', 'Moderate', 'Low'] },
+                                    notes: { type: Type.STRING, description: "A brief summary of pros and cons for this crop." }
+                                },
+                                required: ['cropName', 'marketValue', 'waterRequirement', 'pestResistance', 'notes']
+                            }
                         }
                     },
-                    required: ['recommendedCrop', 'reasoning', 'alternativeCrops', 'soilManagementTips']
+                    required: ['recommendedCrop', 'reasoning', 'alternativeCrops', 'soilManagementTips', 'comparativeAnalysis']
                 }
             }
         });

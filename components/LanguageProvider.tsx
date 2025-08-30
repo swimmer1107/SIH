@@ -118,6 +118,12 @@ const translations: { [key in Language]: Translations } = {
     'crop.result.bestCrop': 'Best Crop to Plant',
     'crop.result.alternatives': 'Alternative Crops',
     'crop.result.tips': 'Soil Management Tips',
+    'crop.result.comparison': 'Comparative Analysis',
+    'crop.comparison.crop': 'Crop',
+    'crop.comparison.marketValue': 'Market Value',
+    'crop.comparison.water': 'Water Requirement',
+    'crop.comparison.pest': 'Pest Resistance',
+    'crop.comparison.notes': 'Notes',
 
     // Schemes Page
     'schemes.title': 'Government Schemes & Benefits',
@@ -313,6 +319,12 @@ const translations: { [key in Language]: Translations } = {
     'crop.result.bestCrop': 'रोपण के लिए सबसे अच्छी फसल',
     'crop.result.alternatives': 'वैकल्पिक फसलें',
     'crop.result.tips': 'मृदा प्रबंधन युक्तियाँ',
+    'crop.result.comparison': 'तुलनात्मक विश्लेषण',
+    'crop.comparison.crop': 'फ़सल',
+    'crop.comparison.marketValue': 'बाजार मूल्य',
+    'crop.comparison.water': 'पानी की आवश्यकता',
+    'crop.comparison.pest': 'कीट प्रतिरोध',
+    'crop.comparison.notes': 'टिप्पणियाँ',
 
     // Schemes Page
     'schemes.title': 'सरकारी योजनाएं और लाभ',

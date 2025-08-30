@@ -24,4 +24,14 @@ if (supabaseUrl === 'https://ltexqacsjtiesncjvfml.supabase.co' || !process.env.S
 // correct behavior for a production environment. We are using placeholders here 
 // specifically to prevent a crash in a development sandbox where setting env 
 // vars might not be straightforward.
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+    auth: {
+        // FIX: Explicitly set auth options to ensure session persistence and
+        // token refreshing. This can resolve "Invalid Refresh Token" errors that
+        // sometimes occur when default settings are not applied correctly in
+        // certain environments.
+        autoRefreshToken: true,
+        persistSession: true,
+        detectSessionInUrl: true
+    },
+});
