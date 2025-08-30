@@ -7,7 +7,6 @@ export enum Page {
   CropRecommendation = 'Crop Recommendation',
   Schemes = 'Schemes & Benefits',
   Satellite = 'Satellite Imagery',
-  Marketplace = 'Marketplace',
   About = 'About Us',
   Contact = 'Contact Us',
   Login = 'Login',

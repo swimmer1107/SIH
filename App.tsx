@@ -7,7 +7,6 @@ import DiseaseDetectionPage from './components/pages/DiseaseDetectionPage';
 import CropRecommendationPage from './components/pages/CropRecommendationPage';
 import SchemesPage from './components/pages/SchemesPage';
 import SatellitePage from './components/pages/SatellitePage';
-import MarketplacePage from './components/pages/MarketplacePage';
 import AboutPage from './components/pages/AboutPage';
 import ContactPage from './components/pages/ContactPage';
 import LoginPage from './components/pages/LoginPage';
@@ -72,7 +71,7 @@ const App: React.FC = () => {
             setCurrentPage(targetPage);
             setPageBeforeLogin(null);
         } else if (!session) {
-            const protectedPages: Page[] = [Page.Dashboard, Page.DiseaseDetection, Page.CropRecommendation, Page.Schemes, Page.Satellite, Page.Marketplace];
+            const protectedPages: Page[] = [Page.Dashboard, Page.DiseaseDetection, Page.CropRecommendation, Page.Schemes, Page.Satellite];
             if (protectedPages.includes(currentPage)) {
                 setCurrentPage(Page.Home);
             }
@@ -81,7 +80,7 @@ const App: React.FC = () => {
   }, [session, checkingSession, currentPage, pageBeforeLogin]);
 
   const handleNavigation = useCallback((page: Page) => {
-    const protectedPages: Page[] = [Page.Dashboard, Page.DiseaseDetection, Page.CropRecommendation, Page.Schemes, Page.Satellite, Page.Marketplace];
+    const protectedPages: Page[] = [Page.Dashboard, Page.DiseaseDetection, Page.CropRecommendation, Page.Schemes, Page.Satellite];
     if (protectedPages.includes(page) && !session) {
       setPageBeforeLogin(page);
       setCurrentPage(Page.Login);
@@ -109,8 +108,6 @@ const App: React.FC = () => {
         return <SchemesPage />;
       case Page.Satellite:
         return <SatellitePage />;
-      case Page.Marketplace:
-        return <MarketplacePage />;
       case Page.About:
         return <AboutPage />;
       case Page.Contact:

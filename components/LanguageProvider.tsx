@@ -27,7 +27,6 @@ const englishTranslations: Translations = {
     [Page.CropRecommendation]: 'Crop Recommendation',
     [Page.Schemes]: 'Schemes & Benefits',
     [Page.Satellite]: 'Satellite Imagery',
-    [Page.Marketplace]: 'Marketplace',
     [Page.About]: 'About Us',
     [Page.Contact]: 'Contact Us',
     [Page.Login]: 'Login',
@@ -140,8 +139,31 @@ const englishTranslations: Translations = {
 
     // Satellite Page
     'satellite.title': 'Satellite Imagery Analysis',
-    'satellite.comingSoon': 'Coming Soon!',
-    'satellite.desc': "We are working hard to bring you this powerful new feature. Soon, you'll be able to monitor crop health, detect stress, and track growth patterns across your entire farm using advanced satellite data. Stay tuned!",
+    'satellite.subtitle': 'Enter your farm location to get real-time analysis of crop health, vegetation, and soil moisture.',
+    'satellite.form.location': 'Farm Location',
+    'satellite.form.placeholder': 'e.g., Ludhiana, Punjab',
+    'satellite.button.analyze': 'Analyze Area',
+    'satellite.button.loading': 'Analyzing...',
+    'satellite.loading.1': 'Acquiring satellite lock...',
+    'satellite.loading.2': 'Processing multispectral imagery...',
+    'satellite.loading.3': 'Generating NDVI vegetation index...',
+    'satellite.loading.4': 'Calculating soil moisture levels...',
+    'satellite.loading.5': 'Finalizing analysis...',
+    'satellite.imageAlt': 'Satellite view of a farm',
+    'satellite.view.natural': 'Natural',
+    'satellite.view.ndvi': 'NDVI',
+    'satellite.view.moisture': 'Moisture',
+    'satellite.result.area': '{area} Hectares Analyzed',
+    'satellite.result.health.title': 'Overall Farm Health',
+    'satellite.result.health.desc': 'Based on vegetation and moisture',
+    'satellite.result.ndvi.title': 'NDVI Vegetation Index',
+    'satellite.result.ndvi.desc': 'Higher value indicates denser vegetation',
+    'satellite.result.moisture.title': 'Soil Moisture Index',
+    'satellite.result.moisture.desc': 'Estimated water content in topsoil',
+    'satellite.result.stress.title': 'Potential Stress Areas',
+    'satellite.result.stress.1': 'Potential water stress detected in the northwest quadrant.',
+    'satellite.result.stress.2': 'Slightly lower vegetation density observed along the southern edge.',
+    'satellite.result.stress.none': 'No significant stress areas detected. Farm appears uniformly healthy.',
 
     // About Page
     'about.title': 'About CropGuru',
@@ -183,26 +205,6 @@ const englishTranslations: Translations = {
     'signup.link.prompt': 'Already have an account?',
     'signup.link.action': 'Sign In',
 
-    // Marketplace Page
-    'marketplace.title': 'Farmers\' Marketplace',
-    'marketplace.subtitle': 'Connect with other farmers to buy and sell produce, equipment, and more.',
-    'marketplace.demo': '(This is a community demo with sample data)',
-    'marketplace.filter.show': 'Show:',
-    'marketplace.filter.category': 'Category:',
-    'marketplace.filter.forSale': 'For Sale',
-    'marketplace.filter.toBuy': 'Looking to Buy',
-    'marketplace.button.postAd': 'Post New Ad',
-    'marketplace.noMatch': 'No listings match the current filters.',
-    'marketplace.button.contact': 'Contact Seller',
-    'marketplace.modal.title': 'Create a New Listing',
-    'marketplace.modal.type': 'Ad Type',
-    'marketplace.modal.itemName': 'Item Name',
-    'marketplace.modal.price': 'Price',
-    'marketplace.modal.price.placeholder': 'e.g., ₹ 5,000 or \'Contact for price\'',
-    'marketplace.modal.quantity': 'Quantity',
-    'marketplace.modal.quantity.placeholder': 'e.g., 50 kg or 1 unit',
-    'marketplace.modal.description': 'Description',
-
     // Services
     'service.gemini.apiKeyError': 'The AI assistant is not configured. The API key might be invalid or missing in the source code.',
     'service.gemini.connectError': "Sorry, I'm having trouble connecting to my knowledge base. Please try again later.",
@@ -233,7 +235,6 @@ const translations: { [key in Language]: Translations } = {
       [Page.CropRecommendation]: 'फ़सल सिफ़ारिश',
       [Page.Schemes]: 'योजनाएं और लाभ',
       [Page.Satellite]: 'सैटेलाइट इमेजरी',
-      [Page.Marketplace]: 'बाज़ार',
       [Page.About]: 'हमारे बारे में',
       [Page.Contact]: 'संपर्क करें',
       [Page.Login]: 'लॉगिन',
@@ -346,8 +347,31 @@ const translations: { [key in Language]: Translations } = {
 
       // Satellite Page
       'satellite.title': 'सैटेलाइट इमेजरी विश्लेषण',
-      'satellite.comingSoon': 'जल्द आ रहा है!',
-      'satellite.desc': 'हम आपको यह शक्तिशाली नई सुविधा लाने के लिए कड़ी मेहनत कर रहे हैं। जल्द ही, आप उन्नत उपग्रह डेटा का उपयोग करके फसल स्वास्थ्य की निगरानी करने, तनाव का पता लगाने और अपने पूरे खेत में विकास पैटर्न को ट्रैक करने में सक्षम होंगे। बने रहें!',
+      'satellite.subtitle': 'फसल स्वास्थ्य, वनस्पति, और मिट्टी की नमी का वास्तविक समय विश्लेषण प्राप्त करने के लिए अपने खेत का स्थान दर्ज करें।',
+      'satellite.form.location': 'खेत का स्थान',
+      'satellite.form.placeholder': 'जैसे, लुधियाना, पंजाब',
+      'satellite.button.analyze': 'क्षेत्र का विश्लेषण करें',
+      'satellite.button.loading': 'विश्लेषण हो रहा है...',
+      'satellite.loading.1': 'सैटेलाइट लॉक प्राप्त किया जा रहा है...',
+      'satellite.loading.2': 'मल्टीस्पेक्ट्रल इमेजरी को संसाधित किया जा रहा है...',
+      'satellite.loading.3': 'NDVI वनस्पति सूचकांक उत्पन्न किया जा रहा है...',
+      'satellite.loading.4': 'मिट्टी की नमी के स्तर की गणना की जा रही है...',
+      'satellite.loading.5': 'विश्लेषण को अंतिम रूप दिया जा रहा है...',
+      'satellite.imageAlt': 'एक खेत का सैटेलाइट दृश्य',
+      'satellite.view.natural': 'प्राकृतिक',
+      'satellite.view.ndvi': 'NDVI',
+      'satellite.view.moisture': 'नमी',
+      'satellite.result.area': '{area} हेक्टेयर का विश्लेषण किया गया',
+      'satellite.result.health.title': 'समग्र खेत का स्वास्थ्य',
+      'satellite.result.health.desc': 'वनस्पति और नमी के आधार पर',
+      'satellite.result.ndvi.title': 'NDVI वनस्पति सूचकांक',
+      'satellite.result.ndvi.desc': 'उच्च मान घनी वनस्पति को इंगित करता है',
+      'satellite.result.moisture.title': 'मिट्टी की नमी सूचकांक',
+      'satellite.result.moisture.desc': 'ऊपरी मिट्टी में अनुमानित पानी की मात्रा',
+      'satellite.result.stress.title': 'संभावित तनाव क्षेत्र',
+      'satellite.result.stress.1': 'उत्तर-पश्चिम चतुर्थांश में संभावित पानी का तनाव पाया गया।',
+      'satellite.result.stress.2': 'दक्षिणी किनारे पर थोड़ी कम वनस्पति घनत्व देखी गई।',
+      'satellite.result.stress.none': 'कोई महत्वपूर्ण तनाव क्षेत्र नहीं पाया गया। खेत समान रूप से स्वस्थ दिखाई देता है।',
 
       // About Page
       'about.title': 'क्रॉपगुरु के बारे में',
@@ -389,26 +413,6 @@ const translations: { [key in Language]: Translations } = {
       'signup.link.prompt': 'क्या आपका पहले से एक खाता मौजूद है?',
       'signup.link.action': 'साइन इन करें',
 
-      // Marketplace Page
-      'marketplace.title': 'किसानों का बाज़ार',
-      'marketplace.subtitle': 'उपज, उपकरण, और बहुत कुछ खरीदने और बेचने के लिए अन्य किसानों से जुड़ें।',
-      'marketplace.demo': '(यह नमूना डेटा के साथ एक सामुदायिक डेमो है)',
-      'marketplace.filter.show': 'दिखाएँ:',
-      'marketplace.filter.category': 'श्रेणी:',
-      'marketplace.filter.forSale': 'बिक्री के लिए',
-      'marketplace.filter.toBuy': 'खरीदना चाहते हैं',
-      'marketplace.button.postAd': 'नया विज्ञापन पोस्ट करें',
-      'marketplace.noMatch': 'वर्तमान फिल्टर से कोई लिस्टिंग मेल नहीं खाती।',
-      'marketplace.button.contact': 'विक्रेता से संपर्क करें',
-      'marketplace.modal.title': 'एक नई लिस्टिंग बनाएं',
-      'marketplace.modal.type': 'विज्ञापन प्रकार',
-      'marketplace.modal.itemName': 'वस्तु का नाम',
-      'marketplace.modal.price': 'कीमत',
-      'marketplace.modal.price.placeholder': 'जैसे, ₹ 5,000 या \'कीमत के लिए संपर्क करें\'',
-      'marketplace.modal.quantity': 'मात्रा',
-      'marketplace.modal.quantity.placeholder': 'जैसे, 50 किलो या 1 इकाई',
-      'marketplace.modal.description': 'विवरण',
-
       // Services
       'service.gemini.apiKeyError': 'एआई सहायक कॉन्फ़िगर नहीं है। एपीआई कुंजी अमान्य हो सकती है या स्रोत कोड में गुम हो सकती है।',
       'service.gemini.connectError': 'क्षमा करें, मुझे अपने ज्ञान के आधार से जुड़ने में समस्या हो रही है। कृपया बाद में पुन: प्रयास करें।',
@@ -437,7 +441,6 @@ const translations: { [key in Language]: Translations } = {
       [Page.CropRecommendation]: 'ਫਸਲ ਦੀ ਸਿਫਾਰਸ਼',
       [Page.Schemes]: 'ਯੋਜਨਾਵਾਂ ਅਤੇ ਲਾਭ',
       [Page.Satellite]: 'ਸੈਟੇਲਾਈਟ ਇਮੇਜਰੀ',
-      [Page.Marketplace]: 'ਬਾਜ਼ਾਰ',
       [Page.About]: 'ਸਾਡੇ ਬਾਰੇ',
       [Page.Contact]: 'ਸਾਡੇ ਨਾਲ ਸੰਪਰਕ ਕਰੋ',
       [Page.Login]: 'ਲਾਗਇਨ',
@@ -540,7 +543,6 @@ const translations: { [key in Language]: Translations } = {
       [Page.CropRecommendation]: 'பயிர் பரிந்துரை',
       [Page.Schemes]: 'திட்டங்கள் & நன்மைகள்',
       [Page.Satellite]: 'செயற்கைக்கோள் படங்கள்',
-      [Page.Marketplace]: 'சந்தை',
       [Page.About]: 'எங்களைப் பற்றி',
       [Page.Contact]: 'தொடர்பு கொள்ள',
       [Page.Login]: 'உள்நுழை',
@@ -626,7 +628,6 @@ const translations: { [key in Language]: Translations } = {
       [Page.CropRecommendation]: 'పంట సిఫార్సు',
       [Page.Schemes]: 'పథకాలు & ప్రయోజనాలు',
       [Page.Satellite]: 'ఉపగ్రహ చిత్రాలు',
-      [Page.Marketplace]: 'మార్కెట్',
       [Page.About]: 'మా గురించి',
       [Page.Contact]: 'మమ్మల్ని సంప్రదించండి',
       [Page.Login]: 'ప్రవేశించండి',
@@ -644,7 +645,7 @@ const translations: { [key in Language]: Translations } = {
       // Chatbot
       'chatbot.greeting': 'నమస్కారం! నేను క్రాప్‌గురు AI సహాయకుడిని. ఈ రోజు మీ వ్యవసాయ ప్రశ్నలకు నేను ఎలా సహాయపడగలను?',
       'chatbot.title': 'క్రాప్‌గురు AI సహాయకుడు',
-      'chatbot.error': 'క్షమించండి, ఏదో పొరపాటు జరిగింది. దయచేసి మళ్లీ ప్రయత్నించండి.',
+      'chatbot.error': 'క్షమించండి, ఏదੋ పొరపాటు జరిగింది. దయచేసి మళ్లీ ప్రయత్నించండి.',
       'chatbot.placeholder': 'పంటల గురించి అడగండి...',
 
       // Home Page
@@ -700,7 +701,7 @@ const translations: { [key in Language]: Translations } = {
 interface LanguageContextType {
   language: Language;
   setLanguage: (language: Language) => void;
-  t: (key: string) => string;
+  t: (key: string, options?: { [key: string]: string | number }) => string;
   availableLanguages: { code: Language; name: string }[];
 }
 
@@ -713,8 +714,14 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
     setLanguage(lang);
   }, []);
 
-  const t = useCallback((key: string): string => {
-    return translations[language][key] ?? key;
+  const t = useCallback((key: string, options?: { [key: string]: string | number }): string => {
+    let translation = translations[language][key] ?? key;
+    if (options) {
+      Object.keys(options).forEach(optionKey => {
+        translation = translation.replace(`{${optionKey}}`, String(options[optionKey]));
+      });
+    }
+    return translation;
   }, [language]);
 
 
