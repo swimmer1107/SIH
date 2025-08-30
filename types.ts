@@ -57,3 +57,19 @@ export interface CropRecommendationResult {
     notes: string;
   }[];
 }
+
+export interface SatelliteAnalysisResult {
+  healthScore: number;
+  ndvi: number;
+  moisture: number;
+  stressAreas: string[];
+  area: number;
+}
+
+export interface Coordinates {
+    lat: number;
+    lon: number;
+    name: string;
+    country: string;
+    state?: string;
+}

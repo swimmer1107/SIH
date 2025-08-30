@@ -1,6 +1,6 @@
 import { GoogleGenAI, GenerateContentResponse, Type, Modality } from "@google/genai";
 // FIX: Added CropRecommendationResult to imports to support the new crop recommendation feature.
-import { DiseaseResult, ChatMessage, Scheme, CropRecommendationResult } from '../types';
+import { DiseaseResult, ChatMessage, Scheme, CropRecommendationResult, SatelliteAnalysisResult } from '../types';
 import { supabase } from './supabaseClient';
 
 // --- VERY IMPORTANT SECURITY WARNING ---
@@ -285,5 +285,46 @@ Respond only in the requested JSON format.`;
              throw new Error("service.gemini.cropRecConfigError");
         }
         throw new Error("service.gemini.cropRecGeneralError");
+    }
+};
+
+export const getSatelliteAnalysis = async (location: string): Promise<SatelliteAnalysisResult> => {
+    try {
+        const aiInstance = getAI();
+        const prompt = `You are an advanced agricultural satellite imagery analysis system. Based on the provided location in India ("${location}"), generate a plausible and realistic analysis for a typical mid-sized farm (around 25-35 hectares) in that area. Consider the typical crops, climate, and geography of the location. Provide the analysis in JSON format. The JSON should include: a health score (an integer percentage from 60 to 98), an NDVI value (a float between 0.5 and 0.9), a soil moisture index (a float between 0.4 and 0.9), an array of 2-3 potential stress areas as strings (e.g., 'Slight water logging possible in the eastern fields due to soil type', 'Lower vegetation density on the northern boundary suggests potential nutrient deficiency'), and an analyzed area in hectares (a float between 25.0 and 35.0).`;
+
+        const response = await aiInstance.models.generateContent({
+            model: 'gemini-2.5-flash',
+            contents: prompt,
+            config: {
+                responseMimeType: 'application/json',
+                responseSchema: {
+                    type: Type.OBJECT,
+                    properties: {
+                        healthScore: { type: Type.INTEGER, description: "Overall farm health as a percentage from 60 to 98." },
+                        ndvi: { type: Type.NUMBER, description: "Normalized Difference Vegetation Index, from 0.5 to 0.9." },
+                        moisture: { type: Type.NUMBER, description: "Soil moisture index, from 0.4 to 0.9." },
+                        stressAreas: {
+                            type: Type.ARRAY,
+                            description: "A list of 2-3 potential stress areas.",
+                            items: { type: Type.STRING }
+                        },
+                        area: { type: Type.NUMBER, description: "Analyzed area in hectares, from 25.0 to 35.0." }
+                    },
+                    required: ['healthScore', 'ndvi', 'moisture', 'stressAreas', 'area']
+                }
+            }
+        });
+
+        const jsonText = response.text.trim();
+        const result = JSON.parse(jsonText) as SatelliteAnalysisResult;
+        return result;
+
+    } catch (error) {
+        console.error("Error getting satellite analysis:", error);
+        if (error instanceof Error && error.message.includes("API key")) {
+             throw new Error("service.gemini.satelliteConfigError");
+        }
+        throw new Error("service.gemini.satelliteGeneralError");
     }
 };

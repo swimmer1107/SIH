@@ -164,6 +164,7 @@ const englishTranslations: Translations = {
     'satellite.result.stress.1': 'Potential water stress detected in the northwest quadrant.',
     'satellite.result.stress.2': 'Slightly lower vegetation density observed along the southern edge.',
     'satellite.result.stress.none': 'No significant stress areas detected. Farm appears uniformly healthy.',
+    'satellite.error.nonIndianLocation': 'This application is intended for locations in India. Analysis for "{location}" is not supported.',
 
     // About Page
     'about.title': 'About CropGuru',
@@ -214,6 +215,10 @@ const englishTranslations: Translations = {
     'service.gemini.schemesGeneralError': 'Failed to fetch government schemes. The AI model might be unavailable or there was a network issue.',
     'service.gemini.cropRecConfigError': 'AI crop recommendation is not configured. The API key is missing or invalid in the source code.',
     'service.gemini.cropRecGeneralError': 'Failed to get crop recommendation. The AI model might be unavailable or the input data is invalid.',
+    'service.gemini.satelliteConfigError': 'AI satellite analysis is not configured. The API key is missing or invalid in the source code.',
+    'service.gemini.satelliteGeneralError': 'Failed to get satellite analysis. The AI model might be unavailable or the location is invalid.',
+    'service.map.locationNotFound': 'Could not find the specified location. Please check the spelling and try again.',
+    'service.map.geocodeFailed': 'Failed to get location coordinates. The mapping service may be temporarily unavailable.',
 };
 
 const translations: { [key in Language]: Translations } = {
@@ -372,6 +377,7 @@ const translations: { [key in Language]: Translations } = {
       'satellite.result.stress.1': 'उत्तर-पश्चिम चतुर्थांश में संभावित पानी का तनाव पाया गया।',
       'satellite.result.stress.2': 'दक्षिणी किनारे पर थोड़ी कम वनस्पति घनत्व देखी गई।',
       'satellite.result.stress.none': 'कोई महत्वपूर्ण तनाव क्षेत्र नहीं पाया गया। खेत समान रूप से स्वस्थ दिखाई देता है।',
+      'satellite.error.nonIndianLocation': 'यह एप्लिकेशन भारत में स्थानों के लिए है। "{location}" के लिए विश्लेषण समर्थित नहीं है।',
 
       // About Page
       'about.title': 'क्रॉपगुरु के बारे में',
@@ -422,6 +428,10 @@ const translations: { [key in Language]: Translations } = {
       'service.gemini.schemesGeneralError': 'सरकारी योजनाओं को लाने में विफल। एआई मॉडल अनुपलब्ध हो सकता है या कोई नेटवर्क समस्या थी।',
       'service.gemini.cropRecConfigError': 'एआई फसल अनुशंसा कॉन्फ़िगर नहीं है। एपीआई कुंजी स्रोत कोड में गुम या अमान्य है।',
       'service.gemini.cropRecGeneralError': 'फसल की सिफारिश प्राप्त करने में विफल। एआई मॉडल अनुपलब्ध हो सकता है या इनपुट डेटा अमान्य है।',
+      'service.gemini.satelliteConfigError': 'एआई उपग्रह विश्लेषण कॉन्फ़िगर नहीं है। एपीआई कुंजी स्रोत कोड में गुम या अमान्य है।',
+      'service.gemini.satelliteGeneralError': 'उपग्रह विश्लेषण प्राप्त करने में विफल। एआई मॉडल अनुपलब्ध हो सकता है या स्थान अमान्य है।',
+      'service.map.locationNotFound': 'निर्दिष्ट स्थान नहीं मिल सका। कृपया वर्तनी जांचें और पुनः प्रयास करें।',
+      'service.map.geocodeFailed': 'स्थान निर्देशांक प्राप्त करने में विफल। मैपिंग सेवा अस्थायी रूप से अनुपलब्ध हो सकती है।',
     }
   },
   pa: {
@@ -524,6 +534,15 @@ const translations: { [key in Language]: Translations } = {
       'disease.result.name': 'ਬਿਮਾਰੀ ਦਾ ਨਾਮ',
       'disease.result.confidence': 'ਵਿਸ਼ਵਾਸ',
       'disease.result.treatment': 'ਸਿਫਾਰਸ਼ੀ ਇਲਾਜ',
+      
+      // Satellite Page
+      'satellite.error.nonIndianLocation': 'ਇਹ ਐਪਲੀਕੇਸ਼ਨ ਭਾਰਤ ਵਿੱਚ ਸਥਾਨਾਂ ਲਈ ਹੈ। "{location}" ਲਈ ਵਿਸ਼ਲੇਸ਼ਣ ਸਮਰਥਿਤ ਨਹੀਂ ਹੈ।',
+
+      // Services
+      'service.gemini.satelliteConfigError': 'AI ਸੈਟੇਲਾਈਟ ਵਿਸ਼ਲੇਸ਼ਣ ਕੌਂਫਿਗਰ ਨਹੀਂ ਕੀਤਾ ਗਿਆ ਹੈ। API ਕੁੰਜੀ ਸਰੋਤ ਕੋਡ ਵਿੱਚ ਗੁੰਮ ਜਾਂ ਅਵੈਧ ਹੈ।',
+      'service.gemini.satelliteGeneralError': 'ਸੈਟੇਲਾਈਟ ਵਿਸ਼ਲੇਸ਼ਣ ਪ੍ਰਾਪਤ ਕਰਨ ਵਿੱਚ ਅਸਫਲ। AI ਮਾਡਲ ਉਪਲਬਧ ਨਹੀਂ ਹੋ ਸਕਦਾ ਜਾਂ ਸਥਾਨ ਅਵੈਧ ਹੈ।',
+      'service.map.locationNotFound': 'ਦੱਸੀ ਗਈ ਥਾਂ ਨਹੀਂ ਮਿਲੀ। ਕਿਰਪਾ ਕਰਕੇ ਸਪੈਲਿੰਗ ਚੈੱਕ ਕਰੋ ਅਤੇ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।',
+      'service.map.geocodeFailed': 'ਸਥਾਨ ਦੇ ਕੋਆਰਡੀਨੇਟ ਪ੍ਰਾਪਤ ਕਰਨ ਵਿੱਚ ਅਸਫਲ। ਮੈਪਿੰਗ ਸੇਵਾ ਅਸਥਾਈ ਤੌਰ \'ਤੇ ਅਣਉਪਲਬਧ ਹੋ ਸਕਦੀ ਹੈ।',
     }
   },
   ta: {
@@ -609,6 +628,15 @@ const translations: { [key in Language]: Translations } = {
       'dashboard.soil.title': 'மண் நிலை',
       'yourUsage': 'உங்கள் பயன்பாடு',
       'recommended': 'பரிந்துரைக்கப்பட்டது',
+
+      // Satellite Page
+      'satellite.error.nonIndianLocation': 'இந்த பயன்பாடு இந்தியாவில் உள்ள இடங்களுக்காக வடிவமைக்கப்பட்டுள்ளது. "{location}" க்கான பகுப்பாய்வு ஆதரிக்கப்படவில்லை.',
+
+      // Services
+      'service.gemini.satelliteConfigError': 'AI செயற்கைக்கோள் பகுப்பாய்வு கட்டமைக்கப்படவில்லை. API விசை மூலக் குறியீட்டில் இல்லை அல்லது தவறானது.',
+      'service.gemini.satelliteGeneralError': 'செயற்கைக்கோள் பகுப்பாய்வைப் பெற முடியவில்லை. AI மாதிரி கிடைக்காமல் இருக்கலாம் அல்லது இருப்பிடம் தவறானது.',
+      'service.map.locationNotFound': 'குறிப்பிட்ட இடத்தைக் கண்டுபிடிக்க முடியவில்லை. தயவுசெய்து எழுத்துப்பிழையைச் சரிபார்த்து மீண்டும் முயற்சிக்கவும்.',
+      'service.map.geocodeFailed': 'இருப்பிட ஒருங்கிணைப்புகளைப் பெறுவதில் தோல்வி. மேப்பிங் சேவை தற்காலிகமாக கிடைக்காமல் போகலாம்.',
     }
   },
   te: {
@@ -645,7 +673,7 @@ const translations: { [key in Language]: Translations } = {
       // Chatbot
       'chatbot.greeting': 'నమస్కారం! నేను క్రాప్‌గురు AI సహాయకుడిని. ఈ రోజు మీ వ్యవసాయ ప్రశ్నలకు నేను ఎలా సహాయపడగలను?',
       'chatbot.title': 'క్రాప్‌గురు AI సహాయకుడు',
-      'chatbot.error': 'క్షమించండి, ఏదੋ పొరపాటు జరిగింది. దయచేసి మళ్లీ ప్రయత్నించండి.',
+      'chatbot.error': 'క్షమించండి, ఏదో పొరపాటు జరిగింది. దయచేసి మళ్లీ ప్రయత్నించండి.',
       'chatbot.placeholder': 'పంటల గురించి అడగండి...',
 
       // Home Page
@@ -694,6 +722,15 @@ const translations: { [key in Language]: Translations } = {
       'dashboard.soil.title': 'నేల పరిస్థితి',
       'yourUsage': 'మీ వినియోగం',
       'recommended': 'సిఫార్సు చేయబడింది',
+
+      // Satellite Page
+      'satellite.error.nonIndianLocation': 'ఈ అప్లికేషన్ భారతదేశంలోని ప్రదేశాల కోసం ఉద్దేశించబడింది. "{location}" కోసం విశ్లేషణకు మద్దతు లేదు.',
+
+      // Services
+      'service.gemini.satelliteConfigError': 'AI ఉపగ్రహ విశ్లేషణ కాన్ఫిਗਰ చేయబడలేదు. API కీ మూల కోడ్‌లో లేదు లేదా చెల్లదు.',
+      'service.gemini.satelliteGeneralError': 'ఉపగ్రహ విశ్లేషణను పొందడంలో విఫలమైంది. AI మోడల్ అందుబాటులో ఉండకపోవచ్చు లేదా ప్రదేశం చెల్లదు.',
+      'service.map.locationNotFound': 'పేర్కొన్న ప్రదేశం కనుగొనబడలేదు. దయచేసి స్పెల్లింగ్‌ను తనిఖీ చేసి, మళ్లీ ప్రయత్నించండి.',
+      'service.map.geocodeFailed': 'స్థాన కోఆర్డినేట్‌లను పొందడంలో విఫలమైంది. మ్యాపింగ్ సేవ తాత్కాలికంగా అందుబాటులో ఉండకపోవచ్చు.',
     }
   },
 };
