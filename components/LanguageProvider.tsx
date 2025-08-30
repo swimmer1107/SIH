@@ -1,11 +1,18 @@
 import React, { createContext, useState, useContext, ReactNode, useCallback } from 'react';
 import { Page } from '../types';
 
-type Language = 'en' | 'hi';
+export type Language = 'en' | 'hi' | 'pa' | 'ta' | 'te';
 type Translations = { [key: string]: string };
 
-const translations: { [key in Language]: Translations } = {
-  en: {
+export const availableLanguages: { code: Language; name: string }[] = [
+  { code: 'en', name: 'English' },
+  { code: 'hi', name: 'हिन्दी' },
+  { code: 'pa', name: 'ਪੰਜਾਬੀ' }, // Punjabi
+  { code: 'ta', name: 'தமிழ்' }, // Tamil
+  { code: 'te', name: 'తెలుగు' }, // Telugu
+];
+
+const englishTranslations: Translations = {
     // General
     'language.toggle': 'हिन्दी',
     'all': 'All',
@@ -20,6 +27,7 @@ const translations: { [key in Language]: Translations } = {
     [Page.CropRecommendation]: 'Crop Recommendation',
     [Page.Schemes]: 'Schemes & Benefits',
     [Page.Satellite]: 'Satellite Imagery',
+    [Page.Marketplace]: 'Marketplace',
     [Page.About]: 'About Us',
     [Page.Contact]: 'Contact Us',
     [Page.Login]: 'Login',
@@ -204,214 +212,496 @@ const translations: { [key in Language]: Translations } = {
     'service.gemini.schemesGeneralError': 'Failed to fetch government schemes. The AI model might be unavailable or there was a network issue.',
     'service.gemini.cropRecConfigError': 'AI crop recommendation is not configured. The API key is missing or invalid in the source code.',
     'service.gemini.cropRecGeneralError': 'Failed to get crop recommendation. The AI model might be unavailable or the input data is invalid.',
+};
 
-  },
+const translations: { [key in Language]: Translations } = {
+  en: englishTranslations,
   hi: {
-    // General
-    'language.toggle': 'English',
-    'all': 'सभी',
-    'cancel': 'रद्द करें',
-    'error': 'त्रुटि',
-    'success': 'सफलता!',
+    ...englishTranslations,
+    ...{
+      // General
+      'language.toggle': 'English',
+      'all': 'सभी',
+      'cancel': 'रद्द करें',
+      'error': 'त्रुटि',
+      'success': 'सफलता!',
 
-    // Page Titles
-    [Page.Home]: 'होम',
-    [Page.Dashboard]: 'भविष्यवाणी डैशबोर्ड',
-    [Page.DiseaseDetection]: 'रोग पहचान',
-    [Page.CropRecommendation]: 'फ़सल सिफ़ारिश',
-    [Page.Schemes]: 'योजनाएं और लाभ',
-    [Page.Satellite]: 'सैटेलाइट इमेजरी',
-    [Page.About]: 'हमारे बारे में',
-    [Page.Contact]: 'संपर्क करें',
-    [Page.Login]: 'लॉगिन',
-    [Page.SignUp]: 'साइन अप करें',
-    
-    // Header & Sidebar
-    'header.title': 'क्रॉपगुरु',
-    'logout': 'लॉग आउट',
-    'login': 'लॉगिन',
-    'signup': 'साइन अप करें',
+      // Page Titles
+      [Page.Home]: 'होम',
+      [Page.Dashboard]: 'भविष्यवाणी डैशबोर्ड',
+      [Page.DiseaseDetection]: 'रोग पहचान',
+      [Page.CropRecommendation]: 'फ़सल सिफ़ारिश',
+      [Page.Schemes]: 'योजनाएं और लाभ',
+      [Page.Satellite]: 'सैटेलाइट इमेजरी',
+      [Page.Marketplace]: 'बाज़ार',
+      [Page.About]: 'हमारे बारे में',
+      [Page.Contact]: 'संपर्क करें',
+      [Page.Login]: 'लॉगिन',
+      [Page.SignUp]: 'साइन अप करें',
+      
+      // Header & Sidebar
+      'header.title': 'क्रॉपगुरु',
+      'logout': 'लॉग आउट',
+      'login': 'लॉगिन',
+      'signup': 'साइन अप करें',
 
-    // Footer
-    'footer.copyright': `© ${new Date().getFullYear()} क्रॉपगुरु। सर्वाधिकार सुरक्षित। SIH 2025 के लिए DEV10 द्वारा निर्मित।`,
-    
-    // Chatbot
-    'chatbot.greeting': 'नमस्ते! मैं क्रॉपगुरु का AI सहायक हूँ। मैं आज आपके खेती-संबंधी सवालों में कैसे मदद कर सकता हूँ?',
-    'chatbot.title': 'क्रॉपगुरु AI सहायक',
-    'chatbot.error': 'क्षमा करें, कुछ गड़बड़ हो गई। कृपया पुनः प्रयास करें।',
-    'chatbot.placeholder': 'फसलों के बारे में पूछें...',
+      // Footer
+      'footer.copyright': `© ${new Date().getFullYear()} क्रॉपगुरु। सर्वाधिकार सुरक्षित। SIH 2025 के लिए DEV10 द्वारा निर्मित।`,
+      
+      // Chatbot
+      'chatbot.greeting': 'नमस्ते! मैं क्रॉपगुरु का AI सहायक हूँ। मैं आज आपके खेती-संबंधी सवालों में कैसे मदद कर सकता हूँ?',
+      'chatbot.title': 'क्रॉपगुरु AI सहायक',
+      'chatbot.error': 'क्षमा करें, कुछ गड़बड़ हो गई। कृपया पुनः प्रयास करें।',
+      'chatbot.placeholder': 'फसलों के बारे में पूछें...',
 
-    // Home Page
-    'home.hero.title': 'के लिए AI-संचालित फसल उपज भविष्यवाणी और अनुकूलन',
-    'home.hero.title.highlight': 'भारतीय किसान',
-    'home.hero.subtitle': 'उच्च पैदावार, बेहतर मिट्टी स्वास्थ्य और टिकाऊ कृषि पद्धतियों के लिए डेटा-संचालित अंतर्दृष्टि के साथ कृषि को सशक्त बनाना।',
-    'home.hero.button.demo': 'डेमो डैशबोर्ड आज़माएँ',
-    'home.hero.button.contact': 'संपर्क करें',
-    'home.features.title': 'क्रॉपगुरु क्यों?',
-    'home.features.subtitle': 'आधुनिक खेती की चुनौतियों का एक संपूर्ण समाधान।',
-    'home.feature.farming.title': 'सटीक खेती',
-    'home.feature.farming.desc': 'फसल की उपज के लिए AI-संचालित भविष्यवाणियां और व्यक्तिगत सिफारिशें प्राप्त करें।',
-    'home.feature.chatbot.title': 'AI चैटबॉट',
-    'home.feature.chatbot.desc': 'फसलों, योजनाओं और अन्य सभी प्रश्नों के लिए आपका 24/7 खेती सहायक।',
-    'home.feature.disease.title': 'फसल रोग का पता लगाना',
-    'home.feature.disease.desc': 'बीमारियों की तुरंत पहचान करने और समाधान पाने के लिए एक पत्ते की तस्वीर अपलोड करें।',
-    'home.feature.weather.title': 'मौसम पूर्वानुमान',
-    'home.feature.weather.desc': 'अपनी कृषि गतिविधियों की योजना बनाने के लिए सटीक, स्थान-आधारित मौसम की भविष्यवाणी।',
-    'home.impact.yield.title': 'अधिक उपज क्षमता',
-    'home.impact.water.title': 'कम पानी का उपयोग',
-    'home.impact.scouting.title': 'कम खोज समय',
+      // Home Page
+      'home.hero.title': 'के लिए AI-संचालित फसल उपज भविष्यवाणी और अनुकूलन',
+      'home.hero.title.highlight': 'भारतीय किसान',
+      'home.hero.subtitle': 'उच्च पैदावार, बेहतर मिट्टी स्वास्थ्य और टिकाऊ कृषि पद्धतियों के लिए डेटा-संचालित अंतर्दृष्टि के साथ कृषि को सशक्त बनाना।',
+      'home.hero.button.demo': 'डेमो डैशबोर्ड आज़माएँ',
+      'home.hero.button.contact': 'संपर्क करें',
+      'home.features.title': 'क्रॉपगुरु क्यों?',
+      'home.features.subtitle': 'आधुनिक खेती की चुनौतियों का एक संपूर्ण समाधान।',
+      'home.feature.farming.title': 'सटीक खेती',
+      'home.feature.farming.desc': 'फसल की उपज के लिए AI-संचालित भविष्यवाणियां और व्यक्तिगत सिफारिशें प्राप्त करें।',
+      'home.feature.chatbot.title': 'AI चैटबॉट',
+      'home.feature.chatbot.desc': 'फसलों, योजनाओं और अन्य सभी प्रश्नों के लिए आपका 24/7 खेती सहायक।',
+      'home.feature.disease.title': 'फसल रोग का पता लगाना',
+      'home.feature.disease.desc': 'बीमारियों की तुरंत पहचान करने और समाधान पाने के लिए एक पत्ते की तस्वीर अपलोड करें।',
+      'home.feature.weather.title': 'मौसम पूर्वानुमान',
+      'home.feature.weather.desc': 'अपनी कृषि गतिविधियों की योजना बनाने के लिए सटीक, स्थान-आधारित मौसम की भविष्यवाणी।',
+      'home.impact.yield.title': 'अधिक उपज क्षमता',
+      'home.impact.water.title': 'कम पानी का उपयोग',
+      'home.impact.scouting.title': 'कम खोज समय',
 
-    // Dashboard Page
-    'dashboard.form.cropType': 'फ़सल का प्रकार',
-    'dashboard.form.soilType': 'मिट्टी का प्रकार',
-    'dashboard.form.landSize': 'भूमि का आकार (हेक्टेयर)',
-    'dashboard.form.location': 'स्थान',
-    'dashboard.form.cropYear': 'फ़सल वर्ष',
-    'dashboard.form.rainfall': 'वार्षिक वर्षा (मिमी)',
-    'dashboard.form.fertilizer': 'उर्वरक उपयोग (किग्रा/हेक्टेयर)',
-    'dashboard.form.pesticide': 'कीटनाशक उपयोग (ली/हेक्टेयर)',
-    'dashboard.button.loading': 'विश्लेषण हो रहा है...',
-    'dashboard.button.submit': 'डैशबोर्ड उत्पन्न करें',
-    'dashboard.kpi.yield': 'अनुमानित उपज',
-    'dashboard.kpi.yield.unit': 'टन',
-    'dashboard.kpi.yieldPerHectare': 'प्रति हेक्टेयर उपज',
-    'dashboard.kpi.yieldPerHectare.unit': 'टन/हेक्टेयर',
-    'dashboard.kpi.income': 'अनुमानित आय',
-    'dashboard.chart.yield.title': 'उपज पूर्वानुमान (त्रैमासिक)',
-    'dashboard.chart.resource.title': 'संसाधन उपयोग बनाम सिफ़ारिश',
-    'dashboard.alerts.title': 'खेत अलर्ट और कार्य',
-    'dashboard.market.title': 'बाजार मूल्य',
-    'dashboard.market.subtitle': '(नकली)',
-    'dashboard.weather.title': 'मौसम पूर्वानुमान',
-    'dashboard.weather.loading': 'मौसम लोड हो रहा है...',
-    'dashboard.soil.title': 'मिट्टी की स्थिति',
-    'yourUsage': 'आपका उपयोग',
-    'recommended': 'अनुशंसित',
+      // Dashboard Page
+      'dashboard.form.cropType': 'फ़सल का प्रकार',
+      'dashboard.form.soilType': 'मिट्टी का प्रकार',
+      'dashboard.form.landSize': 'भूमि का आकार (हेक्टेयर)',
+      'dashboard.form.location': 'स्थान',
+      'dashboard.form.cropYear': 'फ़सल वर्ष',
+      'dashboard.form.rainfall': 'वार्षिक वर्षा (मिमी)',
+      'dashboard.form.fertilizer': 'उर्वरक उपयोग (किग्रा/हेक्टेयर)',
+      'dashboard.form.pesticide': 'कीटनाशक उपयोग (ली/हेक्टेयर)',
+      'dashboard.button.loading': 'विश्लेषण हो रहा है...',
+      'dashboard.button.submit': 'डैशबोर्ड उत्पन्न करें',
+      'dashboard.kpi.yield': 'अनुमानित उपज',
+      'dashboard.kpi.yield.unit': 'टन',
+      'dashboard.kpi.yieldPerHectare': 'प्रति हेक्टेयर उपज',
+      'dashboard.kpi.yieldPerHectare.unit': 'टन/हेक्टेयर',
+      'dashboard.kpi.income': 'अनुमानित आय',
+      'dashboard.chart.yield.title': 'उपज पूर्वानुमान (त्रैमासिक)',
+      'dashboard.chart.resource.title': 'संसाधन उपयोग बनाम सिफ़ारिश',
+      'dashboard.alerts.title': 'खेत अलर्ट और कार्य',
+      'dashboard.market.title': 'बाजार मूल्य',
+      'dashboard.market.subtitle': '(नकली)',
+      'dashboard.weather.title': 'मौसम पूर्वानुमान',
+      'dashboard.weather.loading': 'मौसम लोड हो रहा है...',
+      'dashboard.soil.title': 'मिट्टी की स्थिति',
+      'yourUsage': 'आपका उपयोग',
+      'recommended': 'अनुशंसित',
 
-    // Disease Detection Page
-    'disease.title': 'फसल रोग का पता लगाना',
-    'disease.subtitle': 'फसल के पत्ते की एक तस्वीर अपलोड करें या लें, और हमारा AI बीमारियों के लिए इसका विश्लेषण करेगा और उपचार सुझाएगा।',
-    'disease.preview': 'छवि पूर्वावलोकन यहाँ दिखाई देगा',
-    'disease.button.analyze': 'छवि का विश्लेषण करें',
-    'disease.button.analyzing': 'विश्लेषण हो रहा है...',
-    'disease.button.tryAnother': 'दूसरा प्रयास करें',
-    'disease.button.upload': 'डिवाइस से अपलोड करें',
-    'disease.button.camera': 'कैमरे का उपयोग करें',
-    'disease.camera.prompt': 'अपने कैमरे को फसल के पत्ते पर इंगित करें',
-    'disease.result.title': 'विश्लेषण परिणाम',
-    'disease.result.healthy': 'पौधा स्वस्थ दिखाई देता है',
-    'disease.result.healthy.desc': 'दिए गए चित्र में कोई महत्वपूर्ण रोग नहीं पाया गया।',
-    'disease.result.name': 'रोग का नाम',
-    'disease.result.confidence': 'आत्मविश्वास',
-    'disease.result.treatment': 'अनुशंसित उपचार',
+      // Disease Detection Page
+      'disease.title': 'फसल रोग का पता लगाना',
+      'disease.subtitle': 'फसल के पत्ते की एक तस्वीर अपलोड करें या लें, और हमारा AI बीमारियों के लिए इसका विश्लेषण करेगा और उपचार सुझाएगा।',
+      'disease.preview': 'छवि पूर्वावलोकन यहाँ दिखाई देगा',
+      'disease.button.analyze': 'छवि का विश्लेषण करें',
+      'disease.button.analyzing': 'विश्लेषण हो रहा है...',
+      'disease.button.tryAnother': 'दूसरा प्रयास करें',
+      'disease.button.upload': 'डिवाइस से अपलोड करें',
+      'disease.button.camera': 'कैमरे का उपयोग करें',
+      'disease.camera.prompt': 'अपने कैमरे को फसल के पत्ते पर इंगित करें',
+      'disease.result.title': 'विश्लेषण परिणाम',
+      'disease.result.healthy': 'पौधा स्वस्थ दिखाई देता है',
+      'disease.result.healthy.desc': 'दिए गए चित्र में कोई महत्वपूर्ण रोग नहीं पाया गया।',
+      'disease.result.name': 'रोग का नाम',
+      'disease.result.confidence': 'आत्मविश्वास',
+      'disease.result.treatment': 'अनुशंसित उपचार',
 
-    // Crop Recommendation Page
-    'crop.title': 'AI फ़सल सिफ़ारिश',
-    'crop.subtitle': 'रोपण के लिए सबसे अच्छी फसल के लिए विशेषज्ञ की सिफारिश प्राप्त करने के लिए अपने खेत की स्थितियों का वर्णन करें।',
-    'crop.form.state': 'राज्य',
-    'crop.form.district': 'ज़िला',
-    'crop.form.soilColor': 'मिट्टी का रंग',
-    'crop.form.soilTexture': 'मिट्टी की बनावट (महसूस)',
-    'crop.form.rainfall': 'वार्षिक वर्षा',
-    'crop.button.loading': 'सिफारिश मिल रही है...',
-    'crop.button.submit': 'फसल की सिफारिश करें',
-    'crop.result.title': 'सिफारिश परिणाम',
-    'crop.result.bestCrop': 'रोपण के लिए सबसे अच्छी फसल',
-    'crop.result.alternatives': 'वैकल्पिक फसलें',
-    'crop.result.tips': 'मृदा प्रबंधन युक्तियाँ',
-    'crop.result.comparison': 'तुलनात्मक विश्लेषण',
-    'crop.comparison.crop': 'फ़सल',
-    'crop.comparison.marketValue': 'बाजार मूल्य',
-    'crop.comparison.water': 'पानी की आवश्यकता',
-    'crop.comparison.pest': 'कीट प्रतिरोध',
-    'crop.comparison.notes': 'टिप्पणियाँ',
+      // Crop Recommendation Page
+      'crop.title': 'AI फ़सल सिफ़ारिश',
+      'crop.subtitle': 'रोपण के लिए सबसे अच्छी फसल के लिए विशेषज्ञ की सिफारिश प्राप्त करने के लिए अपने खेत की स्थितियों का वर्णन करें।',
+      'crop.form.state': 'राज्य',
+      'crop.form.district': 'ज़िला',
+      'crop.form.soilColor': 'मिट्टी का रंग',
+      'crop.form.soilTexture': 'मिट्टी की बनावट (महसूस)',
+      'crop.form.rainfall': 'वार्षिक वर्षा',
+      'crop.button.loading': 'सिफारिश मिल रही है...',
+      'crop.button.submit': 'फसल की सिफारिश करें',
+      'crop.result.title': 'सिफारिश परिणाम',
+      'crop.result.bestCrop': 'रोपण के लिए सबसे अच्छी फसल',
+      'crop.result.alternatives': 'वैकल्पिक फसलें',
+      'crop.result.tips': 'मृदा प्रबंधन युक्तियाँ',
+      'crop.result.comparison': 'तुलनात्मक विश्लेषण',
+      'crop.comparison.crop': 'फ़सल',
+      'crop.comparison.marketValue': 'बाजार मूल्य',
+      'crop.comparison.water': 'पानी की आवश्यकता',
+      'crop.comparison.pest': 'कीट प्रतिरोध',
+      'crop.comparison.notes': 'टिप्पणियाँ',
 
-    // Schemes Page
-    'schemes.title': 'सरकारी योजनाएं और लाभ',
-    'schemes.subtitle': 'अपनी खेती का समर्थन करने के लिए नवीनतम सरकारी पहलों, सब्सिडी और अलर्ट के साथ अपडेट रहें।',
-    'schemes.error.prefix': 'योजनाएं प्राप्त करने में त्रुटि:',
+      // Schemes Page
+      'schemes.title': 'सरकारी योजनाएं और लाभ',
+      'schemes.subtitle': 'अपनी खेती का समर्थन करने के लिए नवीनतम सरकारी पहलों, सब्सिडी और अलर्ट के साथ अपडेट रहें।',
+      'schemes.error.prefix': 'योजनाएं प्राप्त करने में त्रुटि:',
 
-    // Satellite Page
-    'satellite.title': 'सैटेलाइट इमेजरी विश्लेषण',
-    'satellite.comingSoon': 'जल्द आ रहा है!',
-    'satellite.desc': 'हम आपको यह शक्तिशाली नई सुविधा लाने के लिए कड़ी मेहनत कर रहे हैं। जल्द ही, आप उन्नत उपग्रह डेटा का उपयोग करके फसल स्वास्थ्य की निगरानी करने, तनाव का पता लगाने और अपने पूरे खेत में विकास पैटर्न को ट्रैक करने में सक्षम होंगे। बने रहें!',
+      // Satellite Page
+      'satellite.title': 'सैटेलाइट इमेजरी विश्लेषण',
+      'satellite.comingSoon': 'जल्द आ रहा है!',
+      'satellite.desc': 'हम आपको यह शक्तिशाली नई सुविधा लाने के लिए कड़ी मेहनत कर रहे हैं। जल्द ही, आप उन्नत उपग्रह डेटा का उपयोग करके फसल स्वास्थ्य की निगरानी करने, तनाव का पता लगाने और अपने पूरे खेत में विकास पैटर्न को ट्रैक करने में सक्षम होंगे। बने रहें!',
 
-    // About Page
-    'about.title': 'क्रॉपगुरु के बारे में',
-    'about.subtitle': 'एक स्थायी भविष्य के लिए कृषि में क्रांति।',
-    'about.mission.title': 'हमारा लक्ष्य',
-    'about.mission.desc': 'क्रॉपगुरु, स्मार्ट इंडिया हैकथॉन 2025 के लिए टीम DEV10 द्वारा विकसित एक परियोजना है। हमारा मिशन छोटे और मध्यम स्तर के किसानों को शक्तिशाली AI-संचालित उपकरणों तक पहुँच प्रदान करके भारतीय कृषि में प्रौद्योगिकी अंतर को पाटना है। हमारा उद्देश्य सटीक कृषि को सुलभ, सस्ता और उपयोग में आसान बनाना है, जिससे किसानों को अपनी उपज बढ़ाने, बर्बादी कम करने और अपनी आजीविका में सुधार करने में मदद मिलती है।',
-    'about.vision.title': 'दृष्टिकोण',
-    'about.vision.desc': 'हम एक ऐसे भविष्य की कल्पना करते हैं जहां भारत में हर किसान, अपने संचालन के पैमाने की परवाह किए बिना, डेटा-सूचित निर्णय ले सकता है। एआई, मशीन लर्निंग और सैटेलाइट इमेजरी जैसी तकनीकों का लाभ उठाकर, क्रॉपगुरु का लक्ष्य किसानों के लिए एक व्यापक डिजिटल साथी बनना है। हमारा लक्ष्य कई क्षेत्रीय भाषाओं का समर्थन करने, स्थानीय बाजार की कीमतों के साथ एकीकृत करने और दूरंदेशी किसानों का एक मजबूत समुदाय बनाने के लिए इस मंच को बढ़ाना है।',
-    'about.team.title': 'टीम DEV10 से मिलें',
-    'about.team.desc': 'हम डेवलपर्स, डिजाइनरों और कृषि उत्साही लोगों की एक उत्साही टीम हैं जो प्रभावशाली समाधान बनाने के लिए प्रतिबद्ध हैं। हमारा विविध कौशल सेट हमें रचनात्मकता और तकनीकी विशेषज्ञता के साथ जटिल समस्याओं से निपटने की अनुमति देता है। हम सकारात्मक बदलाव लाने के लिए प्रौद्योगिकी की शक्ति में विश्वास करते हैं और SIH 2025 में क्रॉपगुरु को प्रस्तुत करने के लिए उत्साहित हैं।',
+      // About Page
+      'about.title': 'क्रॉपगुरु के बारे में',
+      'about.subtitle': 'एक स्थायी भविष्य के लिए कृषि में क्रांति।',
+      'about.mission.title': 'हमारा लक्ष्य',
+      'about.mission.desc': 'क्रॉपगुरु, स्मार्ट इंडिया हैकथॉन 2025 के लिए टीम DEV10 द्वारा विकसित एक परियोजना है। हमारा मिशन छोटे और मध्यम स्तर के किसानों को शक्तिशाली AI-संचालित उपकरणों तक पहुँच प्रदान करके भारतीय कृषि में प्रौद्योगिकी अंतर को पाटना है। हमारा उद्देश्य सटीक कृषि को सुलभ, सस्ता और उपयोग में आसान बनाना है, जिससे किसानों को अपनी उपज बढ़ाने, बर्बादी कम करने और अपनी आजीविका में सुधार करने में मदद मिलती है।',
+      'about.vision.title': 'दृष्टिकोण',
+      'about.vision.desc': 'हम एक ऐसे भविष्य की कल्पना करते हैं जहां भारत में हर किसान, अपने संचालन के पैमाने की परवाह किए बिना, डेटा-सूचित निर्णय ले सकता है। एआई, मशीन लर्निंग और सैटेलाइट इमेजरी जैसी तकनीकों का लाभ उठाकर, क्रॉपगुरु का लक्ष्य किसानों के लिए एक व्यापक डिजिटल साथी बनना है। हमारा लक्ष्य कई क्षेत्रीय भाषाओं का समर्थन करने, स्थानीय बाजार की कीमतों के साथ एकीकृत करने और दूरंदेशी किसानों का एक मजबूत समुदाय बनाने के लिए इस मंच को बढ़ाना है।',
+      'about.team.title': 'टीम DEV10 से मिलें',
+      'about.team.desc': 'हम डेवलपर्स, डिजाइनरों और कृषि उत्साही लोगों की एक उत्साही टीम हैं जो प्रभावशाली समाधान बनाने के लिए प्रतिबद्ध हैं। हमारा विविध कौशल सेट हमें रचनात्मकता और तकनीकी विशेषज्ञता के साथ जटिल समस्याओं से निपटने की अनुमति देता है। हम सकारात्मक बदलाव लाने के लिए प्रौद्योगिकी की शक्ति में विश्वास करते हैं और SIH 2025 में क्रॉपगुरु को प्रस्तुत करने के लिए उत्साहित हैं।',
 
-    // Contact Page
-    'contact.title': 'संपर्क में रहें',
-    'contact.subtitle': 'हमें आपसे सुनना अच्छा लगेगा! चाहे आपका कोई प्रश्न हो, प्रतिक्रिया हो, या साझेदारी का प्रस्ताव हो, कृपया संपर्क करें।',
-    'contact.form.name': 'पूरा नाम',
-    'contact.form.email': 'ईमेल',
-    'contact.form.message': 'संदेश',
-    'contact.button.submit': 'संदेश भेजें',
-    'contact.success.title': 'धन्यवाद!',
-    'contact.success.desc': 'आपका संदेश भेज दिया गया है। हम जल्द ही आपसे संपर्क करेंगे।',
+      // Contact Page
+      'contact.title': 'संपर्क में रहें',
+      'contact.subtitle': 'हमें आपसे सुनना अच्छा लगेगा! चाहे आपका कोई प्रश्न हो, प्रतिक्रिया हो, या साझेदारी का प्रस्ताव हो, कृपया संपर्क करें।',
+      'contact.form.name': 'पूरा नाम',
+      'contact.form.email': 'ईमेल',
+      'contact.form.message': 'संदेश',
+      'contact.button.submit': 'संदेश भेजें',
+      'contact.success.title': 'धन्यवाद!',
+      'contact.success.desc': 'आपका संदेश भेज दिया गया है। हम जल्द ही आपसे संपर्क करेंगे।',
 
-    // Login Page
-    'login.title': 'वापसी पर स्वागत है',
-    'login.subtitle': 'अपने डैशबोर्ड तक पहुंचने के लिए साइन इन करें।',
-    'login.form.email': 'ईमेल पता',
-    'login.form.password': 'पासवर्ड',
-    'login.button.submit': 'साइन इन करें',
-    'login.button.loading': 'साइन इन हो रहा है...',
-    'login.link.prompt': 'क्या आपका खाता नहीं है?',
-    'login.link.action': 'साइन अप करें',
-    
-    // Sign Up Page
-    'signup.title': 'खाता बनाएं',
-    'signup.subtitle': 'आरंभ करने के लिए क्रॉपगुरु से जुड़ें।',
-    'signup.form.name': 'पूरा नाम',
-    'signup.success.message': 'खाता बन गया! कृपया अपना साइन अप की पुष्टि करने के लिए अपना ईमेल जांचें।',
-    'signup.button.submit': 'खाता बनाएं',
-    'signup.button.loading': 'खाता बनाया जा रहा है...',
-    'signup.link.prompt': 'क्या आपका पहले से एक खाता मौजूद है?',
-    'signup.link.action': 'साइन इन करें',
+      // Login Page
+      'login.title': 'वापसी पर स्वागत है',
+      'login.subtitle': 'अपने डैशबोर्ड तक पहुंचने के लिए साइन इन करें।',
+      'login.form.email': 'ईमेल पता',
+      'login.form.password': 'पासवर्ड',
+      'login.button.submit': 'साइन इन करें',
+      'login.button.loading': 'साइन इन हो रहा है...',
+      'login.link.prompt': 'क्या आपका खाता नहीं है?',
+      'login.link.action': 'साइन अप करें',
+      
+      // Sign Up Page
+      'signup.title': 'खाता बनाएं',
+      'signup.subtitle': 'आरंभ करने के लिए क्रॉपगुरु से जुड़ें।',
+      'signup.form.name': 'पूरा नाम',
+      'signup.success.message': 'खाता बन गया! कृपया अपना साइन अप की पुष्टि करने के लिए अपना ईमेल जांचें।',
+      'signup.button.submit': 'खाता बनाएं',
+      'signup.button.loading': 'खाता बनाया जा रहा है...',
+      'signup.link.prompt': 'क्या आपका पहले से एक खाता मौजूद है?',
+      'signup.link.action': 'साइन इन करें',
 
-    // Marketplace Page
-    'marketplace.title': 'किसानों का बाज़ार',
-    'marketplace.subtitle': 'उपज, उपकरण, और बहुत कुछ खरीदने और बेचने के लिए अन्य किसानों से जुड़ें।',
-    'marketplace.demo': '(यह नमूना डेटा के साथ एक सामुदायिक डेमो है)',
-    'marketplace.filter.show': 'दिखाएँ:',
-    'marketplace.filter.category': 'श्रेणी:',
-    'marketplace.filter.forSale': 'बिक्री के लिए',
-    'marketplace.filter.toBuy': 'खरीदना चाहते हैं',
-    'marketplace.button.postAd': 'नया विज्ञापन पोस्ट करें',
-    'marketplace.noMatch': 'वर्तमान फिल्टर से कोई लिस्टिंग मेल नहीं खाती।',
-    'marketplace.button.contact': 'विक्रेता से संपर्क करें',
-    'marketplace.modal.title': 'एक नई लिस्टिंग बनाएं',
-    'marketplace.modal.type': 'विज्ञापन प्रकार',
-    'marketplace.modal.itemName': 'वस्तु का नाम',
-    'marketplace.modal.price': 'कीमत',
-    'marketplace.modal.price.placeholder': 'जैसे, ₹ 5,000 या \'कीमत के लिए संपर्क करें\'',
-    'marketplace.modal.quantity': 'मात्रा',
-    'marketplace.modal.quantity.placeholder': 'जैसे, 50 किलो या 1 इकाई',
-    'marketplace.modal.description': 'विवरण',
+      // Marketplace Page
+      'marketplace.title': 'किसानों का बाज़ार',
+      'marketplace.subtitle': 'उपज, उपकरण, और बहुत कुछ खरीदने और बेचने के लिए अन्य किसानों से जुड़ें।',
+      'marketplace.demo': '(यह नमूना डेटा के साथ एक सामुदायिक डेमो है)',
+      'marketplace.filter.show': 'दिखाएँ:',
+      'marketplace.filter.category': 'श्रेणी:',
+      'marketplace.filter.forSale': 'बिक्री के लिए',
+      'marketplace.filter.toBuy': 'खरीदना चाहते हैं',
+      'marketplace.button.postAd': 'नया विज्ञापन पोस्ट करें',
+      'marketplace.noMatch': 'वर्तमान फिल्टर से कोई लिस्टिंग मेल नहीं खाती।',
+      'marketplace.button.contact': 'विक्रेता से संपर्क करें',
+      'marketplace.modal.title': 'एक नई लिस्टिंग बनाएं',
+      'marketplace.modal.type': 'विज्ञापन प्रकार',
+      'marketplace.modal.itemName': 'वस्तु का नाम',
+      'marketplace.modal.price': 'कीमत',
+      'marketplace.modal.price.placeholder': 'जैसे, ₹ 5,000 या \'कीमत के लिए संपर्क करें\'',
+      'marketplace.modal.quantity': 'मात्रा',
+      'marketplace.modal.quantity.placeholder': 'जैसे, 50 किलो या 1 इकाई',
+      'marketplace.modal.description': 'विवरण',
 
-    // Services
-    'service.gemini.apiKeyError': 'एआई सहायक कॉन्फ़िगर नहीं है। एपीआई कुंजी अमान्य हो सकती है या स्रोत कोड में गुम हो सकती है।',
-    'service.gemini.connectError': 'क्षमा करें, मुझे अपने ज्ञान के आधार से जुड़ने में समस्या हो रही है। कृपया बाद में पुन: प्रयास करें।',
-    'service.gemini.imageAnalysisConfigError': 'एआई छवि विश्लेषण कॉन्फ़िगर नहीं है। एपीआई कुंजी स्रोत कोड में गुम या अमान्य है।',
-    'service.gemini.imageAnalysisGeneralError': 'छवि का विश्लेषण करने में विफल। एआई मॉडल अनुपलब्ध हो सकता है या छवि को संसाधित नहीं किया जा सका।',
-    'service.gemini.schemesConfigError': 'एआई योजना लाने वाला कॉन्फ़िगर नहीं है। एपीआई कुंजी स्रोत कोड में गुम या अमान्य है।',
-    'service.gemini.schemesGeneralError': 'सरकारी योजनाओं को लाने में विफल। एआई मॉडल अनुपलब्ध हो सकता है या कोई नेटवर्क समस्या थी।',
-    'service.gemini.cropRecConfigError': 'एआई फसल अनुशंसा कॉन्फ़िगर नहीं है। एपीआई कुंजी स्रोत कोड में गुम या अमान्य है।',
-    'service.gemini.cropRecGeneralError': 'फसल की सिफारिश प्राप्त करने में विफल। एआई मॉडल अनुपलब्ध हो सकता है या इनपुट डेटा अमान्य है।',
+      // Services
+      'service.gemini.apiKeyError': 'एआई सहायक कॉन्फ़िगर नहीं है। एपीआई कुंजी अमान्य हो सकती है या स्रोत कोड में गुम हो सकती है।',
+      'service.gemini.connectError': 'क्षमा करें, मुझे अपने ज्ञान के आधार से जुड़ने में समस्या हो रही है। कृपया बाद में पुन: प्रयास करें।',
+      'service.gemini.imageAnalysisConfigError': 'एआई छवि विश्लेषण कॉन्फ़िगर नहीं है। एपीआई कुंजी स्रोत कोड में गुम या अमान्य है।',
+      'service.gemini.imageAnalysisGeneralError': 'छवि का विश्लेषण करने में विफल। एआई मॉडल अनुपलब्ध हो सकता है या छवि को संसाधित नहीं किया जा सका।',
+      'service.gemini.schemesConfigError': 'एआई योजना लाने वाला कॉन्फ़िगर नहीं है। एपीआई कुंजी स्रोत कोड में गुम या अमान्य है।',
+      'service.gemini.schemesGeneralError': 'सरकारी योजनाओं को लाने में विफल। एआई मॉडल अनुपलब्ध हो सकता है या कोई नेटवर्क समस्या थी।',
+      'service.gemini.cropRecConfigError': 'एआई फसल अनुशंसा कॉन्फ़िगर नहीं है। एपीआई कुंजी स्रोत कोड में गुम या अमान्य है।',
+      'service.gemini.cropRecGeneralError': 'फसल की सिफारिश प्राप्त करने में विफल। एआई मॉडल अनुपलब्ध हो सकता है या इनपुट डेटा अमान्य है।',
+    }
+  },
+  pa: {
+    ...englishTranslations,
+    ...{
+      // General
+      'language.toggle': 'English',
+      'all': 'ਸਾਰੇ',
+      'cancel': 'ਰੱਦ ਕਰੋ',
+      'error': 'ਗਲਤੀ',
+      'success': 'ਸਫਲਤਾ!',
+
+      // Page Titles
+      [Page.Home]: 'ਮੁੱਖ ਪੰਨਾ',
+      [Page.Dashboard]: 'ਭਵਿੱਖਬਾਣੀ ਡੈਸ਼ਬੋਰਡ',
+      [Page.DiseaseDetection]: 'ਬਿਮਾਰੀ ਦੀ ਪਛਾਣ',
+      [Page.CropRecommendation]: 'ਫਸਲ ਦੀ ਸਿਫਾਰਸ਼',
+      [Page.Schemes]: 'ਯੋਜਨਾਵਾਂ ਅਤੇ ਲਾਭ',
+      [Page.Satellite]: 'ਸੈਟੇਲਾਈਟ ਇਮੇਜਰੀ',
+      [Page.Marketplace]: 'ਬਾਜ਼ਾਰ',
+      [Page.About]: 'ਸਾਡੇ ਬਾਰੇ',
+      [Page.Contact]: 'ਸਾਡੇ ਨਾਲ ਸੰਪਰਕ ਕਰੋ',
+      [Page.Login]: 'ਲਾਗਇਨ',
+      [Page.SignUp]: 'ਸਾਈਨ ਅੱਪ ਕਰੋ',
+
+      // Header & Sidebar
+      'header.title': 'ਕਰੌਪਗੁਰੂ',
+      'logout': 'ਲੌਗ ਆਉਟ',
+      'login': 'ਲਾਗਇਨ',
+      'signup': 'ਸਾਈਨ ਅੱਪ ਕਰੋ',
+
+      // Footer
+      'footer.copyright': `© ${new Date().getFullYear()} ਕਰੌਪਗੁਰੂ। ਸਾਰੇ ਹੱਕ ਰਾਖਵੇਂ ਹਨ। SIH 2025 ਲਈ DEV10 ਦੁਆਰਾ ਬਣਾਇਆ ਗਿਆ।`,
+
+      // Chatbot
+      'chatbot.greeting': 'ਸਤਿ ਸ੍ਰੀ ਅਕਾਲ! ਮੈਂ ਕਰੌਪਗੁਰੂ ਦਾ AI ਸਹਾਇਕ ਹਾਂ। ਮੈਂ ਅੱਜ ਤੁਹਾਡੇ ਖੇਤੀ-ਸੰਬੰਧੀ ਸਵਾਲਾਂ ਵਿੱਚ ਕਿਵੇਂ ਮਦਦ ਕਰ ਸਕਦਾ ਹਾਂ?',
+      'chatbot.title': 'ਕਰੌਪਗੁਰੂ AI ਸਹਾਇਕ',
+      'chatbot.error': 'ਮਾਫ ਕਰਨਾ, ਕੁਝ ਗਲਤ ਹੋ ਗਿਆ। ਕਿਰਪਾ ਕਰਕੇ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।',
+      'chatbot.placeholder': 'ਫਸਲਾਂ ਬਾਰੇ ਪੁੱਛੋ...',
+
+      // Home Page
+      'home.hero.title': 'ਲਈ AI-ਸੰਚਾਲਿਤ ਫਸਲ ਝਾੜ ਦੀ ਭਵਿੱਖਬਾਣੀ ਅਤੇ ਅਨੁਕੂਲਨ',
+      'home.hero.title.highlight': 'ਭਾਰਤੀ ਕਿਸਾਨ',
+      'home.hero.subtitle': 'ਵਧੇਰੇ ਝਾੜ, ਬਿਹਤਰ ਮਿੱਟੀ ਦੀ ਸਿਹਤ ਅਤੇ ਟਿਕਾਊ ਖੇਤੀ ਅਭਿਆਸਾਂ ਲਈ ਡਾਟਾ-ਸੰਚਾਲਿਤ ਸੂਝ ਨਾਲ ਖੇਤੀਬਾੜੀ ਨੂੰ ਸ਼ਕਤੀ ਪ੍ਰਦਾਨ ਕਰਨਾ।',
+      'home.hero.button.demo': 'ਡੈਮੋ ਡੈਸ਼ਬੋਰਡ ਅਜ਼ਮਾਓ',
+      'home.hero.button.contact': 'ਸਾਡੇ ਨਾਲ ਸੰਪਰਕ ਕਰੋ',
+      'home.features.title': 'ਕਰੌਪਗੁਰੂ ਕਿਉਂ?',
+      'home.features.subtitle': 'ਆਧੁਨਿਕ ਖੇਤੀ ਦੀਆਂ ਚੁਣੌਤੀਆਂ ਦਾ ਇੱਕ ਪੂਰਾ ਹੱਲ।',
+      'home.feature.farming.title': 'ਸਟੀਕ ਖੇਤੀ',
+      'home.feature.farming.desc': 'ਫਸਲ ਦੇ ਝਾੜ ਲਈ AI-ਸੰਚਾਲਿਤ ਭਵਿੱਖਬਾਣੀਆਂ ਅਤੇ ਵਿਅਕਤੀਗਤ ਸਿਫਾਰਸ਼ਾਂ ਪ੍ਰਾਪਤ ਕਰੋ।',
+      'home.feature.chatbot.title': 'AI ਚੈਟਬੋਟ',
+      'home.feature.chatbot.desc': 'ਫਸਲਾਂ, ਯੋਜਨਾਵਾਂ ਅਤੇ ਹੋਰ ਸਾਰੇ ਸਵਾਲਾਂ ਲਈ ਤੁਹਾਡਾ 24/7 ਖੇਤੀ ਸਹਾਇਕ।',
+      'home.feature.disease.title': 'ਫਸਲ ਰੋਗ ਦੀ ਪਛਾਣ',
+      'home.feature.disease.desc': 'ਬਿਮਾਰੀਆਂ ਦੀ ਤੁਰੰਤ ਪਛਾਣ ਕਰਨ ਅਤੇ ਹੱਲ ਪ੍ਰਾਪਤ ਕਰਨ ਲਈ ਇੱਕ ਪੱਤੇ ਦੀ ਫੋਟੋ ਅਪਲੋਡ ਕਰੋ।',
+      'home.feature.weather.title': 'ਮੌਸਮ ਦੀ ਭਵਿੱਖਬਾਣੀ',
+      'home.feature.weather.desc': 'ਆਪਣੀਆਂ ਖੇਤੀ ਗਤੀਵਿਧੀਆਂ ਦੀ ਯੋਜਨਾ ਬਣਾਉਣ ਲਈ ਸਹੀ, ਸਥਾਨ-ਅਧਾਰਤ ਮੌਸਮ ਦੀ ਭਵਿੱਖਬਾਣੀ।',
+      'home.impact.yield.title': 'ਵਧੇਰੇ ਝਾੜ ਦੀ ਸੰਭਾਵਨਾ',
+      'home.impact.water.title': 'ਪਾਣੀ ਦੀ ਘੱਟ ਵਰਤੋਂ',
+      'home.impact.scouting.title': 'ਘੱਟ ਖੋਜ ਸਮਾਂ',
+
+      // Dashboard Page
+      'dashboard.form.cropType': 'ਫਸਲ ਦੀ ਕਿਸਮ',
+      'dashboard.form.soilType': 'ਮਿੱਟੀ ਦੀ ਕਿਸਮ',
+      'dashboard.form.landSize': 'ਜ਼ਮੀਨ ਦਾ ਆਕਾਰ (ਹੈਕਟੇਅਰ)',
+      'dashboard.form.location': 'ਸਥਾਨ',
+      'dashboard.form.cropYear': 'ਫਸਲ ਦਾ ਸਾਲ',
+      'dashboard.form.rainfall': 'ਸਾਲਾਨਾ ਬਾਰਸ਼ (ਮਿਲੀਮੀਟਰ)',
+      'dashboard.form.fertilizer': 'ਖਾਦ ਦੀ ਵਰਤੋਂ (ਕਿਲੋ/ਹੈਕਟੇਅਰ)',
+      'dashboard.form.pesticide': 'ਕੀਟਨਾਸ਼ਕ ਦੀ ਵਰਤੋਂ (ਲੀਟਰ/ਹੈਕਟੇਅਰ)',
+      'dashboard.button.loading': 'ਵਿਸ਼ਲੇਸ਼ਣ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ...',
+      'dashboard.button.submit': 'ਡੈਸ਼ਬੋਰਡ ਬਣਾਓ',
+      'dashboard.kpi.yield': 'ਅਨੁਮਾਨਿਤ ਝਾੜ',
+      'dashboard.kpi.yield.unit': 'ਟਨ',
+      'dashboard.kpi.yieldPerHectare': 'ਪ੍ਰਤੀ ਹੈਕਟੇਅਰ ਝਾੜ',
+      'dashboard.kpi.yieldPerHectare.unit': 'ਟਨ/ਹੈਕਟੇਅਰ',
+      'dashboard.kpi.income': 'ਅਨੁਮਾਨਿਤ ਆਮਦਨ',
+      'dashboard.chart.yield.title': 'ਝਾੜ ਦੀ ਭਵਿੱਖਬਾਣੀ (ਤਿਮਾਹੀ)',
+      'dashboard.chart.resource.title': 'ਸਰੋਤ ਦੀ ਵਰਤੋਂ ਬਨਾਮ ਸਿਫਾਰਸ਼',
+      'dashboard.alerts.title': 'ਫਾਰਮ ਚੇਤਾਵਨੀਆਂ ਅਤੇ ਕਾਰਜ',
+      'dashboard.market.title': 'ਬਾਜ਼ਾਰ ਦੀਆਂ ਕੀਮਤਾਂ',
+      'dashboard.market.subtitle': '(ਸਿਮੂਲੇਟਡ)',
+      'dashboard.weather.title': 'ਮੌਸਮ ਦੀ ਭਵਿੱਖਬਾਣੀ',
+      'dashboard.weather.loading': 'ਮੌਸਮ ਲੋਡ ਹੋ ਰਿਹਾ ਹੈ...',
+      'dashboard.soil.title': 'ਮਿੱਟੀ ਦੀ ਸਥਿਤੀ',
+      'yourUsage': 'ਤੁਹਾਡੀ ਵਰਤੋਂ',
+      'recommended': 'ਸਿਫਾਰਸ਼ੀ',
+
+      // Disease Detection Page
+      'disease.title': 'ਫਸਲ ਰੋਗ ਦੀ ਪਛਾਣ',
+      'disease.subtitle': 'ਫਸਲ ਦੇ ਪੱਤੇ ਦੀ ਫੋਟੋ ਅਪਲੋਡ ਕਰੋ ਜਾਂ ਲਓ, ਅਤੇ ਸਾਡਾ AI ਇਸ ਦਾ ਬਿਮਾਰੀਆਂ ਲਈ ਵਿਸ਼ਲੇਸ਼ਣ ਕਰੇਗਾ ਅਤੇ ਇਲਾਜ ਦਾ ਸੁਝਾਅ ਦੇਵੇਗਾ।',
+      'disease.preview': 'ਚਿੱਤਰ ਦਾ ਪੂਰਵ ਦਰਸ਼ਨ ਇੱਥੇ ਦਿਖਾਈ ਦੇਵੇਗਾ',
+      'disease.button.analyze': 'ਚਿੱਤਰ ਦਾ ਵਿਸ਼ਲੇਸ਼ਣ ਕਰੋ',
+      'disease.button.analyzing': 'ਵਿਸ਼ਲੇਸ਼ਣ ਹੋ ਰਿਹਾ ਹੈ...',
+      'disease.button.tryAnother': 'ਦੂਜੀ ਕੋਸ਼ਿਸ਼ ਕਰੋ',
+      'disease.button.upload': 'ਡਿਵਾਈਸ ਤੋਂ ਅਪਲੋਡ ਕਰੋ',
+      'disease.button.camera': 'ਕੈਮਰਾ ਵਰਤੋ',
+      'disease.camera.prompt': 'ਆਪਣਾ ਕੈਮਰਾ ਫਸਲ ਦੇ ਪੱਤੇ ਵੱਲ ਕਰੋ',
+      'disease.result.title': 'ਵਿਸ਼ਲੇਸ਼ਣ ਦਾ ਨਤੀਜਾ',
+      'disease.result.healthy': 'ਪੌਦਾ ਸਿਹਤਮੰਦ ਜਾਪਦਾ ਹੈ',
+      'disease.result.healthy.desc': 'ਦਿੱਤੀ ਗਈ ਤਸਵੀਰ ਵਿੱਚ ਕੋਈ ਖਾਸ ਬਿਮਾਰੀ ਨਹੀਂ ਮਿਲੀ।',
+      'disease.result.name': 'ਬਿਮਾਰੀ ਦਾ ਨਾਮ',
+      'disease.result.confidence': 'ਵਿਸ਼ਵਾਸ',
+      'disease.result.treatment': 'ਸਿਫਾਰਸ਼ੀ ਇਲਾਜ',
+    }
+  },
+  ta: {
+    ...englishTranslations,
+    ...{
+      // General
+      'language.toggle': 'English',
+      'all': 'அனைத்தும்',
+      'cancel': 'ரத்து செய்',
+      'error': 'பிழை',
+      'success': 'வெற்றி!',
+
+      // Page Titles
+      [Page.Home]: 'முகப்பு',
+      [Page.Dashboard]: 'கணிப்பு டாஷ்போர்டு',
+      [Page.DiseaseDetection]: 'நோய் கண்டறிதல்',
+      [Page.CropRecommendation]: 'பயிர் பரிந்துரை',
+      [Page.Schemes]: 'திட்டங்கள் & நன்மைகள்',
+      [Page.Satellite]: 'செயற்கைக்கோள் படங்கள்',
+      [Page.Marketplace]: 'சந்தை',
+      [Page.About]: 'எங்களைப் பற்றி',
+      [Page.Contact]: 'தொடர்பு கொள்ள',
+      [Page.Login]: 'உள்நுழை',
+      [Page.SignUp]: 'பதிவுபெறுக',
+
+      // Header & Sidebar
+      'header.title': 'கிராப்குரு',
+      'logout': 'வெளியேறு',
+      'login': 'உள்நுழை',
+      'signup': 'பதிவுபெறுக',
+
+      // Footer
+      'footer.copyright': `© ${new Date().getFullYear()} கிராப்குரு. அனைத்து உரிமைகளும் பாதுகாக்கப்பட்டவை. SIH 2025-க்காக DEV10 ஆல் உருவாக்கப்பட்டது.`,
+
+      // Chatbot
+      'chatbot.greeting': 'வணக்கம்! நான் கிராப்குருவின் AI உதவியாளர். இன்று உங்கள் விவசாயக் கேள்விகளுக்கு நான் எப்படி உதவ முடியும்?',
+      'chatbot.title': 'கிராப்குரு AI உதவியாளர்',
+      'chatbot.error': 'மன்னிக்கவும், ஏதோ தவறு நடந்துவிட்டது. மீண்டும் முயற்சிக்கவும்.',
+      'chatbot.placeholder': 'பயிர்களைப் பற்றி கேளுங்கள்...',
+
+      // Home Page
+      'home.hero.title': 'க்கான AI-இயக்கும் பயிர் விளைச்சல் கணிப்பு மற்றும் மேம்படுத்தல்',
+      'home.hero.title.highlight': 'இந்திய விவசாயிகள்',
+      'home.hero.subtitle': 'அதிக மகசூல், சிறந்த மண் ஆரோக்கியம் மற்றும் நிலையான விவசாய முறைகளுக்காக தரவு சார்ந்த நுண்ணறிவுகளுடன் விவசாயத்தை மேம்படுத்துதல்.',
+      'home.hero.button.demo': 'டெமோ டாஷ்போர்டை முயற்சிக்கவும்',
+      'home.hero.button.contact': 'தொடர்பு கொள்ள',
+      'home.features.title': 'கிராப்குரு ஏன்?',
+      'home.features.subtitle': 'நவீன விவசாய சவால்களுக்கு ஒரு முழுமையான தீர்வு.',
+      'home.feature.farming.title': 'துல்லியமான விவசாயம்',
+      'home.feature.farming.desc': 'பயிர் விளைச்சலுக்கான AI-ஆற்றல்மிக்க கணிப்புகள் மற்றும் தனிப்பயனாக்கப்பட்ட பரிந்துரைகளைப் பெறுங்கள்.',
+      'home.feature.chatbot.title': 'AI சாட்பாட்',
+      'home.feature.chatbot.desc': 'பயிர்கள், திட்டங்கள் மற்றும் பலவற்றைப் பற்றிய அனைத்து கேள்விகளுக்கும் உங்கள் 24/7 விவசாய உதவியாளர்.',
+      'home.feature.disease.title': 'பயிர் நோய் கண்டறிதல்',
+      'home.feature.disease.desc': 'நோய்களை உடனடியாகக் கண்டறிந்து தீர்வுகளைப் பெற ஒரு இலையின் புகைப்படத்தைப் பதிவேற்றவும்.',
+      'home.feature.weather.title': 'வானிலை முன்னறிவிப்பு',
+      'home.feature.weather.desc': 'உங்கள் விவசாய நடவடிக்கைகளைத் திட்டமிட துல்லியமான, இருப்பிட அடிப்படையிலான வானிலை கணிப்புகள்.',
+      'home.impact.yield.title': 'அதிக மகசூல் திறன்',
+      'home.impact.water.title': 'குறைந்த நீர் பயன்பாடு',
+      'home.impact.scouting.title': 'குறைந்த கண்காணிப்பு நேரம்',
+
+      // Dashboard Page
+      'dashboard.form.cropType': 'பயிர் வகை',
+      'dashboard.form.soilType': 'மண் வகை',
+      'dashboard.form.landSize': 'நில அளவு (ஹெக்டேர்)',
+      'dashboard.form.location': 'இடம்',
+      'dashboard.form.cropYear': 'பயிர் ஆண்டு',
+      'dashboard.form.rainfall': 'ஆண்டு மழைப்பொழிவு (மிமீ)',
+      'dashboard.form.fertilizer': 'உரப் பயன்பாடு (கிலோ/ஹெக்டேர்)',
+      'dashboard.form.pesticide': 'பூச்சிக்கொல்லி பயன்பாடு (லி/ஹெக்டேர்)',
+      'dashboard.button.loading': 'பகுப்பாய்வு செய்யப்படுகிறது...',
+      'dashboard.button.submit': 'டாஷ்போர்டை உருவாக்கு',
+      'dashboard.kpi.yield': 'கணிக்கப்பட்ட விளைச்சல்',
+      'dashboard.kpi.yield.unit': 'டன்கள்',
+      'dashboard.kpi.yieldPerHectare': 'ஒரு ஹெக்டேருக்கு விளைச்சல்',
+      'dashboard.kpi.yieldPerHectare.unit': 'டன்/ஹெக்டேர்',
+      'dashboard.kpi.income': 'மதிப்பிடப்பட்ட வருமானம்',
+      'dashboard.chart.yield.title': 'விளைச்சல் முன்னறிவிப்பு (காலாண்டு)',
+      'dashboard.chart.resource.title': 'வளப் பயன்பாடு vs. பரிந்துரை',
+      'dashboard.alerts.title': 'பண்ணை எச்சரிக்கைகள் & பணிகள்',
+      'dashboard.market.title': 'சந்தை விலைகள்',
+      'dashboard.market.subtitle': '(மாதிரி)',
+      'dashboard.weather.title': 'வானிலை முன்னறிவிப்பு',
+      'dashboard.weather.loading': 'வானிலை ஏற்றப்படுகிறது...',
+      'dashboard.soil.title': 'மண் நிலை',
+      'yourUsage': 'உங்கள் பயன்பாடு',
+      'recommended': 'பரிந்துரைக்கப்பட்டது',
+    }
+  },
+  te: {
+    ...englishTranslations,
+    ...{
+      // General
+      'language.toggle': 'English',
+      'all': 'అన్నీ',
+      'cancel': 'రద్దు చేయండి',
+      'error': 'లోపం',
+      'success': 'విజయం!',
+
+      // Page Titles
+      [Page.Home]: 'హోమ్',
+      [Page.Dashboard]: 'అంచనా డాష్‌బోర్డ్',
+      [Page.DiseaseDetection]: 'వ్యాధి నిర్ధారణ',
+      [Page.CropRecommendation]: 'పంట సిఫార్సు',
+      [Page.Schemes]: 'పథకాలు & ప్రయోజనాలు',
+      [Page.Satellite]: 'ఉపగ్రహ చిత్రాలు',
+      [Page.Marketplace]: 'మార్కెట్',
+      [Page.About]: 'మా గురించి',
+      [Page.Contact]: 'మమ్మల్ని సంప్రదించండి',
+      [Page.Login]: 'ప్రవేశించండి',
+      [Page.SignUp]: 'నమోదు చేసుకోండి',
+
+      // Header & Sidebar
+      'header.title': 'క్రాప్‌గురు',
+      'logout': 'లాగ్ అవుట్',
+      'login': 'ప్రవేశించండి',
+      'signup': 'నమోదు చేసుకోండి',
+
+      // Footer
+      'footer.copyright': `© ${new Date().getFullYear()} క్రాప్‌గురు. అన్ని హక్కులు ప్రత్యేకించబడ్డాయి. SIH 2025 కోసం DEV10 ద్వారా నిర్మించబడింది.`,
+
+      // Chatbot
+      'chatbot.greeting': 'నమస్కారం! నేను క్రాప్‌గురు AI సహాయకుడిని. ఈ రోజు మీ వ్యవసాయ ప్రశ్నలకు నేను ఎలా సహాయపడగలను?',
+      'chatbot.title': 'క్రాప్‌గురు AI సహాయకుడు',
+      'chatbot.error': 'క్షమించండి, ఏదో పొరపాటు జరిగింది. దయచేసి మళ్లీ ప్రయత్నించండి.',
+      'chatbot.placeholder': 'పంటల గురించి అడగండి...',
+
+      // Home Page
+      'home.hero.title': 'కోసం AI-ఆధారిత పంట దిగుబడి అంచనా & ఆప్టిమైజేషన్',
+      'home.hero.title.highlight': 'భారతీయ రైతులు',
+      'home.hero.subtitle': 'అధిక దిగుబడులు, మెరుగైన నేల ఆరోగ్యం మరియు స్థిరమైన వ్యవసాయ పద్ధతుల కోసం డేటా-ఆధారిత అంతర్దృష్టులతో వ్యవసాయాన్ని శక్తివంతం చేయడం.',
+      'home.hero.button.demo': 'డెమో డాష్‌బోర్డ్‌ను ప్రయత్నించండి',
+      'home.hero.button.contact': 'మమ్మల్ని సంప్రదించండి',
+      'home.features.title': 'క్రాప్‌గురు ఎందుకు?',
+      'home.features.subtitle': 'ఆధునిక వ్యవసాయ సవాళ్లకు పూర్తి పరిష్కారం.',
+      'home.feature.farming.title': 'ఖచ్చితమైన వ్యవసాయం',
+      'home.feature.farming.desc': 'పంట దిగుబడి కోసం AI-ఆధారిత అంచనాలు మరియు వ్యక్తిగతీకరించిన సిఫార్సులను పొందండి.',
+      'home.feature.chatbot.title': 'AI చాట్‌బాట్',
+      'home.feature.chatbot.desc': 'పంటలు, పథకాలు మరియు మరిన్నింటిపై అన్ని ప్రశ్నల కోసం మీ 24/7 వ్యవసాయ సహాయకుడు.',
+      'home.feature.disease.title': 'పంట వ్యాధి నిర్ధారణ',
+      'home.feature.disease.desc': 'వ్యాధులను తక్షణమే గుర్తించడానికి మరియు పరిష్కారాలను పొందడానికి ఆకు ఫోటోను అప్‌లోడ్ చేయండి.',
+      'home.feature.weather.title': 'వాతావరణ సూచన',
+      'home.feature.weather.desc': 'మీ వ్యవసాయ కార్యకలాపాలను ప్లాన్ చేయడానికి ఖచ్చితమైన, స్థాన-ఆధారిత వాతావరణ అంచనాలు.',
+      'home.impact.yield.title': 'అధిక దిగుబడి సంభావ్యత',
+      'home.impact.water.title': 'తగ్గిన నీటి వినియోగం',
+      'home.impact.scouting.title': 'తక్కువ పర్యవేక్షణ సమయం',
+      
+      // Dashboard Page
+      'dashboard.form.cropType': 'పంట రకం',
+      'dashboard.form.soilType': 'నేల రకం',
+      'dashboard.form.landSize': 'భూమి పరిమాణం (హెక్టార్లు)',
+      'dashboard.form.location': 'ప్రదేశం',
+      'dashboard.form.cropYear': 'పంట సంవత్సరం',
+      'dashboard.form.rainfall': 'వార్షిక వర్షపాతం (మిమీ)',
+      'dashboard.form.fertilizer': 'ఎరువుల వాడకం (కిలోలు/హెక్టారు)',
+      'dashboard.form.pesticide': 'పురుగుమందుల వాడకం (లీ/హెక్టారు)',
+      'dashboard.button.loading': 'విశ్లేషిస్తోంది...',
+      'dashboard.button.submit': 'డాష్‌బోర్డ్‌ను రూపొందించండి',
+      'dashboard.kpi.yield': 'అంచనా వేయబడిన దిగుబడి',
+      'dashboard.kpi.yield.unit': 'టన్నులు',
+      'dashboard.kpi.yieldPerHectare': 'హెక్టారుకు దిగుబడి',
+      'dashboard.kpi.yieldPerHectare.unit': 'టన్ను/హెక్టారు',
+      'dashboard.kpi.income': 'అంచనా వేయబడిన ఆదాయం',
+      'dashboard.chart.yield.title': 'దిగుబడి సూచన (త్రైమాసికం)',
+      'dashboard.chart.resource.title': 'వనరుల వినియోగం వర్సెస్ సిఫార్సు',
+      'dashboard.alerts.title': 'పొలం హెచ్చరికలు & పనులు',
+      'dashboard.market.title': 'మార్కెట్ ధరలు',
+      'dashboard.market.subtitle': '(అనుకరణ)',
+      'dashboard.weather.title': 'వాతావరణ సూచన',
+      'dashboard.weather.loading': 'వాతావరణం లోడ్ అవుతోంది...',
+      'dashboard.soil.title': 'నేల పరిస్థితి',
+      'yourUsage': 'మీ వినియోగం',
+      'recommended': 'సిఫార్సు చేయబడింది',
+    }
   },
 };
 
 interface LanguageContextType {
   language: Language;
-  toggleLanguage: () => void;
+  setLanguage: (language: Language) => void;
   t: (key: string) => string;
+  availableLanguages: { code: Language; name: string }[];
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
@@ -419,16 +709,17 @@ const LanguageContext = createContext<LanguageContextType | undefined>(undefined
 export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [language, setLanguage] = useState<Language>('en');
 
-  const toggleLanguage = useCallback(() => {
-    setLanguage((prevLang) => (prevLang === 'en' ? 'hi' : 'en'));
+  const handleSetLanguage = useCallback((lang: Language) => {
+    setLanguage(lang);
   }, []);
 
   const t = useCallback((key: string): string => {
-    return translations[language][key] || key;
+    return translations[language][key] ?? key;
   }, [language]);
 
+
   return (
-    <LanguageContext.Provider value={{ language, toggleLanguage, t }}>
+    <LanguageContext.Provider value={{ language, setLanguage: handleSetLanguage, t, availableLanguages }}>
       {children}
     </LanguageContext.Provider>
   );

@@ -7,6 +7,7 @@ import DiseaseDetectionPage from './components/pages/DiseaseDetectionPage';
 import CropRecommendationPage from './components/pages/CropRecommendationPage';
 import SchemesPage from './components/pages/SchemesPage';
 import SatellitePage from './components/pages/SatellitePage';
+import MarketplacePage from './components/pages/MarketplacePage';
 import AboutPage from './components/pages/AboutPage';
 import ContactPage from './components/pages/ContactPage';
 import LoginPage from './components/pages/LoginPage';
@@ -17,13 +18,36 @@ import { Page } from './types';
 import { supabase } from './services/supabaseClient';
 import type { Session } from '@supabase/supabase-js';
 
+const APP_PAGE_KEY = 'cropGuruCurrentPage';
+const PAGE_BEFORE_LOGIN_KEY = 'cropGuruPageBeforeLogin';
+
 const App: React.FC = () => {
-  const [currentPage, setCurrentPage] = useState<Page>(Page.Home);
+  const [currentPage, setCurrentPage] = useState<Page>(() => {
+    const savedPage = sessionStorage.getItem(APP_PAGE_KEY) as Page;
+    // Ensure the saved value is a valid page, otherwise default to Home
+    return savedPage && Object.values(Page).includes(savedPage) ? savedPage : Page.Home;
+  });
   const [session, setSession] = useState<Session | null>(null);
   const [checkingSession, setCheckingSession] = useState(true);
   const isAuthenticated = !!session;
-  const [pageBeforeLogin, setPageBeforeLogin] = useState<Page | null>(null);
+  const [pageBeforeLogin, setPageBeforeLogin] = useState<Page | null>(() => {
+    return sessionStorage.getItem(PAGE_BEFORE_LOGIN_KEY) as Page | null;
+  });
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  // Save current page to session storage whenever it changes
+  useEffect(() => {
+    sessionStorage.setItem(APP_PAGE_KEY, currentPage);
+  }, [currentPage]);
+
+  // Save the page the user was trying to access before login
+  useEffect(() => {
+    if (pageBeforeLogin) {
+      sessionStorage.setItem(PAGE_BEFORE_LOGIN_KEY, pageBeforeLogin);
+    } else {
+      sessionStorage.removeItem(PAGE_BEFORE_LOGIN_KEY);
+    }
+  }, [pageBeforeLogin]);
   
   useEffect(() => {
     const fetchSession = async () => {
@@ -48,7 +72,7 @@ const App: React.FC = () => {
             setCurrentPage(targetPage);
             setPageBeforeLogin(null);
         } else if (!session) {
-            const protectedPages: Page[] = [Page.Dashboard, Page.DiseaseDetection, Page.CropRecommendation, Page.Schemes, Page.Satellite];
+            const protectedPages: Page[] = [Page.Dashboard, Page.DiseaseDetection, Page.CropRecommendation, Page.Schemes, Page.Satellite, Page.Marketplace];
             if (protectedPages.includes(currentPage)) {
                 setCurrentPage(Page.Home);
             }
@@ -57,7 +81,7 @@ const App: React.FC = () => {
   }, [session, checkingSession, currentPage, pageBeforeLogin]);
 
   const handleNavigation = useCallback((page: Page) => {
-    const protectedPages: Page[] = [Page.Dashboard, Page.DiseaseDetection, Page.CropRecommendation, Page.Schemes, Page.Satellite];
+    const protectedPages: Page[] = [Page.Dashboard, Page.DiseaseDetection, Page.CropRecommendation, Page.Schemes, Page.Satellite, Page.Marketplace];
     if (protectedPages.includes(page) && !session) {
       setPageBeforeLogin(page);
       setCurrentPage(Page.Login);
@@ -85,6 +109,8 @@ const App: React.FC = () => {
         return <SchemesPage />;
       case Page.Satellite:
         return <SatellitePage />;
+      case Page.Marketplace:
+        return <MarketplacePage />;
       case Page.About:
         return <AboutPage />;
       case Page.Contact:

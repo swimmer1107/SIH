@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Page } from '../types';
 import { NAV_LINKS } from '../constants';
 import Button from './ui/Button';
@@ -13,6 +13,7 @@ interface HeaderProps {
   setSidebarOpen: (update: (isOpen: boolean) => boolean) => void;
 }
 
+// --- ICONS ---
 const LeafIcon: React.FC<{className?: string}> = ({className}) => (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className={className}>
         <path d="M11.9999 1.5C11.9999 1.5 5.43994 4.859 3.41194 11.234C1.38394 17.609 8.24994 22.5 11.9999 22.5C15.7499 22.5 22.6159 17.609 20.5879 11.234C18.5599 4.859 11.9999 1.5 11.9999 1.5Z" />
@@ -28,13 +29,32 @@ const MoonIcon: React.FC<{className?: string}> = ({className}) => (
         <path strokeLinecap="round" strokeLinejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
     </svg>
 );
+const GlobeIcon: React.FC<{className?: string}> = ({className}) => (
+    <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2h1a2 2 0 002-2v-1a2 2 0 012-2h1.945M7.758 4.586a10.001 10.001 0 00-4.697 3.31M19.945 11c.05.32.055.644.055.972 0 5.253-4.247 9.528-9.5 9.528S1 17.225 1 11.972c0-.328.005-.652.055-.972m18.89 0A10.001 10.001 0 0016.242 4.586" />
+    </svg>
+);
+
 
 const Header: React.FC<HeaderProps> = ({ currentPage, setCurrentPage, isAuthenticated, setSidebarOpen }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { toggleLanguage, t } = useLanguage();
+  const [isLangMenuOpen, setIsLangMenuOpen] = useState(false);
+  const { language, setLanguage, t, availableLanguages } = useLanguage();
   const { isDarkMode, toggleTheme } = useTheme();
+  const langMenuRef = useRef<HTMLDivElement>(null);
 
   const navLinks = NAV_LINKS.filter(link => [Page.Home, Page.About, Page.Contact].includes(link.name));
+  
+  // Close language dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (langMenuRef.current && !langMenuRef.current.contains(event.target as Node)) {
+        setIsLangMenuOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   return (
     <>
@@ -87,9 +107,31 @@ const Header: React.FC<HeaderProps> = ({ currentPage, setCurrentPage, isAuthenti
              <button onClick={toggleTheme} className="p-2 rounded-full text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 dark:focus:ring-offset-gray-900 focus:ring-primary-500">
                 {isDarkMode ? <SunIcon className="h-5 w-5" /> : <MoonIcon className="h-5 w-5" />}
              </button>
-             <button onClick={toggleLanguage} className="p-2 rounded-full text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 dark:focus:ring-offset-gray-900 focus:ring-primary-500 font-semibold text-sm">
-                {t('language.toggle')}
-             </button>
+             
+             {/* Language Dropdown */}
+             <div className="relative" ref={langMenuRef}>
+                 <button onClick={() => setIsLangMenuOpen(!isLangMenuOpen)} className="p-2 rounded-full text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 dark:focus:ring-offset-gray-900 focus:ring-primary-500">
+                     <GlobeIcon className="h-5 w-5" />
+                 </button>
+                 {isLangMenuOpen && (
+                     <div className="absolute right-0 mt-2 w-40 bg-white dark:bg-gray-800 rounded-md shadow-lg py-1 ring-1 ring-black ring-opacity-5 z-30">
+                         {availableLanguages.map(lang => (
+                             <a
+                                 key={lang.code}
+                                 href="#"
+                                 onClick={(e) => {
+                                     e.preventDefault();
+                                     setLanguage(lang.code);
+                                     setIsLangMenuOpen(false);
+                                 }}
+                                 className={`block px-4 py-2 text-sm ${language === lang.code ? 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white' : 'text-gray-700 dark:text-gray-300'} hover:bg-gray-100 dark:hover:bg-gray-700`}
+                             >
+                                 {lang.name}
+                             </a>
+                         ))}
+                     </div>
+                 )}
+             </div>
              
              {!isAuthenticated && (
                 <>
