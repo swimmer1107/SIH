@@ -1,0 +1,7 @@
+{
+  "name": "CropGuru – AI Crop Yield Prediction & Optimization",
+  "description": "An AI-based system for farmers in India to get personalized insights about crop yield, soil health, disease detection, weather forecasts, and government schemes.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
