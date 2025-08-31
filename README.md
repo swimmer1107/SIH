@@ -1,5 +1,5 @@
 <div align="center">
-<img width="1200" height="475" alt="GHBanner" src="" />
+<img width="1200" height="475" alt="GHBanner" src="sih.png" />
 </div>
 
 🌱 CropGuru – AI-Powered Crop Yield Prediction & Optimization
@@ -9,7 +9,7 @@
 
 CropGuru is an AI-driven platform designed to help farmers maximize crop yield, predict production, and optimize agricultural practices. By combining machine learning, real-time weather data, and soil parameters, the platform provides actionable insights for smarter farming.
 
-👉 Live Demo: <a href="https://sih-nine-beta.vercel.app/">CropGuru on Vercel</a>
+👉 Live Deployment: <a href="https://sih-nine-beta.vercel.app/">CropGuru on Vercel</a>
 
 🚀 Features
 
