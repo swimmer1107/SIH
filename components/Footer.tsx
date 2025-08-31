@@ -2,7 +2,7 @@ import React from 'react';
 import { useLanguage } from './LanguageProvider';
 
 const SocialIcon: React.FC<{ href: string, path: string }> = ({ href, path }) => (
-    <a href={href} className="text-gray-500 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">
+    <a href={href} className="text-gray-500 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">
         <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
             <path fillRule="evenodd" d={path} clipRule="evenodd" />
         </svg>
@@ -13,7 +13,7 @@ const Footer: React.FC = () => {
   const { t } = useLanguage();
 
   return (
-    <footer className="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
+    <footer className="bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800">
       <div className="container mx-auto py-8 px-4 sm:px-6 lg:px-8">
         <div className="md:flex md:items-center md:justify-between">
           <div className="flex justify-center space-x-6 md:order-2">

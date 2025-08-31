@@ -25,18 +25,18 @@ const SchemeCard: React.FC<{ scheme: Scheme }> = ({ scheme }) => (
 const SkeletonCard = () => (
     <Card className="flex flex-col h-full animate-pulse">
         <div className="flex-grow">
-            <div className="h-5 bg-gray-300 dark:bg-gray-600 rounded w-1/3 mb-4"></div>
-            <div className="h-6 bg-gray-300 dark:bg-gray-600 rounded w-3/4 mb-2"></div>
+            <div className="h-5 bg-gray-300 dark:bg-gray-700 rounded w-1/3 mb-4"></div>
+            <div className="h-6 bg-gray-300 dark:bg-gray-700 rounded w-3/4 mb-2"></div>
             <div className="space-y-2">
-                <div className="h-4 bg-gray-300 dark:bg-gray-600 rounded"></div>
-                <div className="h-4 bg-gray-300 dark:bg-gray-600 rounded"></div>
-                <div className="h-4 bg-gray-300 dark:bg-gray-600 rounded w-5/6"></div>
+                <div className="h-4 bg-gray-300 dark:bg-gray-700 rounded"></div>
+                <div className="h-4 bg-gray-300 dark:bg-gray-700 rounded"></div>
+                <div className="h-4 bg-gray-300 dark:bg-gray-700 rounded w-5/6"></div>
             </div>
-             <div className="mt-4 h-4 bg-gray-300 dark:bg-gray-600 rounded w-full"></div>
-             <div className="mt-2 h-4 bg-gray-300 dark:bg-gray-600 rounded w-1/2"></div>
+             <div className="mt-4 h-4 bg-gray-300 dark:bg-gray-700 rounded w-full"></div>
+             <div className="mt-2 h-4 bg-gray-300 dark:bg-gray-700 rounded w-1/2"></div>
         </div>
         <div className="mt-6">
-            <div className="h-5 bg-gray-300 dark:bg-gray-600 rounded w-1/4"></div>
+            <div className="h-5 bg-gray-300 dark:bg-gray-700 rounded w-1/4"></div>
         </div>
     </Card>
 );
@@ -88,8 +88,8 @@ const SchemesPage: React.FC = () => {
                 onClick={() => setFilter(category)}
                 className={`px-4 py-2 text-sm font-medium rounded-full transition-colors ${
                   filter === category
-                    ? 'bg-primary-600 text-white'
-                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600'
+                    ? 'bg-primary-600 text-white shadow-md'
+                    : 'bg-white text-gray-700 hover:bg-gray-100 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700'
                 }`}
               >
                 {category === 'All' ? t('all') : category}
@@ -105,7 +105,7 @@ const SchemesPage: React.FC = () => {
       )}
 
       {error && !isLoading && (
-        <Card className="max-w-2xl mx-auto border-l-4 border-red-500 dark:bg-red-900/20">
+        <Card className="max-w-2xl mx-auto border-l-4 border-red-500 bg-red-50 dark:bg-red-900/20">
             <p className="text-red-700 dark:text-red-300 font-semibold">{t('schemes.error.prefix')}</p>
             <p className="text-red-600 dark:text-red-400">{error}</p>
         </Card>

@@ -58,12 +58,12 @@ const Header: React.FC<HeaderProps> = ({ currentPage, setCurrentPage, isAuthenti
 
   return (
     <>
-    <header className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm sticky top-0 z-20 border-b border-gray-200 dark:border-gray-700">
+    <header className="bg-white/70 dark:bg-gray-900/70 backdrop-blur-lg sticky top-0 z-20 border-b border-gray-200 dark:border-gray-800">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center">
              {isAuthenticated && (
-                 <button className="p-2 -ml-2 mr-2 text-gray-600 dark:text-gray-300" onClick={() => setSidebarOpen(isOpen => !isOpen)} aria-label="Open sidebar">
+                 <button className="p-2 -ml-2 mr-2 text-gray-500 dark:text-gray-300" onClick={() => setSidebarOpen(isOpen => !isOpen)} aria-label="Open sidebar">
                     <svg className="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
                     </svg>
@@ -71,7 +71,7 @@ const Header: React.FC<HeaderProps> = ({ currentPage, setCurrentPage, isAuthenti
              )}
              <a href="#" onClick={(e) => { e.preventDefault(); setCurrentPage(Page.Home); }} className="flex items-center space-x-2">
                <LeafIcon className="h-8 w-8 text-primary-600" />
-               <span className="text-2xl font-bold text-gray-800 dark:text-white">{t('header.title')}</span>
+               <span className="text-2xl font-bold text-gray-900 dark:text-white">{t('header.title')}</span>
              </a>
           </div>
           
@@ -81,22 +81,19 @@ const Header: React.FC<HeaderProps> = ({ currentPage, setCurrentPage, isAuthenti
                     {t(currentPage)}
                 </h1>
              ) : (
-                <div className="hidden md:flex items-baseline space-x-6">
+                <div className="hidden md:flex items-baseline space-x-1">
                   {navLinks.map((link) => (
                     <a
                       key={link.name}
                       href={link.path}
                       onClick={(e) => { e.preventDefault(); setCurrentPage(link.name); }}
-                      className={`relative px-2 py-2 text-sm font-medium transition-colors ${
+                      className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
                         currentPage === link.name
-                          ? 'text-primary-600 dark:text-primary-400'
-                          : 'text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400'
+                          ? 'bg-primary-50 text-primary-600 dark:bg-gray-800 dark:text-primary-400'
+                          : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
                       }`}
                     >
                       {t(link.name)}
-                      {currentPage === link.name && (
-                        <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-4/5 h-0.5 bg-primary-600 dark:bg-primary-400 rounded-full"></span>
-                      )}
                     </a>
                   ))}
                 </div>
@@ -104,17 +101,17 @@ const Header: React.FC<HeaderProps> = ({ currentPage, setCurrentPage, isAuthenti
           </div>
           
           <div className="flex items-center space-x-2">
-             <button onClick={toggleTheme} className="p-2 rounded-full text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 dark:focus:ring-offset-gray-900 focus:ring-primary-500">
+             <button onClick={toggleTheme} className="p-2 rounded-full text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-900 focus:ring-primary-500">
                 {isDarkMode ? <SunIcon className="h-5 w-5" /> : <MoonIcon className="h-5 w-5" />}
              </button>
              
              {/* Language Dropdown */}
              <div className="relative" ref={langMenuRef}>
-                 <button onClick={() => setIsLangMenuOpen(!isLangMenuOpen)} className="p-2 rounded-full text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 dark:focus:ring-offset-gray-900 focus:ring-primary-500">
+                 <button onClick={() => setIsLangMenuOpen(!isLangMenuOpen)} className="p-2 rounded-full text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-900 focus:ring-primary-500">
                      <GlobeIcon className="h-5 w-5" />
                  </button>
                  {isLangMenuOpen && (
-                     <div className="absolute right-0 mt-2 w-40 bg-white dark:bg-gray-800 rounded-md shadow-lg py-1 ring-1 ring-black ring-opacity-5 z-30">
+                     <div className="absolute right-0 mt-2 w-40 bg-white dark:bg-gray-800 rounded-lg shadow-lg py-1 ring-1 ring-black ring-opacity-5 z-30">
                          {availableLanguages.map(lang => (
                              <a
                                  key={lang.code}
@@ -142,7 +139,7 @@ const Header: React.FC<HeaderProps> = ({ currentPage, setCurrentPage, isAuthenti
                   <div className="ml-2 -mr-2 flex md:hidden">
                     <button
                       onClick={() => setIsMenuOpen(!isMenuOpen)}
-                      className="inline-flex items-center justify-center p-2 rounded-md text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none"
+                      className="inline-flex items-center justify-center p-2 rounded-md text-gray-500 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-800 focus:outline-none"
                       aria-label="Open menu"
                       aria-expanded={isMenuOpen}
                     >
@@ -174,7 +171,7 @@ const Header: React.FC<HeaderProps> = ({ currentPage, setCurrentPage, isAuthenti
             ></div>
 
             <div
-            className={`fixed top-0 right-0 h-full w-4/5 max-w-sm bg-white dark:bg-gray-800 z-50 shadow-lg transform transition-transform duration-300 ease-in-out md:hidden ${
+            className={`fixed top-0 right-0 h-full w-4/5 max-w-sm bg-white dark:bg-gray-900 z-50 shadow-lg transform transition-transform duration-300 ease-in-out md:hidden ${
                 isMenuOpen ? 'translate-x-0' : 'translate-x-full'
             }`}
             role="dialog"
@@ -206,8 +203,8 @@ const Header: React.FC<HeaderProps> = ({ currentPage, setCurrentPage, isAuthenti
                         onClick={(e) => { e.preventDefault(); setCurrentPage(link.name); setIsMenuOpen(false); }}
                         className={`${
                         currentPage === link.name
-                            ? 'bg-primary-50 text-primary-700 dark:bg-gray-700 dark:text-white'
-                            : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
+                            ? 'bg-primary-50 text-primary-700 dark:bg-gray-800 dark:text-white'
+                            : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
                         } block px-3 py-2 rounded-md text-base font-medium transition-colors`}
                     >
                         {t(link.name)}

@@ -17,7 +17,7 @@ const AlertIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w
 // --- REUSABLE COMPONENTS ---
 const KpiCard = ({ title, value, icon, unit }: { title: string, value: string, icon: React.ReactNode, unit?: string }) => (
     <Card className="flex items-center p-4">
-        <div className="bg-primary-100 dark:bg-gray-700 p-3 rounded-full mr-4">
+        <div className="bg-primary-100 dark:bg-gray-800 p-3 rounded-xl mr-4">
             {icon}
         </div>
         <div>
@@ -112,45 +112,44 @@ const DashboardPage: React.FC = () => {
     { subject: 'Moisture', A: 85 + Math.random() * 10, fullMark: 100 },
   ], [prediction]);
   
-  const commonInputClasses = "mt-1 block w-full pl-3 pr-2 py-2 text-base border-gray-300 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-200 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm rounded-md";
-  const commonLabelClasses = "block text-sm font-medium text-gray-700 dark:text-gray-300";
+  const commonLabelClasses = "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1";
 
   const renderSkeleton = () => (
     <div className="space-y-6 mt-8 animate-pulse">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="h-24 bg-gray-200 dark:bg-gray-700 rounded-xl"></div>
-            <div className="h-24 bg-gray-200 dark:bg-gray-700 rounded-xl"></div>
-            <div className="h-24 bg-gray-200 dark:bg-gray-700 rounded-xl"></div>
+            <div className="h-24 bg-gray-200 dark:bg-gray-800 rounded-2xl"></div>
+            <div className="h-24 bg-gray-200 dark:bg-gray-800 rounded-2xl"></div>
+            <div className="h-24 bg-gray-200 dark:bg-gray-800 rounded-2xl"></div>
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div className="lg:col-span-2 space-y-6">
-                <div className="h-80 bg-gray-200 dark:bg-gray-700 rounded-xl"></div>
-                <div className="h-80 bg-gray-200 dark:bg-gray-700 rounded-xl"></div>
+                <div className="h-80 bg-gray-200 dark:bg-gray-800 rounded-2xl"></div>
+                <div className="h-80 bg-gray-200 dark:bg-gray-800 rounded-2xl"></div>
             </div>
             <div className="lg:col-span-1 space-y-6">
-                <div className="h-48 bg-gray-200 dark:bg-gray-700 rounded-xl"></div>
-                <div className="h-48 bg-gray-200 dark:bg-gray-700 rounded-xl"></div>
-                <div className="h-96 bg-gray-200 dark:bg-gray-700 rounded-xl"></div>
+                <div className="h-48 bg-gray-200 dark:bg-gray-800 rounded-2xl"></div>
+                <div className="h-48 bg-gray-200 dark:bg-gray-800 rounded-2xl"></div>
+                <div className="h-96 bg-gray-200 dark:bg-gray-800 rounded-2xl"></div>
             </div>
         </div>
     </div>
   );
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <h1 className="text-3xl font-bold text-gray-900 dark:text-white">{t(Page.Dashboard)}</h1>
       
       <Card>
         <form onSubmit={handlePredict} className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div><label htmlFor="cropType" className={commonLabelClasses}>{t('dashboard.form.cropType')}</label><select id="cropType" name="cropType" value={formData.cropType} onChange={handleInputChange} className={commonInputClasses}>{CROP_TYPES.map(c => <option key={c}>{c}</option>)}</select></div>
-            <div><label htmlFor="soilType" className={commonLabelClasses}>{t('dashboard.form.soilType')}</label><select id="soilType" name="soilType" value={formData.soilType} onChange={handleInputChange} className={commonInputClasses}>{SOIL_TYPES.map(s => <option key={s}>{s}</option>)}</select></div>
-            <div><label htmlFor="landSize" className={commonLabelClasses}>{t('dashboard.form.landSize')}</label><input type="number" name="landSize" id="landSize" value={formData.landSize} onChange={handleInputChange} className={commonInputClasses} step="0.1" min="0" /></div>
-            <div><label htmlFor="location" className={commonLabelClasses}>{t('dashboard.form.location')}</label><input type="text" name="location" id="location" value={formData.location} onChange={handleInputChange} className={commonInputClasses} /></div>
-            <div><label htmlFor="cropYear" className={commonLabelClasses}>{t('dashboard.form.cropYear')}</label><select id="cropYear" name="cropYear" value={formData.cropYear} onChange={handleInputChange} className={commonInputClasses}>{CROP_YEARS.map(y => <option key={y}>{y}</option>)}</select></div>
-            <div><label htmlFor="annualRainfall" className={commonLabelClasses}>{t('dashboard.form.rainfall')}</label><input type="number" name="annualRainfall" id="annualRainfall" value={formData.annualRainfall} onChange={handleInputChange} className={commonInputClasses} step="50" min="0" /></div>
-            <div><label htmlFor="fertilizerUsage" className={commonLabelClasses}>{t('dashboard.form.fertilizer')}</label><input type="number" name="fertilizerUsage" id="fertilizerUsage" value={formData.fertilizerUsage} onChange={handleInputChange} className={commonInputClasses} step="10" min="0" /></div>
-            <div><label htmlFor="pesticideUsage" className={commonLabelClasses}>{t('dashboard.form.pesticide')}</label><input type="number" name="pesticideUsage" id="pesticideUsage" value={formData.pesticideUsage} onChange={handleInputChange} className={commonInputClasses} step="0.1" min="0" /></div>
+            <div><label htmlFor="cropType" className={commonLabelClasses}>{t('dashboard.form.cropType')}</label><select id="cropType" name="cropType" value={formData.cropType} onChange={handleInputChange} className="input-base">{CROP_TYPES.map(c => <option key={c}>{c}</option>)}</select></div>
+            <div><label htmlFor="soilType" className={commonLabelClasses}>{t('dashboard.form.soilType')}</label><select id="soilType" name="soilType" value={formData.soilType} onChange={handleInputChange} className="input-base">{SOIL_TYPES.map(s => <option key={s}>{s}</option>)}</select></div>
+            <div><label htmlFor="landSize" className={commonLabelClasses}>{t('dashboard.form.landSize')}</label><input type="number" name="landSize" id="landSize" value={formData.landSize} onChange={handleInputChange} className="input-base" step="0.1" min="0" /></div>
+            <div><label htmlFor="location" className={commonLabelClasses}>{t('dashboard.form.location')}</label><input type="text" name="location" id="location" value={formData.location} onChange={handleInputChange} className="input-base" /></div>
+            <div><label htmlFor="cropYear" className={commonLabelClasses}>{t('dashboard.form.cropYear')}</label><select id="cropYear" name="cropYear" value={formData.cropYear} onChange={handleInputChange} className="input-base">{CROP_YEARS.map(y => <option key={y}>{y}</option>)}</select></div>
+            <div><label htmlFor="annualRainfall" className={commonLabelClasses}>{t('dashboard.form.rainfall')}</label><input type="number" name="annualRainfall" id="annualRainfall" value={formData.annualRainfall} onChange={handleInputChange} className="input-base" step="50" min="0" /></div>
+            <div><label htmlFor="fertilizerUsage" className={commonLabelClasses}>{t('dashboard.form.fertilizer')}</label><input type="number" name="fertilizerUsage" id="fertilizerUsage" value={formData.fertilizerUsage} onChange={handleInputChange} className="input-base" step="10" min="0" /></div>
+            <div><label htmlFor="pesticideUsage" className={commonLabelClasses}>{t('dashboard.form.pesticide')}</label><input type="number" name="pesticideUsage" id="pesticideUsage" value={formData.pesticideUsage} onChange={handleInputChange} className="input-base" step="0.1" min="0" /></div>
           </div>
           <div className="pt-2 flex justify-center">
             <Button type="submit" disabled={isLoading} className="w-full md:w-auto px-12">
@@ -175,7 +174,7 @@ const DashboardPage: React.FC = () => {
               <Card>
                 <h3 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">{t('dashboard.chart.yield.title')}</h3>
                 <ResponsiveContainer width="100%" height={300}>
-                  <LineChart data={yieldForecastData} margin={{ top: 5, right: 20, left: -10, bottom: 5 }}><CartesianGrid strokeDasharray="3 3" stroke={isDarkMode ? "rgba(128, 128, 128, 0.3)" : "rgba(128, 128, 128, 0.3)"} /><XAxis dataKey="name" tick={{ fill: isDarkMode ? '#A0AEC0' : '#4A5568' }} /><YAxis tick={{ fill: isDarkMode ? '#A0AEC0' : '#4A5568' }} /><Tooltip contentStyle={{ backgroundColor: isDarkMode ? '#2D3748' : '#FFFFFF', border: '1px solid #4A5568' }} /><Legend wrapperStyle={{ color: isDarkMode ? '#FFFFFF' : '#000000' }} /><Line type="monotone" dataKey="yield" name="Yield (Tonnes)" stroke="#16a34a" strokeWidth={2} activeDot={{ r: 8 }} /></LineChart>
+                  <LineChart data={yieldForecastData} margin={{ top: 5, right: 20, left: -10, bottom: 5 }}><CartesianGrid strokeDasharray="3 3" stroke={isDarkMode ? "#334155" : "#e2e8f0"} /><XAxis dataKey="name" tick={{ fill: isDarkMode ? '#94a3b8' : '#64748b' }} /><YAxis tick={{ fill: isDarkMode ? '#94a3b8' : '#64748b' }} /><Tooltip contentStyle={{ backgroundColor: isDarkMode ? '#0f172a' : '#ffffff', border: `1px solid ${isDarkMode ? '#334155' : '#e2e8f0'}` }} /><Legend wrapperStyle={{ color: isDarkMode ? '#e2e8f0' : '#0f172a' }} /><Line type="monotone" dataKey="yield" name="Yield (Tonnes)" stroke="#10b981" strokeWidth={2} activeDot={{ r: 8 }} /></LineChart>
                 </ResponsiveContainer>
               </Card>
               <Card>
@@ -185,13 +184,13 @@ const DashboardPage: React.FC = () => {
                         { name: 'Fertilizer (kg/ha)', [t('yourUsage')]: prediction.resourceUsage.fertilizer.user, [t('recommended')]: prediction.resourceUsage.fertilizer.recommended },
                         { name: 'Pesticide (L/ha)', [t('yourUsage')]: prediction.resourceUsage.pesticide.user, [t('recommended')]: prediction.resourceUsage.pesticide.recommended },
                     ]} layout="vertical" margin={{ top: 5, right: 20, left: 20, bottom: 5 }}>
-                        <CartesianGrid strokeDasharray="3 3" stroke={isDarkMode ? "rgba(128, 128, 128, 0.2)" : "rgba(128, 128, 128, 0.2)"} />
-                        <XAxis type="number" tick={{ fill: isDarkMode ? '#A0AEC0' : '#4A5568' }} />
-                        <YAxis type="category" dataKey="name" width={120} tick={{ fill: isDarkMode ? '#A0AEC0' : '#4A5568' }} />
-                        <Tooltip contentStyle={{ backgroundColor: isDarkMode ? '#2D3748' : '#FFFFFF', border: '1px solid #4A5568' }} cursor={{fill: isDarkMode ? '#4A5568' : '#E2E8F0' }} />
-                        <Legend wrapperStyle={{ color: isDarkMode ? '#FFFFFF' : '#000000' }} />
+                        <CartesianGrid strokeDasharray="3 3" stroke={isDarkMode ? "#334155" : "#e2e8f0"} />
+                        <XAxis type="number" tick={{ fill: isDarkMode ? '#94a3b8' : '#64748b' }} />
+                        <YAxis type="category" dataKey="name" width={120} tick={{ fill: isDarkMode ? '#94a3b8' : '#64748b' }} />
+                        <Tooltip contentStyle={{ backgroundColor: isDarkMode ? '#0f172a' : '#ffffff', border: `1px solid ${isDarkMode ? '#334155' : '#e2e8f0'}` }} cursor={{fill: isDarkMode ? '#334155' : '#f1f5f9' }} />
+                        <Legend wrapperStyle={{ color: isDarkMode ? '#e2e8f0' : '#0f172a' }} />
                         <Bar dataKey={t('yourUsage')} fill="#fbbf24" />
-                        <Bar dataKey={t('recommended')} fill="#16a34a" />
+                        <Bar dataKey={t('recommended')} fill="#10b981" />
                     </BarChart>
                 </ResponsiveContainer>
               </Card>
@@ -202,7 +201,7 @@ const DashboardPage: React.FC = () => {
                     <h3 className="text-lg font-semibold mb-3 text-gray-900 dark:text-white">{t('dashboard.alerts.title')}</h3>
                     <div className="space-y-3">
                         {prediction.alerts.map((alert: any, index: number) => (
-                           <div key={index} className={`p-3 rounded-lg flex items-start ${alert.type === 'warning' ? 'bg-yellow-50 dark:bg-yellow-900/30' : 'bg-green-50 dark:bg-green-900/30'}`}>
+                           <div key={index} className={`p-3 rounded-lg flex items-start ${alert.type === 'warning' ? 'bg-yellow-100 dark:bg-yellow-950/30' : 'bg-green-100 dark:bg-green-950/30'}`}>
                                <AlertIcon />
                                <p className={`text-sm ${alert.type === 'warning' ? 'text-yellow-800 dark:text-yellow-300' : 'text-green-800 dark:text-green-300'}`}>{alert.text}</p>
                            </div>
@@ -213,7 +212,7 @@ const DashboardPage: React.FC = () => {
                     <h3 className="text-lg font-semibold mb-3 text-gray-900 dark:text-white">{t('dashboard.market.title')} <span className="text-sm font-normal text-gray-500 dark:text-gray-400">{t('dashboard.market.subtitle')}</span></h3>
                     <div className="space-y-2">
                         {prediction.marketPrices.map((market: any, index: number) => (
-                            <div key={index} className="flex justify-between items-center text-sm p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700">
+                            <div key={index} className="flex justify-between items-center text-sm p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800">
                                 <span className="font-medium text-gray-700 dark:text-gray-300">{market.city}</span>
                                 <span className="font-semibold text-gray-900 dark:text-white">₹ {Math.round(market.price).toLocaleString('en-IN')} / Tonne</span>
                             </div>
@@ -242,9 +241,9 @@ const DashboardPage: React.FC = () => {
                   <h3 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">{t('dashboard.soil.title')}</h3>
                   <ResponsiveContainer width="100%" height={300}>
                       <RadarChart cx="50%" cy="50%" outerRadius="80%" data={soilConditionData}>
-                        <PolarGrid stroke={isDarkMode ? "rgba(128, 128, 128, 0.3)" : "rgba(128, 128, 128, 0.3)"} />
-                        <PolarAngleAxis dataKey="subject" tick={{ fill: isDarkMode ? '#A0AEC0' : '#4A5568' }} />
-                        <PolarRadiusAxis angle={30} domain={[0, 100]} tick={{ fill: isDarkMode ? '#A0AEC0' : '#4A5568' }} />
+                        <PolarGrid stroke={isDarkMode ? "#334155" : "#e2e8f0"} />
+                        <PolarAngleAxis dataKey="subject" tick={{ fill: isDarkMode ? '#94a3b8' : '#64748b', fontSize: '12px' }} />
+                        <PolarRadiusAxis angle={30} domain={[0, 100]} tick={{ fill: isDarkMode ? '#94a3b8' : '#64748b' }} />
                         <Radar name="Condition" dataKey="A" stroke="#f59e0b" fill="#f59e0b" fillOpacity={0.6} />
                       </RadarChart>
                   </ResponsiveContainer>

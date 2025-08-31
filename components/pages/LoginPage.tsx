@@ -65,7 +65,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ setCurrentPage }) => {
                                 required
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
-                                className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm bg-white dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                                className="input-base"
                             />
                         </div>
                     </div>
@@ -83,7 +83,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ setCurrentPage }) => {
                                 required
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
-                                className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm bg-white dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                                className="input-base"
                             />
                         </div>
                     </div>

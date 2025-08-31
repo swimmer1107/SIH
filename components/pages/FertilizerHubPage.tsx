@@ -15,16 +15,16 @@ const GuideIcon: React.FC = () => <svg xmlns="http://www.w3.org/2000/svg" classN
 
 const ComparisonSkeleton: React.FC = () => (
     <div className="mt-8 animate-pulse space-y-8">
-        <div className="h-8 bg-gray-300 dark:bg-gray-600 rounded w-1/2"></div>
+        <div className="h-8 bg-gray-300 dark:bg-gray-700 rounded w-1/2"></div>
         <Card className="p-0">
             <div className="space-y-px">
-                <div className="h-12 bg-gray-200 dark:bg-gray-700 rounded-t-lg"></div>
-                <div className="h-12 bg-gray-100 dark:bg-gray-800"></div>
-                <div className="h-12 bg-gray-100 dark:bg-gray-800"></div>
-                <div className="h-12 bg-gray-100 dark:bg-gray-800"></div>
-                <div className="h-12 bg-gray-100 dark:bg-gray-800"></div>
-                <div className="h-12 bg-gray-100 dark:bg-gray-800"></div>
-                <div className="h-12 bg-gray-100 dark:bg-gray-800 rounded-b-lg"></div>
+                <div className="h-12 bg-gray-200 dark:bg-gray-800 rounded-t-lg"></div>
+                <div className="h-12 bg-gray-100 dark:bg-gray-900"></div>
+                <div className="h-12 bg-gray-100 dark:bg-gray-900"></div>
+                <div className="h-12 bg-gray-100 dark:bg-gray-900"></div>
+                <div className="h-12 bg-gray-100 dark:bg-gray-900"></div>
+                <div className="h-12 bg-gray-100 dark:bg-gray-900"></div>
+                <div className="h-12 bg-gray-100 dark:bg-gray-900 rounded-b-lg"></div>
             </div>
         </Card>
         <div className="h-48 bg-gray-200 dark:bg-gray-700 rounded-lg"></div>
@@ -33,15 +33,15 @@ const ComparisonSkeleton: React.FC = () => (
 
 const GuideSkeleton: React.FC = () => (
     <Card className="mt-6 animate-pulse">
-        <div className="h-7 bg-gray-300 dark:bg-gray-600 rounded w-1/3 mb-4"></div>
+        <div className="h-7 bg-gray-300 dark:bg-gray-700 rounded w-1/3 mb-4"></div>
         <div className="space-y-3">
-            <div className="h-5 bg-gray-300 dark:bg-gray-600 rounded"></div>
-            <div className="h-5 bg-gray-300 dark:bg-gray-600 rounded w-5/6"></div>
+            <div className="h-5 bg-gray-300 dark:bg-gray-700 rounded"></div>
+            <div className="h-5 bg-gray-300 dark:bg-gray-700 rounded w-5/6"></div>
         </div>
         <div className="mt-4 border-t border-gray-200 dark:border-gray-700 pt-4 space-y-3">
-             <div className="h-5 bg-gray-300 dark:bg-gray-600 rounded w-1/4 mb-3"></div>
-             <div className="h-5 bg-gray-300 dark:bg-gray-600 rounded w-1/2"></div>
-             <div className="h-5 bg-gray-300 dark:bg-gray-600 rounded w-2/3"></div>
+             <div className="h-5 bg-gray-300 dark:bg-gray-700 rounded w-1/4 mb-3"></div>
+             <div className="h-5 bg-gray-300 dark:bg-gray-700 rounded w-1/2"></div>
+             <div className="h-5 bg-gray-300 dark:bg-gray-700 rounded w-2/3"></div>
         </div>
     </Card>
 );
@@ -134,16 +134,16 @@ const FertilizerHubPage: React.FC = () => {
                 </div>
 
                 <Card>
-                    <form onSubmit={handleComparisonSubmit} className="space-y-4 md:space-y-0 md:flex md:items-end md:gap-4 p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
+                    <form onSubmit={handleComparisonSubmit} className="space-y-4 md:space-y-0 md:flex md:items-end md:gap-4 p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
                         <div className="flex-1">
-                            <label htmlFor="fertilizer1" className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t('fertilizer.tool.input1_label')}</label>
-                            <input type="text" id="fertilizer1" value={fertilizer1} onChange={e => setFertilizer1(e.target.value)} placeholder={t('fertilizer.tool.input1_placeholder')} className="mt-1 w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500" required />
+                            <label htmlFor="fertilizer1" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t('fertilizer.tool.input1_label')}</label>
+                            <input type="text" id="fertilizer1" value={fertilizer1} onChange={e => setFertilizer1(e.target.value)} placeholder={t('fertilizer.tool.input1_placeholder')} className="input-base" required />
                         </div>
                          <div className="flex-1">
-                            <label htmlFor="fertilizer2" className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t('fertilizer.tool.input2_label')}</label>
-                            <input type="text" id="fertilizer2" value={fertilizer2} onChange={e => setFertilizer2(e.target.value)} placeholder={t('fertilizer.tool.input2_placeholder')} className="mt-1 w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500" required />
+                            <label htmlFor="fertilizer2" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t('fertilizer.tool.input2_label')}</label>
+                            <input type="text" id="fertilizer2" value={fertilizer2} onChange={e => setFertilizer2(e.target.value)} placeholder={t('fertilizer.tool.input2_placeholder')} className="input-base" required />
                         </div>
-                        <Button type="submit" disabled={isComparing} className="w-full md:w-auto px-8 py-3 shrink-0">
+                        <Button type="submit" disabled={isComparing} className="w-full md:w-auto px-8 shrink-0">
                             {isComparing ? t('fertilizer.tool.loading') : t('fertilizer.tool.button')}
                         </Button>
                     </form>
@@ -154,8 +154,8 @@ const FertilizerHubPage: React.FC = () => {
                     {comparisonResult && (
                         <div className="mt-8 space-y-8">
                             <h3 className="text-2xl font-bold text-gray-900 dark:text-white text-center">{t('fertilizer.results.title', { name1: comparisonResult.comparison[0].productName, name2: comparisonResult.comparison[1].productName })}</h3>
-                            <div className="overflow-x-auto"><table className="w-full min-w-[600px] text-sm text-left text-gray-500 dark:text-gray-400"><thead className="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-300"><tr><th scope="col" className="px-6 py-3 rounded-l-lg w-1/4">{t('fertilizer.results.feature')}</th><th scope="col" className="px-6 py-3 text-center">{comparisonResult.comparison[0].productName}</th><th scope="col" className="px-6 py-3 rounded-r-lg text-center">{comparisonResult.comparison[1].productName}</th></tr></thead><tbody>{comparisonFeatures.map(({ key, label }) => (<tr key={key} className="bg-white dark:bg-gray-800 border-b dark:border-gray-700"><th scope="row" className="px-6 py-4 font-bold text-gray-900 whitespace-nowrap dark:text-white">{label}</th><td className="px-6 py-4">{comparisonResult.comparison[0][key]}</td><td className="px-6 py-4">{comparisonResult.comparison[1][key]}</td></tr>))}</tbody></table></div>
-                            <Card className="bg-green-50 dark:bg-gray-700/50"><h3 className="text-2xl font-bold mb-4 flex items-center text-gray-900 dark:text-white"><SummaryIcon />{t('fertilizer.recommendation.title')}</h3><div className="space-y-2 text-gray-700 dark:text-gray-300"><p className="text-lg"><span className="font-semibold text-gray-800 dark:text-gray-200">{t('fertilizer.recommendation.winner')}: </span><span className="font-bold text-green-700 dark:text-green-300">{comparisonResult.recommendation.winner}</span></p><p className="pt-2 border-t border-green-200 dark:border-gray-600">{comparisonResult.recommendation.reasoning}</p></div></Card>
+                            <div className="overflow-x-auto"><table className="w-full min-w-[600px] text-sm text-left text-gray-500 dark:text-gray-400"><thead className="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-800 dark:text-gray-300"><tr><th scope="col" className="px-6 py-3 rounded-l-lg w-1/4">{t('fertilizer.results.feature')}</th><th scope="col" className="px-6 py-3 text-center">{comparisonResult.comparison[0].productName}</th><th scope="col" className="px-6 py-3 rounded-r-lg text-center">{comparisonResult.comparison[1].productName}</th></tr></thead><tbody>{comparisonFeatures.map(({ key, label }) => (<tr key={key} className="bg-white dark:bg-gray-900 border-b dark:border-gray-800"><th scope="row" className="px-6 py-4 font-bold text-gray-900 whitespace-nowrap dark:text-white">{label}</th><td className="px-6 py-4">{comparisonResult.comparison[0][key]}</td><td className="px-6 py-4">{comparisonResult.comparison[1][key]}</td></tr>))}</tbody></table></div>
+                            <Card className="bg-green-50 dark:bg-gray-800/50"><h3 className="text-2xl font-bold mb-4 flex items-center text-gray-900 dark:text-white"><SummaryIcon />{t('fertilizer.recommendation.title')}</h3><div className="space-y-2 text-gray-700 dark:text-gray-300"><p className="text-lg"><span className="font-semibold text-gray-800 dark:text-gray-200">{t('fertilizer.recommendation.winner')}: </span><span className="font-bold text-green-700 dark:text-green-300">{comparisonResult.recommendation.winner}</span></p><p className="pt-2 border-t border-green-200 dark:border-gray-700">{comparisonResult.recommendation.reasoning}</p></div></Card>
                         </div>
                     )}
                 </Card>
@@ -176,7 +176,7 @@ const FertilizerHubPage: React.FC = () => {
                 <Card>
                     <div className="flex flex-wrap justify-center gap-3 p-4">
                         {NUTRIENT_TYPES.map(nutrient => (
-                            <button key={nutrient} onClick={() => handleNutrientSelect(nutrient)} className={`px-4 py-2 text-sm font-medium rounded-full transition-all duration-200 transform hover:scale-105 ${selectedNutrient === nutrient ? 'bg-primary-600 text-white shadow-lg' : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600'}`}>
+                            <button key={nutrient} onClick={() => handleNutrientSelect(nutrient)} className={`px-4 py-2 text-sm font-medium rounded-full transition-all duration-200 transform hover:scale-105 ${selectedNutrient === nutrient ? 'bg-primary-600 text-white shadow-lg' : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700'}`}>
                                 {isGuideLoading && selectedNutrient === nutrient ? t('fertilizer.guide.button.loading') : nutrient}
                             </button>
                         ))}
@@ -186,7 +186,7 @@ const FertilizerHubPage: React.FC = () => {
                     {guideError && <div className="mt-6 border-l-4 border-red-500 bg-red-50 dark:bg-red-900/20 p-4"><p className="text-red-700 dark:text-red-300 font-semibold">{t('error')}:</p><p className="text-red-600 dark:text-red-400">{guideError}</p></div>}
                     
                     {nutrientGuide && !isGuideLoading && (
-                        <Card className="mt-6 bg-gray-50 dark:bg-gray-900/50">
+                        <Card className="mt-6 bg-gray-50 dark:bg-gray-800/50">
                             <h3 className="text-2xl font-bold text-primary-700 dark:text-primary-300 mb-4">{nutrientGuide.nutrientName}</h3>
                             <div className="space-y-4">
                                 <div>

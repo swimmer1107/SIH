@@ -12,20 +12,20 @@ const LightBulbIcon: React.FC = () => <svg xmlns="http://www.w3.org/2000/svg" cl
 
 const ResultSkeleton: React.FC = () => (
     <Card className="mt-8 animate-pulse">
-        <div className="h-8 bg-gray-300 dark:bg-gray-600 rounded w-1/3 mb-6"></div>
+        <div className="h-8 bg-gray-300 dark:bg-gray-700 rounded w-1/3 mb-6"></div>
         <div className="space-y-4">
-            <div className="h-6 bg-gray-300 dark:bg-gray-600 rounded w-3/4"></div>
-            <div className="h-4 bg-gray-300 dark:bg-gray-600 rounded"></div>
-            <div className="h-4 bg-gray-300 dark:bg-gray-600 rounded"></div>
+            <div className="h-6 bg-gray-300 dark:bg-gray-700 rounded w-3/4"></div>
+            <div className="h-4 bg-gray-300 dark:bg-gray-700 rounded"></div>
+            <div className="h-4 bg-gray-300 dark:bg-gray-700 rounded"></div>
         </div>
         <div className="mt-6 border-t border-gray-200 dark:border-gray-700 pt-6">
-            <div className="h-6 bg-gray-300 dark:bg-gray-600 rounded w-1/2 mb-4"></div>
-            <div className="h-4 bg-gray-300 dark:bg-gray-600 rounded w-5/6 mb-2"></div>
-            <div className="h-4 bg-gray-300 dark:bg-gray-600 rounded w-4/6"></div>
+            <div className="h-6 bg-gray-300 dark:bg-gray-700 rounded w-1/2 mb-4"></div>
+            <div className="h-4 bg-gray-300 dark:bg-gray-700 rounded w-5/6 mb-2"></div>
+            <div className="h-4 bg-gray-300 dark:bg-gray-700 rounded w-4/6"></div>
         </div>
         <div className="mt-6 border-t border-gray-200 dark:border-gray-700 pt-6">
-            <div className="h-7 bg-gray-300 dark:bg-gray-600 rounded w-1/3 mb-4"></div>
-            <div className="h-32 bg-gray-300 dark:bg-gray-600 rounded w-full"></div>
+            <div className="h-7 bg-gray-300 dark:bg-gray-700 rounded w-1/3 mb-4"></div>
+            <div className="h-32 bg-gray-300 dark:bg-gray-700 rounded w-full"></div>
         </div>
     </Card>
 );
@@ -61,9 +61,9 @@ const ComparisonView: React.FC<{ analysis: CropRecommendationResult['comparative
             <h3 className="text-xl font-bold mb-4 dark:text-white">{t('crop.result.comparison')}</h3>
             {/* Table for larger screens */}
             <div className="hidden md:block">
-                <Card className="p-0 overflow-x-auto">
+                <div className="p-0 overflow-x-auto">
                     <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                        <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-300">
+                        <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-800 dark:text-gray-300">
                             <tr>
                                 <th scope="col" className="px-6 py-3">{t('crop.comparison.crop')}</th>
                                 <th scope="col" className="px-6 py-3">{t('crop.comparison.marketValue')}</th>
@@ -74,7 +74,7 @@ const ComparisonView: React.FC<{ analysis: CropRecommendationResult['comparative
                         </thead>
                         <tbody>
                             {analysis.map(crop => (
-                                <tr key={crop.cropName} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                <tr key={crop.cropName} className="bg-white border-b dark:bg-gray-900 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800/50">
                                     <th scope="row" className="px-6 py-4 font-bold text-gray-900 whitespace-nowrap dark:text-white">{crop.cropName}</th>
                                     <td className="px-6 py-4"><span className={getRatingClass('marketValue', crop.marketValue)}>{crop.marketValue}</span></td>
                                     <td className="px-6 py-4"><span className={getRatingClass('waterRequirement', crop.waterRequirement)}>{crop.waterRequirement}</span></td>
@@ -84,7 +84,7 @@ const ComparisonView: React.FC<{ analysis: CropRecommendationResult['comparative
                             ))}
                         </tbody>
                     </table>
-                </Card>
+                </div>
             </div>
             {/* Cards for smaller screens */}
             <div className="md:hidden space-y-4">
@@ -105,7 +105,7 @@ const ComparisonView: React.FC<{ analysis: CropRecommendationResult['comparative
                                 <span className={getRatingClass('pestResistance', crop.pestResistance)}>{crop.pestResistance}</span>
                             </div>
                         </div>
-                        <p className="mt-4 text-sm text-gray-700 dark:text-gray-300 border-t pt-3 dark:border-gray-600">{crop.notes}</p>
+                        <p className="mt-4 text-sm text-gray-700 dark:text-gray-300 border-t pt-3 dark:border-gray-700">{crop.notes}</p>
                     </Card>
                 ))}
             </div>
@@ -147,8 +147,7 @@ const CropRecommendationPage: React.FC = () => {
         }
     };
 
-    const commonInputClasses = "mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-200 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm rounded-md";
-    const commonLabelClasses = "block text-sm font-medium text-gray-700 dark:text-gray-300";
+    const commonLabelClasses = "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1";
 
     return (
         <div className="space-y-8 max-w-4xl mx-auto">
@@ -164,17 +163,17 @@ const CropRecommendationPage: React.FC = () => {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                             <label htmlFor="state" className={commonLabelClasses}>{t('crop.form.state')}</label>
-                            <select id="state" name="state" value={formData.state} onChange={handleInputChange} className={commonInputClasses} required>
+                            <select id="state" name="state" value={formData.state} onChange={handleInputChange} className="input-base" required>
                                 {INDIAN_STATES.map(s => <option key={s} value={s}>{s}</option>)}
                             </select>
                         </div>
                         <div>
                             <label htmlFor="district" className={commonLabelClasses}>{t('crop.form.district')}</label>
-                            <input type="text" name="district" id="district" value={formData.district} onChange={handleInputChange} className={commonInputClasses} required />
+                            <input type="text" name="district" id="district" value={formData.district} onChange={handleInputChange} className="input-base" required />
                         </div>
                         <div>
                             <label htmlFor="soilColor" className={commonLabelClasses}>{t('crop.form.soilColor')}</label>
-                            <select id="soilColor" name="soilColor" value={formData.soilColor} onChange={handleInputChange} className={commonInputClasses} required>
+                            <select id="soilColor" name="soilColor" value={formData.soilColor} onChange={handleInputChange} className="input-base" required>
                                 <option>Black</option>
                                 <option>Red</option>
                                 <option>Brown / Loamy</option>
@@ -184,7 +183,7 @@ const CropRecommendationPage: React.FC = () => {
                         </div>
                         <div>
                             <label htmlFor="soilTexture" className={commonLabelClasses}>{t('crop.form.soilTexture')}</label>
-                            <select id="soilTexture" name="soilTexture" value={formData.soilTexture} onChange={handleInputChange} className={commonInputClasses} required>
+                            <select id="soilTexture" name="soilTexture" value={formData.soilTexture} onChange={handleInputChange} className="input-base" required>
                                 <option>Sticky (Clay)</option>
                                 <option>Gritty (Sandy)</option>
                                 <option>Smooth / Powdery (Silt)</option>
@@ -193,7 +192,7 @@ const CropRecommendationPage: React.FC = () => {
                         </div>
                         <div className="md:col-span-2">
                             <label htmlFor="rainfall" className={commonLabelClasses}>{t('crop.form.rainfall')}</label>
-                            <select id="rainfall" name="rainfall" value={formData.rainfall} onChange={handleInputChange} className={commonInputClasses} required>
+                            <select id="rainfall" name="rainfall" value={formData.rainfall} onChange={handleInputChange} className="input-base" required>
                                 <option>Low / Arid (&lt; 750mm)</option>
                                 <option>Moderate (750-1150mm)</option>
                                 <option>High (&gt; 1150mm)</option>
@@ -212,7 +211,7 @@ const CropRecommendationPage: React.FC = () => {
             {isLoading && <ResultSkeleton />}
 
             {error && (
-                <Card className="mt-8 border-l-4 border-red-500 dark:bg-red-900/20">
+                <Card className="mt-8 border-l-4 border-red-500 bg-red-50 dark:bg-red-900/20">
                     <p className="text-red-700 dark:text-red-300 font-semibold">{t('error')}:</p>
                     <p className="text-red-600 dark:text-red-400">{error}</p>
                 </Card>
@@ -221,7 +220,7 @@ const CropRecommendationPage: React.FC = () => {
             {result && (
                 <Card className="mt-8">
                     <h2 className="text-2xl font-bold mb-2 dark:text-white">{t('crop.result.title')}</h2>
-                    <div className="bg-primary-50 dark:bg-gray-700/50 p-6 rounded-xl border border-primary-200 dark:border-gray-700">
+                    <div className="bg-primary-50 dark:bg-gray-800/50 p-6 rounded-xl border border-primary-200 dark:border-gray-800">
                         <p className="text-sm font-semibold uppercase tracking-wide text-primary-800 dark:text-primary-300">{t('crop.result.bestCrop')}</p>
                         <p className="text-4xl font-extrabold text-primary-600 dark:text-primary-400 mt-1">{result.recommendedCrop}</p>
                         <p className="mt-4 text-gray-700 dark:text-gray-300">{result.reasoning}</p>
@@ -232,7 +231,7 @@ const CropRecommendationPage: React.FC = () => {
                            <h3 className="text-lg font-semibold mb-3 flex items-center dark:text-white"><CheckCircleIcon /> {t('crop.result.alternatives')}</h3>
                            <div className="space-y-3">
                                 {result.alternativeCrops.map(crop => (
-                                    <div key={crop.name} className="p-3 bg-gray-100 dark:bg-gray-700 rounded-lg">
+                                    <div key={crop.name} className="p-3 bg-gray-100 dark:bg-gray-800 rounded-lg">
                                         <p className="font-semibold text-gray-800 dark:text-gray-200">{crop.name}</p>
                                         <p className="text-sm text-gray-600 dark:text-gray-400">{crop.reason}</p>
                                     </div>
@@ -250,7 +249,7 @@ const CropRecommendationPage: React.FC = () => {
                     </div>
 
                     {result.comparativeAnalysis && result.comparativeAnalysis.length > 0 && (
-                        <div className="mt-8 border-t border-gray-200 dark:border-gray-700 pt-6">
+                        <div className="mt-8 border-t border-gray-200 dark:border-gray-800 pt-6">
                             <ComparisonView analysis={result.comparativeAnalysis} />
                         </div>
                     )}

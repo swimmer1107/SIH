@@ -126,11 +126,11 @@ const App: React.FC = () => {
 
   if (checkingSession) {
     return (
-        <div className="flex items-center justify-center min-h-screen bg-gray-50 dark:bg-gray-900">
+        <div className="flex items-center justify-center min-h-screen bg-gray-50 dark:bg-gray-950">
             <div className="text-primary-600">
-                <svg className="animate-spin h-10 w-10 text-primary-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                <svg width="80" height="80" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
+                    <style>{`.spinner_V8m1{transform-origin:center;animation:spinner_zKoa 2s linear infinite}.spinner_V8m1 circle{stroke-linecap:round;animation:spinner_YpZS 1.5s ease-in-out infinite}@keyframes spinner_zKoa{100%{transform:rotate(360deg)}}@keyframes spinner_YpZS{0%{stroke-dasharray:0 150;stroke-dashoffset:0}47.5%{stroke-dasharray:42 150;stroke-dashoffset:-16}95%,100%{stroke-dasharray:42 150;stroke-dashoffset:-59}}`}</style>
+                    <g className="spinner_V8m1"><circle cx="12" cy="12" r="9.5" fill="none" strokeWidth="2"></circle></g>
                 </svg>
             </div>
         </div>
@@ -138,7 +138,7 @@ const App: React.FC = () => {
   }
 
   return (
-    <div className="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200 font-sans transition-colors duration-300">
+    <div className="bg-gray-50 dark:bg-gray-950 text-gray-800 dark:text-gray-200 font-sans transition-colors duration-300">
       {isAuthenticated && (
           <Sidebar
               currentPage={currentPage}
@@ -149,6 +149,7 @@ const App: React.FC = () => {
           />
       )}
       <div className="flex flex-col min-h-screen">
+        <div className="light-mode-bg fixed inset-0 -z-10"></div>
         <Header
           currentPage={currentPage}
           setCurrentPage={handleNavigation}
@@ -156,7 +157,7 @@ const App: React.FC = () => {
           handleLogout={handleLogout}
           setSidebarOpen={setIsSidebarOpen}
         />
-        <main className="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <main className="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
           {renderPage()}
         </main>
         <Footer />

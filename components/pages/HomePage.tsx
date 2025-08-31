@@ -10,11 +10,11 @@ interface HomePageProps {
 
 const FeatureCard: React.FC<{ icon: React.ReactNode; title: string; description: string }> = ({ icon, title, description }) => (
   <Card className="text-center h-full">
-    <div className="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-primary-100 dark:bg-gray-700 mb-4">
+    <div className="mx-auto flex items-center justify-center h-16 w-16 rounded-2xl bg-gradient-to-br from-primary-100 to-primary-200 dark:from-gray-800 dark:to-gray-700 mb-6">
         {icon}
     </div>
-    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{title}</h3>
-    <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">{description}</p>
+    <h3 className="text-xl font-bold text-gray-900 dark:text-white">{title}</h3>
+    <p className="mt-2 text-gray-600 dark:text-gray-400">{description}</p>
   </Card>
 );
 
@@ -45,13 +45,13 @@ const HomePage: React.FC<HomePageProps> = ({ setCurrentPage }) => {
   ];
 
   return (
-    <div className="space-y-16 md:space-y-24">
+    <div className="space-y-20 md:space-y-32">
       {/* Hero Section */}
-      <section className="text-center pt-16 pb-12">
+      <section className="text-center pt-16 pb-12 relative">
         <div 
-          className="absolute inset-0 -z-10 h-[600px] w-full bg-white dark:bg-gray-900 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px]">
+            className="absolute inset-0 -z-10 h-[600px] w-full bg-white dark:bg-gray-950 bg-[radial-gradient(#e2e8f0_1px,transparent_1px)] dark:bg-[radial-gradient(#1e293b_1px,transparent_1px)] [background-size:16px_16px]">
         </div>
-        <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight text-gray-900 dark:text-white">
+        <h1 className="text-4xl md:text-6xl font-extrabold tracking-tighter text-gray-900 dark:text-white">
           {t('home.hero.title')}{' '}<span className="text-primary-600 dark:text-primary-400">{t('home.hero.title.highlight')}</span>
         </h1>
         <p className="mt-6 max-w-2xl mx-auto text-lg md:text-xl text-gray-600 dark:text-gray-300">
@@ -81,7 +81,7 @@ const HomePage: React.FC<HomePageProps> = ({ setCurrentPage }) => {
       </section>
 
       {/* Impact Section */}
-      <section className="bg-primary-50 dark:bg-gray-800 rounded-2xl p-8 md:p-12">
+      <section className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl p-8 md:p-12">
         <div className="max-w-4xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
             <div>

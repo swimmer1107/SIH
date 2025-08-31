@@ -513,6 +513,7 @@ const translations: { [key in Language]: Translations } = {
       [Page.CropRecommendation]: 'ਫਸਲ ਦੀ ਸਿਫਾਰਸ਼',
       [Page.Schemes]: 'ਯੋਜਨਾਵਾਂ ਅਤੇ ਲਾਭ',
       [Page.Satellite]: 'ਸੈਟੇਲਾਈਟ ਇਮੇਜਰੀ',
+      [Page.FertilizerHub]: 'ਖਾਦ ਹੱਬ',
       [Page.About]: 'ਸਾਡੇ ਬਾਰੇ',
       [Page.Contact]: 'ਸਾਡੇ ਨਾਲ ਸੰਪਰਕ ਕਰੋ',
       [Page.Login]: 'ਲਾਗਇਨ',
@@ -628,6 +629,7 @@ const translations: { [key in Language]: Translations } = {
       [Page.CropRecommendation]: 'பயிர் பரிந்துரை',
       [Page.Schemes]: 'திட்டங்கள் & நன்மைகள்',
       [Page.Satellite]: 'செயற்கைக்கோள் படங்கள்',
+      [Page.FertilizerHub]: 'உர மையம்',
       [Page.About]: 'எங்களைப் பற்றி',
       [Page.Contact]: 'தொடர்பு கொள்ள',
       [Page.Login]: 'உள்நுழை',
@@ -726,6 +728,7 @@ const translations: { [key in Language]: Translations } = {
       [Page.CropRecommendation]: 'పంట సిఫార్సు',
       [Page.Schemes]: 'పథకాలు & ప్రయోజనాలు',
       [Page.Satellite]: 'ఉపగ్రహ చిత్రాలు',
+      [Page.FertilizerHub]: 'ఎరువుల హబ్',
       [Page.About]: 'మా గురించి',
       [Page.Contact]: 'మమ్మల్ని సంప్రదించండి',
       [Page.Login]: 'ప్రవేశించండి',
@@ -747,7 +750,7 @@ const translations: { [key in Language]: Translations } = {
       // Chatbot
       'chatbot.greeting': 'నమస్కారం! నేను క్రాప్‌గురు AI సహాయకుడిని. ఈ రోజు మీ వ్యవసాయ ప్రశ్నలకు నేను ఎలా సహాయపడగలను?',
       'chatbot.title': 'క్రాప్‌గురు AI సహాయకుడు',
-      'chatbot.error': 'క్షమించండి, ఏదో పొరపాటు జరిగింది. దయచేసి మళ్లీ ప్రయత్నించండి.',
+      'chatbot.error': 'క్షమించండి, ఏదੋ పొరపాటు జరిగింది. దయచేసి మళ్లీ ప్రయత్నించండి.',
       'chatbot.placeholder': 'పంటల గురించి అడగండి...',
 
       // Home Page
@@ -801,7 +804,7 @@ const translations: { [key in Language]: Translations } = {
       'satellite.error.nonIndianLocation': 'ఈ అప్లికేషన్ భారతదేశంలోని ప్రదేశాల కోసం ఉద్దేశించబడింది. "{location}" కోసం విశ్లేషణకు మద్దతు లేదు.',
 
       // Services
-      'service.gemini.satelliteConfigError': 'AI ఉపగ్రహ విశ్లేషణ కాన్ఫిਗਰ చేయబడలేదు. API కీ మూల కోడ్‌లో లేదు లేదా చెల్లదు.',
+      'service.gemini.satelliteConfigError': 'AI ఉపగ్రహ విశ్లేషణ కాన్ఫਿਗਰ చేయబడలేదు. API కీ మూల కోడ్‌లో లేదు లేదా చెల్లదు.',
       'service.gemini.satelliteGeneralError': 'ఉపగ్రహ విశ్లేషణను పొందడంలో విఫలమైంది. AI మోడల్ అందుబాటులో ఉండకపోవచ్చు లేదా ప్రదేశం చెల్లదు.',
       'service.map.locationNotFound': 'పేర్కొన్న ప్రదేశం కనుగొనబడలేదు. దయచేసి స్పెల్లింగ్‌ను తనిఖీ చేసి, మళ్లీ ప్రయత్నించండి.',
       'service.map.geocodeFailed': 'స్థాన కోఆర్డినేట్‌లను పొందడంలో విఫలమైంది. మ్యాపింగ్ సేవ తాత్కాలికంగా అందుబాటులో ఉండకపోవచ్చు.',

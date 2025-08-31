@@ -27,7 +27,7 @@ type MapView = 'natural' | 'ndvi' | 'moisture';
 const StatCard: React.FC<{ icon: React.ReactNode; title: string; value: string; description: string; }> = ({ icon, title, value, description }) => (
     <Card className="h-full">
         <div className="flex items-center">
-            <div className="p-2 bg-primary-100 dark:bg-gray-700 rounded-lg mr-4">{icon}</div>
+            <div className="p-2 bg-primary-100 dark:bg-gray-800 rounded-lg mr-4">{icon}</div>
             <h3 className="text-md font-semibold text-gray-800 dark:text-gray-200">{title}</h3>
         </div>
         <p className="mt-2 text-4xl font-bold text-gray-900 dark:text-white">{value}</p>
@@ -181,10 +181,10 @@ const SatellitePage: React.FC = () => {
                       value={location}
                       onChange={e => setLocation(e.target.value)}
                       placeholder={t('satellite.form.placeholder')}
-                      className="w-full px-4 py-3 bg-gray-100 dark:bg-gray-700 border border-transparent text-gray-900 dark:text-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+                      className="input-base"
                   />
               </div>
-              <Button type="submit" disabled={isLoading} className="w-full sm:w-auto px-8 py-3">
+              <Button type="submit" disabled={isLoading} className="w-full sm:w-auto px-8">
                   {isLoading ? t('satellite.button.loading') : t('satellite.button.analyze')}
               </Button>
           </form>
@@ -193,7 +193,7 @@ const SatellitePage: React.FC = () => {
       {isLoading && <Card><Loader message={loadingMessage} /></Card>}
       
       {error && !isLoading && (
-        <Card className="border-l-4 border-red-500 dark:bg-red-900/20">
+        <Card className="border-l-4 border-red-500 bg-red-50 dark:bg-red-900/20">
             <p className="text-red-700 dark:text-red-300 font-semibold">{t('error')}:</p>
             <p className="text-red-600 dark:text-red-400">{error}</p>
         </Card>
@@ -201,13 +201,13 @@ const SatellitePage: React.FC = () => {
 
       {(analysisResult && coordinates) && !isLoading && (
           <div className="space-y-8">
-              <Card>
-                  <div className="relative aspect-video w-full rounded-lg overflow-hidden bg-gray-200 dark:bg-gray-700 shadow-inner">
+              <Card className="p-0">
+                  <div className="relative aspect-video w-full rounded-lg overflow-hidden bg-gray-200 dark:bg-gray-800 shadow-inner">
                         <div ref={mapContainerRef} className="w-full h-full z-0" />
                         <div className={`absolute inset-0 transition-opacity duration-500 pointer-events-none ${mapOverlayClass[mapView]}`}></div>
                         <div className="absolute top-2 right-2 md:top-4 md:right-4 bg-white/70 dark:bg-gray-900/70 backdrop-blur-sm p-1.5 rounded-lg shadow-lg flex items-center space-x-1 z-[1000]">
                              {['natural', 'ndvi', 'moisture'].map(view => (
-                                <button key={view} onClick={() => setMapView(view as MapView)} className={`px-2 py-1 md:px-4 md:py-1.5 text-xs md:text-sm font-semibold rounded-md transition-colors ${mapView === view ? 'bg-primary-600 text-white' : 'text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700'}`}>
+                                <button key={view} onClick={() => setMapView(view as MapView)} className={`px-2 py-1 md:px-4 md:py-1.5 text-xs md:text-sm font-semibold rounded-md transition-colors ${mapView === view ? 'bg-primary-600 text-white' : 'text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-800'}`}>
                                     {t(`satellite.view.${view}`)}
                                 </button>
                              ))}
@@ -266,9 +266,6 @@ const SatellitePage: React.FC = () => {
             .animate-loader-bar {
                 animation: loader-bar-animation 2.8s infinite linear;
                 transform-origin: left;
-            }
-            .leaflet-control-zoom {
-                margin-top: 60px !important;
             }
        `}</style>
     </div>

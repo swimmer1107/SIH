@@ -140,7 +140,7 @@ const DiseaseDetectionPage: React.FC = () => {
 
   if (isCameraOpen) {
     return (
-      <div className="fixed inset-0 bg-gray-900 z-50 flex flex-col items-center justify-center p-4">
+      <div className="fixed inset-0 bg-gray-950 z-50 flex flex-col items-center justify-center p-4">
         <p className="text-white text-lg absolute top-4 animate-pulse">{t('disease.camera.prompt')}</p>
         <div className="relative w-full max-w-4xl aspect-video overflow-hidden rounded-lg shadow-2xl">
             <video ref={videoRef} autoPlay playsInline className="w-full h-full object-cover"></video>
@@ -162,7 +162,7 @@ const DiseaseDetectionPage: React.FC = () => {
 
       <Card className="max-w-2xl mx-auto">
         <div className="flex flex-col items-center space-y-6">
-          <div className="w-full h-64 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg flex items-center justify-center bg-gray-50 dark:bg-gray-700/50">
+          <div className="w-full h-64 border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-lg flex items-center justify-center bg-gray-50 dark:bg-gray-800/50">
             {image ? (
               <img src={image} alt="Crop leaf" className="max-h-full max-w-full object-contain rounded-md" />
             ) : (
@@ -185,7 +185,7 @@ const DiseaseDetectionPage: React.FC = () => {
           ) : (
             <div className="flex flex-col sm:flex-row w-full gap-4">
                 <label htmlFor="file-upload" className="flex-1 cursor-pointer">
-                  <div className="w-full text-center px-6 py-3 font-semibold rounded-lg shadow-sm focus:outline-none transition-transform transform hover:scale-105 duration-300 ease-in-out bg-transparent border border-primary-600 text-primary-600 dark:text-primary-400 dark:border-primary-400 hover:bg-primary-50 dark:hover:bg-gray-700 flex items-center justify-center">
+                  <div className="w-full text-center px-6 py-3 font-semibold rounded-lg shadow-sm focus:outline-none transition-all transform hover:-translate-y-px duration-200 ease-in-out bg-transparent border border-primary-600 text-primary-600 dark:text-primary-400 dark:border-primary-400 hover:bg-primary-50 dark:hover:bg-gray-800 flex items-center justify-center">
                     <UploadIcon />
                     {t('disease.button.upload')}
                   </div>
@@ -201,7 +201,7 @@ const DiseaseDetectionPage: React.FC = () => {
       </Card>
       
       {error && !isCameraOpen && (
-        <Card className="max-w-2xl mx-auto border-l-4 border-red-500 dark:bg-red-900/20">
+        <Card className="max-w-2xl mx-auto border-l-4 border-red-500 bg-red-50 dark:bg-red-900/20">
             <p className="text-red-700 dark:text-red-300 font-semibold">{t('error')}:</p>
             <p className="text-red-600 dark:text-red-400">{error}</p>
         </Card>
@@ -211,7 +211,7 @@ const DiseaseDetectionPage: React.FC = () => {
         <Card className="max-w-2xl mx-auto">
           <h2 className="text-2xl font-bold mb-4 dark:text-white">{t('disease.result.title')}</h2>
           {result.isHealthy ? (
-            <div className="p-4 rounded-lg bg-green-50 dark:bg-green-900/30 text-green-800 dark:text-green-200 border border-green-200 dark:border-green-700">
+            <div className="p-4 rounded-lg bg-green-50 dark:bg-green-950/30 text-green-800 dark:text-green-200 border border-green-200 dark:border-green-800">
               <h3 className="text-lg font-semibold">{t('disease.result.healthy')}</h3>
               <p>{t('disease.result.healthy.desc')}</p>
             </div>

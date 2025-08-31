@@ -63,27 +63,27 @@ const Chatbot: React.FC = () => {
       </div>
 
       <div
-        className={`fixed bottom-24 right-6 w-full max-w-sm h-[60vh] bg-white dark:bg-gray-800 rounded-xl shadow-2xl flex flex-col transition-all duration-300 ease-in-out z-50 ${
+        className={`fixed bottom-24 right-6 w-full max-w-sm h-[60vh] bg-white dark:bg-gray-900 rounded-2xl shadow-2xl flex flex-col transition-all duration-300 ease-in-out z-50 border dark:border-gray-800 ${
           isOpen ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10 pointer-events-none'
         }`}
       >
-        <div className="p-4 bg-primary-600 text-white rounded-t-xl flex justify-between items-center">
+        <div className="p-4 bg-primary-600 text-white rounded-t-2xl flex justify-between items-center">
           <h3 className="text-lg font-bold">{t('chatbot.title')}</h3>
-          <button onClick={() => setIsOpen(false)} className="hover:text-gray-200">&times;</button>
+          <button onClick={() => setIsOpen(false)} className="hover:text-gray-200 text-2xl leading-none">&times;</button>
         </div>
 
-        <div className="flex-1 p-4 overflow-y-auto bg-gray-50 dark:bg-gray-900">
+        <div className="flex-1 p-4 overflow-y-auto bg-gray-50 dark:bg-gray-950">
           <div className="space-y-4">
             {messages.map((msg, index) => (
               <div key={index} className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
-                <div className={`max-w-xs lg:max-w-md px-4 py-2 rounded-2xl ${msg.sender === 'user' ? 'bg-primary-500 text-white' : 'bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-gray-200'}`}>
+                <div className={`max-w-xs lg:max-w-md px-4 py-2 rounded-2xl ${msg.sender === 'user' ? 'bg-primary-600 text-white' : 'bg-gray-200 text-gray-800 dark:bg-gray-800 dark:text-gray-200'}`}>
                   <p className="text-sm" dangerouslySetInnerHTML={{ __html: msg.text.replace(/\n/g, '<br />') }} />
                 </div>
               </div>
             ))}
              {isLoading && (
               <div className="flex justify-start">
-                <div className="max-w-xs lg:max-w-md px-4 py-3 rounded-2xl bg-gray-200 dark:bg-gray-700">
+                <div className="max-w-xs lg:max-w-md px-4 py-3 rounded-2xl bg-gray-200 dark:bg-gray-800">
                   <div className="flex items-center space-x-2">
                     <div className="w-2 h-2 rounded-full bg-gray-500 dark:bg-gray-400 animate-bounce"></div>
                     <div className="w-2 h-2 rounded-full bg-gray-500 dark:bg-gray-400 animate-bounce delay-75"></div>
@@ -96,7 +96,7 @@ const Chatbot: React.FC = () => {
           </div>
         </div>
 
-        <div className="p-4 border-t border-gray-200 dark:border-gray-700">
+        <div className="p-4 border-t border-gray-200 dark:border-gray-800">
           <div className="flex items-center space-x-2">
             <input
               type="text"
@@ -104,7 +104,7 @@ const Chatbot: React.FC = () => {
               onChange={(e) => setUserInput(e.target.value)}
               onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
               placeholder={t('chatbot.placeholder')}
-              className="flex-1 w-full px-4 py-2 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-200 rounded-full focus:outline-none focus:ring-2 focus:ring-primary-500"
+              className="flex-1 w-full px-4 py-2 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-gray-200 rounded-full focus:outline-none focus:ring-2 focus:ring-primary-500"
               disabled={isLoading}
             />
             <button

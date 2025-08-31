@@ -52,39 +52,39 @@ const PostAdModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-60 z-50 flex justify-center items-center p-4" onClick={onClose}>
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-lg max-h-[90vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
-                <div className="p-6 border-b border-gray-200 dark:border-gray-700">
+            <div className="bg-white dark:bg-gray-900 rounded-lg shadow-xl w-full max-w-lg max-h-[90vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
+                <div className="p-6 border-b border-gray-200 dark:border-gray-800">
                     <h2 className="text-2xl font-bold text-gray-900 dark:text-white">{t('marketplace.modal.title')}</h2>
                 </div>
                 <form onSubmit={handleSubmit} className="p-6 space-y-4">
                      <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t('marketplace.modal.type')}</label>
-                        <select className="mt-1 block w-full input-base" required>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t('marketplace.modal.type')}</label>
+                        <select className="input-base" required>
                             <option>{t('marketplace.filter.forSale')}</option>
                             <option>{t('marketplace.filter.toBuy')}</option>
                         </select>
                     </div>
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t('marketplace.filter.category')}</label>
-                        <select className="mt-1 block w-full input-base" required>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t('marketplace.filter.category')}</label>
+                        <select className="input-base" required>
                             {categories.slice(1).map(c => <option key={c}>{c}</option>)}
                         </select>
                     </div>
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t('marketplace.modal.itemName')}</label>
-                        <input type="text" className="mt-1 block w-full input-base" required />
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t('marketplace.modal.itemName')}</label>
+                        <input type="text" className="input-base" required />
                     </div>
                      <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t('marketplace.modal.price')}</label>
-                        <input type="text" placeholder={t('marketplace.modal.price.placeholder')} className="mt-1 block w-full input-base" required />
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t('marketplace.modal.price')}</label>
+                        <input type="text" placeholder={t('marketplace.modal.price.placeholder')} className="input-base" required />
                     </div>
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t('marketplace.modal.quantity')}</label>
-                        <input type="text" placeholder={t('marketplace.modal.quantity.placeholder')} className="mt-1 block w-full input-base" required />
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t('marketplace.modal.quantity')}</label>
+                        <input type="text" placeholder={t('marketplace.modal.quantity.placeholder')} className="input-base" required />
                     </div>
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t('marketplace.modal.description')}</label>
-                        <textarea rows={3} className="mt-1 block w-full input-base"></textarea>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t('marketplace.modal.description')}</label>
+                        <textarea rows={3} className="input-base"></textarea>
                     </div>
                     <div className="flex justify-end gap-4 pt-4">
                         <Button type="button" variant="outline" onClick={onClose}>{t('cancel')}</Button>
@@ -92,10 +92,6 @@ const PostAdModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void
                     </div>
                 </form>
             </div>
-            <style>{`.input-base { padding: 0.5rem 0.75rem; border: 1px solid; border-radius: 0.375rem; }
-            .light .input-base { border-color: #d1d5db; background-color: transparent; color: #111827; }
-            .dark .input-base { border-color: #4b5563; background-color: #374151; color: #f9fafb; }
-            `}</style>
         </div>
     );
 };
@@ -135,13 +131,13 @@ const MarketplacePage: React.FC = () => {
                  <p className="mt-2 text-sm text-secondary-600 dark:text-secondary-400">{t('marketplace.demo')}</p>
             </div>
             
-            <Card className="sticky top-16 z-10 backdrop-blur-sm bg-white/80 dark:bg-gray-800/80">
+            <Card className="sticky top-20 z-10 backdrop-blur-sm bg-white/80 dark:bg-gray-900/80">
                 <div className="flex flex-col md:flex-row justify-between items-center gap-4">
                     <div className="flex flex-wrap items-center gap-4">
                         {/* Type Filter */}
                         <div className="flex items-center gap-2">
                            <label className="text-sm font-medium dark:text-gray-300">{t('marketplace.filter.show')}</label>
-                           <select value={filterType} onChange={e => setFilterType(e.target.value)} className="rounded-md border-gray-300 bg-white dark:bg-gray-700 dark:border-gray-600 py-1.5 px-2 text-sm">
+                           <select value={filterType} onChange={e => setFilterType(e.target.value)} className="input-base !py-1.5 !px-2 !text-sm">
                                <option value="All">{t('all')}</option>
                                <option value="For Sale">{t('marketplace.filter.forSale')}</option>
                                <option value="Looking to Buy">{t('marketplace.filter.toBuy')}</option>
@@ -150,7 +146,7 @@ const MarketplacePage: React.FC = () => {
                          {/* Category Filter */}
                         <div className="flex items-center gap-2">
                             <label className="text-sm font-medium dark:text-gray-300">{t('marketplace.filter.category')}</label>
-                           <select value={filterCategory} onChange={e => setFilterCategory(e.target.value)} className="rounded-md border-gray-300 bg-white dark:bg-gray-700 dark:border-gray-600 py-1.5 px-2 text-sm">
+                           <select value={filterCategory} onChange={e => setFilterCategory(e.target.value)} className="input-base !py-1.5 !px-2 !text-sm">
                                {categories.map(c => <option key={c} value={c}>{c === 'All' ? t('all') : c}</option>)}
                            </select>
                         </div>
