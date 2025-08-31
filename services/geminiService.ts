@@ -1,6 +1,6 @@
 import { GoogleGenAI, GenerateContentResponse, Type, Modality } from "@google/genai";
 // FIX: Added CropRecommendationResult to imports to support the new crop recommendation feature.
-import { DiseaseResult, ChatMessage, Scheme, CropRecommendationResult, SatelliteAnalysisResult } from '../types';
+import { DiseaseResult, ChatMessage, Scheme, CropRecommendationResult, SatelliteAnalysisResult, FertilizerDirectComparisonResult, FertilizerNutrientGuide } from '../types';
 import { supabase } from './supabaseClient';
 
 // --- VERY IMPORTANT SECURITY WARNING ---
@@ -326,5 +326,114 @@ export const getSatelliteAnalysis = async (location: string): Promise<SatelliteA
              throw new Error("service.gemini.satelliteConfigError");
         }
         throw new Error("service.gemini.satelliteGeneralError");
+    }
+};
+
+export const getFertilizerComparison = async (fertilizer1: string, fertilizer2: string): Promise<FertilizerDirectComparisonResult> => {
+    try {
+        const aiInstance = getAI();
+        const prompt = `You are an Indian agricultural expert. A farmer wants to compare two fertilizers: '${fertilizer1}' and '${fertilizer2}'. Provide a detailed, head-to-head comparison based on the Indian market. For each fertilizer, provide the following details:
+1.  **productName**: The common name of the product.
+2.  **nutrientContent**: The primary nutrient composition (e.g., NPK ratio like 46-0-0 for Urea, or specific percentages).
+3.  **price**: An estimated price range in India (e.g., '₹1200 - ₹1500 per 50kg bag').
+4.  **releaseSpeed**: How quickly it releases nutrients ('Fast', 'Slow', or 'Moderate').
+5.  **applicationMethod**: How it is typically applied (e.g., 'Soil application during sowing').
+6.  **soilImpact**: Its long-term effect on soil (e.g., 'Can increase soil acidity over time').
+7.  **bestFor**: The ideal use case (e.g., 'Best for promoting rapid leafy growth in early stages').
+
+After detailing both products, provide a final recommendation. The recommendation should have a 'winner' (the name of the product you'd generally recommend between the two) and 'reasoning' (a clear, simple explanation for why you chose it, considering factors like cost-effectiveness, crop stage, and soil health).
+Respond only in the requested JSON format.`;
+
+        const response = await aiInstance.models.generateContent({
+            model: 'gemini-2.5-flash',
+            contents: prompt,
+            config: {
+                responseMimeType: 'application/json',
+                responseSchema: {
+                    type: Type.OBJECT,
+                    properties: {
+                        comparison: {
+                            type: Type.ARRAY,
+                            items: {
+                                type: Type.OBJECT,
+                                properties: {
+                                    productName: { type: Type.STRING },
+                                    nutrientContent: { type: Type.STRING },
+                                    price: { type: Type.STRING },
+                                    releaseSpeed: { type: Type.STRING, enum: ['Fast', 'Slow', 'Moderate'] },
+                                    applicationMethod: { type: Type.STRING },
+                                    soilImpact: { type: Type.STRING },
+                                    bestFor: { type: Type.STRING },
+                                },
+                                required: ['productName', 'nutrientContent', 'price', 'releaseSpeed', 'applicationMethod', 'soilImpact', 'bestFor']
+                            }
+                        },
+                        recommendation: {
+                            type: Type.OBJECT,
+                            properties: {
+                                winner: { type: Type.STRING },
+                                reasoning: { type: Type.STRING },
+                            },
+                            required: ['winner', 'reasoning']
+                        }
+                    },
+                    required: ['comparison', 'recommendation']
+                }
+            }
+        });
+
+        const jsonText = response.text.trim();
+        const result = JSON.parse(jsonText) as FertilizerDirectComparisonResult;
+        return result;
+
+    } catch (error) {
+        console.error("Error getting fertilizer comparison:", error);
+        if (error instanceof Error && error.message.includes("API key")) {
+             throw new Error("service.gemini.fertilizerConfigError");
+        }
+        throw new Error("service.gemini.fertilizerGeneralError");
+    }
+};
+
+export const getNutrientGuide = async (nutrient: string): Promise<FertilizerNutrientGuide> => {
+    try {
+        const aiInstance = getAI();
+        const prompt = `You are an Indian agricultural expert. A farmer wants to understand about a specific nutrient: '${nutrient}'. Provide a simple, easy-to-understand guide for an Indian farmer. The guide should include:
+1.  **nutrientName**: The name of the nutrient (e.g., 'Nitrogen (N)').
+2.  **roleInPlants**: A brief, simple explanation of what this nutrient does for plants.
+3.  **commonFertilizers**: A list of 2-3 common fertilizer products available in India that are primary sources of this nutrient.
+4.  **applicationTips**: Simple, actionable advice on when and how to apply fertilizers containing this nutrient.
+5.  **deficiencySymptoms**: What a farmer should look for in their crops that might indicate a lack of this nutrient.
+Respond only in the requested JSON format. Keep the language clear and practical.`;
+
+        const response = await aiInstance.models.generateContent({
+            model: 'gemini-2.5-flash',
+            contents: prompt,
+            config: {
+                responseMimeType: 'application/json',
+                responseSchema: {
+                    type: Type.OBJECT,
+                    properties: {
+                        nutrientName: { type: Type.STRING },
+                        roleInPlants: { type: Type.STRING },
+                        commonFertilizers: { type: Type.ARRAY, items: { type: Type.STRING } },
+                        applicationTips: { type: Type.STRING },
+                        deficiencySymptoms: { type: Type.STRING },
+                    },
+                    required: ['nutrientName', 'roleInPlants', 'commonFertilizers', 'applicationTips', 'deficiencySymptoms']
+                }
+            }
+        });
+        
+        const jsonText = response.text.trim();
+        const result = JSON.parse(jsonText) as FertilizerNutrientGuide;
+        return result;
+
+    } catch (error) {
+        console.error("Error getting nutrient guide:", error);
+        if (error instanceof Error && error.message.includes("API key")) {
+             throw new Error("service.gemini.fertilizerConfigError");
+        }
+        throw new Error("service.gemini.fertilizerGeneralError");
     }
 };

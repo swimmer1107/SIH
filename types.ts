@@ -1,5 +1,6 @@
 
 
+
 export enum Page {
   Home = 'Home',
   Dashboard = 'Dashboard',
@@ -7,6 +8,7 @@ export enum Page {
   CropRecommendation = 'Crop Recommendation',
   Schemes = 'Schemes & Benefits',
   Satellite = 'Satellite Imagery',
+  FertilizerHub = 'Fertilizer Hub',
   About = 'About Us',
   Contact = 'Contact Us',
   Login = 'Login',
@@ -72,4 +74,30 @@ export interface Coordinates {
     name: string;
     country: string;
     state?: string;
+}
+
+export interface FertilizerAnalysis {
+    productName: string;
+    nutrientContent: string;
+    price: string;
+    releaseSpeed: 'Fast' | 'Slow' | 'Moderate';
+    applicationMethod: string;
+    soilImpact: string;
+    bestFor: string;
+}
+
+export interface FertilizerDirectComparisonResult {
+    comparison: FertilizerAnalysis[];
+    recommendation: {
+        winner: string;
+        reasoning: string;
+    };
+}
+
+export interface FertilizerNutrientGuide {
+    nutrientName: string;
+    roleInPlants: string;
+    commonFertilizers: string[];
+    applicationTips: string;
+    deficiencySymptoms: string;
 }

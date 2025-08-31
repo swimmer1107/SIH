@@ -27,6 +27,7 @@ const englishTranslations: Translations = {
     [Page.CropRecommendation]: 'Crop Recommendation',
     [Page.Schemes]: 'Schemes & Benefits',
     [Page.Satellite]: 'Satellite Imagery',
+    [Page.FertilizerHub]: 'Fertilizer Hub',
     [Page.About]: 'About Us',
     [Page.Contact]: 'Contact Us',
     [Page.Login]: 'Login',
@@ -166,6 +167,34 @@ const englishTranslations: Translations = {
     'satellite.result.stress.none': 'No significant stress areas detected. Farm appears uniformly healthy.',
     'satellite.error.nonIndianLocation': 'This application is intended for locations in India. Analysis for "{location}" is not supported.',
 
+    // Fertilizer Hub Page
+    'fertilizer.title': 'Fertilizer Hub',
+    'fertilizer.tool.title': 'AI Fertilizer Head-to-Head Comparison',
+    'fertilizer.tool.desc': 'Enter the names of two fertilizers you want to compare. Our AI will provide a detailed analysis of their price, nutrient content, and best use cases for Indian farms.',
+    'fertilizer.tool.input1_label': 'Fertilizer 1',
+    'fertilizer.tool.input1_placeholder': 'e.g., Urea',
+    'fertilizer.tool.input2_label': 'Fertilizer 2',
+    'fertilizer.tool.input2_placeholder': 'e.g., DAP',
+    'fertilizer.tool.button': 'Compare',
+    'fertilizer.tool.loading': 'Generating Comparison...',
+    'fertilizer.results.title': 'Comparison: {name1} vs. {name2}',
+    'fertilizer.results.feature': 'Feature',
+    'fertilizer.results.nutrientContent': 'Nutrient Content',
+    'fertilizer.results.price': 'Estimated Price',
+    'fertilizer.results.releaseSpeed': 'Nutrient Release Speed',
+    'fertilizer.results.application': 'Application Method',
+    'fertilizer.results.soilImpact': 'Soil Impact',
+    'fertilizer.results.bestFor': 'Best For',
+    'fertilizer.recommendation.title': 'Expert Recommendation',
+    'fertilizer.recommendation.winner': 'Winner',
+    'fertilizer.guide.title': 'AI Fertilizer Guide',
+    'fertilizer.guide.desc': 'Confused about which nutrient your crop needs? Select a nutrient below to get a simple guide from our AI on what it does and which products contain it.',
+    'fertilizer.guide.button.loading': 'Getting Info...',
+    'fertilizer.guide.role': 'Role in Plants',
+    'fertilizer.guide.sources': 'Common Fertilizers',
+    'fertilizer.guide.application': 'Application Tips',
+    'fertilizer.guide.symptoms': 'Deficiency Symptoms',
+
     // About Page
     'about.title': 'About CropGuru',
     'about.subtitle': 'Revolutionizing agriculture for a sustainable future.',
@@ -217,6 +246,8 @@ const englishTranslations: Translations = {
     'service.gemini.cropRecGeneralError': 'Failed to get crop recommendation. The AI model might be unavailable or the input data is invalid.',
     'service.gemini.satelliteConfigError': 'AI satellite analysis is not configured. The API key is missing or invalid in the source code.',
     'service.gemini.satelliteGeneralError': 'Failed to get satellite analysis. The AI model might be unavailable or the location is invalid.',
+    'service.gemini.fertilizerConfigError': 'AI fertilizer tool is not configured. The API key is missing or invalid in the source code.',
+    'service.gemini.fertilizerGeneralError': 'Failed to get fertilizer comparison. The AI model may be unavailable or there was a network issue.',
     'service.map.locationNotFound': 'Could not find the specified location. Please check the spelling and try again.',
     'service.map.geocodeFailed': 'Failed to get location coordinates. The mapping service may be temporarily unavailable.',
 };
@@ -240,6 +271,7 @@ const translations: { [key in Language]: Translations } = {
       [Page.CropRecommendation]: 'फ़सल सिफ़ारिश',
       [Page.Schemes]: 'योजनाएं और लाभ',
       [Page.Satellite]: 'सैटेलाइट इमेजरी',
+      [Page.FertilizerHub]: 'उर्वरक हब',
       [Page.About]: 'हमारे बारे में',
       [Page.Contact]: 'संपर्क करें',
       [Page.Login]: 'लॉगिन',
@@ -379,6 +411,34 @@ const translations: { [key in Language]: Translations } = {
       'satellite.result.stress.none': 'कोई महत्वपूर्ण तनाव क्षेत्र नहीं पाया गया। खेत समान रूप से स्वस्थ दिखाई देता है।',
       'satellite.error.nonIndianLocation': 'यह एप्लिकेशन भारत में स्थानों के लिए है। "{location}" के लिए विश्लेषण समर्थित नहीं है।',
 
+      // Fertilizer Hub Page
+      'fertilizer.title': 'उर्वरक हब',
+      'fertilizer.tool.title': 'AI उर्वरक सीधी तुलना',
+      'fertilizer.tool.desc': 'आप जिन दो उर्वरकों की तुलना करना चाहते हैं, उनके नाम दर्ज करें। हमारा AI भारतीय खेतों के लिए उनकी कीमत, पोषक तत्व सामग्री और सर्वोत्तम उपयोग के मामलों का विस्तृत विश्लेषण प्रदान करेगा।',
+      'fertilizer.tool.input1_label': 'उर्वरक 1',
+      'fertilizer.tool.input1_placeholder': 'जैसे, यूरिया',
+      'fertilizer.tool.input2_label': 'उर्वरक 2',
+      'fertilizer.tool.input2_placeholder': 'जैसे, डीएपी',
+      'fertilizer.tool.button': 'तुलना करें',
+      'fertilizer.tool.loading': 'तुलना उत्पन्न हो रही है...',
+      'fertilizer.results.title': 'तुलना: {name1} बनाम {name2}',
+      'fertilizer.results.feature': 'विशेषता',
+      'fertilizer.results.nutrientContent': 'पोषक तत्व सामग्री',
+      'fertilizer.results.price': 'अनुमानित मूल्य',
+      'fertilizer.results.releaseSpeed': 'पोषक तत्व रिलीज की गति',
+      'fertilizer.results.application': 'आवेदन विधि',
+      'fertilizer.results.soilImpact': 'मिट्टी पर प्रभाव',
+      'fertilizer.results.bestFor': 'इसके लिए सर्वश्रेष्ठ',
+      'fertilizer.recommendation.title': 'विशेषज्ञ की सिफारिश',
+      'fertilizer.recommendation.winner': 'विजेता',
+      'fertilizer.guide.title': 'AI उर्वरक गाइड',
+      'fertilizer.guide.desc': 'आपकी फसल को किस पोषक तत्व की आवश्यकता है, इस बारे में उलझन में हैं? यह क्या करता है और इसमें कौन से उत्पाद शामिल हैं, इस पर हमारे AI से एक सरल गाइड प्राप्त करने के लिए नीचे एक पोषक तत्व चुनें।',
+      'fertilizer.guide.button.loading': 'जानकारी मिल रही है...',
+      'fertilizer.guide.role': 'पौधों में भूमिका',
+      'fertilizer.guide.sources': 'आम उर्वरक',
+      'fertilizer.guide.application': 'आवेदन युक्तियाँ',
+      'fertilizer.guide.symptoms': 'कमी के लक्षण',
+
       // About Page
       'about.title': 'क्रॉपगुरु के बारे में',
       'about.subtitle': 'एक स्थायी भविष्य के लिए कृषि में क्रांति।',
@@ -430,6 +490,8 @@ const translations: { [key in Language]: Translations } = {
       'service.gemini.cropRecGeneralError': 'फसल की सिफारिश प्राप्त करने में विफल। एआई मॉडल अनुपलब्ध हो सकता है या इनपुट डेटा अमान्य है।',
       'service.gemini.satelliteConfigError': 'एआई उपग्रह विश्लेषण कॉन्फ़िगर नहीं है। एपीआई कुंजी स्रोत कोड में गुम या अमान्य है।',
       'service.gemini.satelliteGeneralError': 'उपग्रह विश्लेषण प्राप्त करने में विफल। एआई मॉडल अनुपलब्ध हो सकता है या स्थान अमान्य है।',
+      'service.gemini.fertilizerConfigError': 'एआई उर्वरक उपकरण कॉन्फ़िगर नहीं है। एपीआई कुंजी स्रोत कोड में गुम या अमान्य है।',
+      'service.gemini.fertilizerGeneralError': 'उर्वरक तुलना प्राप्त करने में विफल। एआई मॉडल अनुपलब्ध हो सकता है या कोई नेटवर्क समस्या थी।',
       'service.map.locationNotFound': 'निर्दिष्ट स्थान नहीं मिल सका। कृपया वर्तनी जांचें और पुनः प्रयास करें।',
       'service.map.geocodeFailed': 'स्थान निर्देशांक प्राप्त करने में विफल। मैपिंग सेवा अस्थायी रूप से अनुपलब्ध हो सकती है।',
     }
@@ -455,6 +517,10 @@ const translations: { [key in Language]: Translations } = {
       [Page.Contact]: 'ਸਾਡੇ ਨਾਲ ਸੰਪਰਕ ਕਰੋ',
       [Page.Login]: 'ਲਾਗਇਨ',
       [Page.SignUp]: 'ਸਾਈਨ ਅੱਪ ਕਰੋ',
+
+      // Fertilizer Hub Page
+      'fertilizer.recommendation.winner': 'ਜੇਤੂ',
+
 
       // Header & Sidebar
       'header.title': 'ਕਰੌਪਗੁਰੂ',
@@ -567,6 +633,10 @@ const translations: { [key in Language]: Translations } = {
       [Page.Login]: 'உள்நுழை',
       [Page.SignUp]: 'பதிவுபெறுக',
 
+      // Fertilizer Hub Page
+      'fertilizer.recommendation.winner': 'வெற்றியாளர்',
+
+
       // Header & Sidebar
       'header.title': 'கிராப்குரு',
       'logout': 'வெளியேறு',
@@ -660,6 +730,10 @@ const translations: { [key in Language]: Translations } = {
       [Page.Contact]: 'మమ్మల్ని సంప్రదించండి',
       [Page.Login]: 'ప్రవేశించండి',
       [Page.SignUp]: 'నమోదు చేసుకోండి',
+
+      // Fertilizer Hub Page
+      'fertilizer.recommendation.winner': 'విజేత',
+
 
       // Header & Sidebar
       'header.title': 'క్రాప్‌గురు',

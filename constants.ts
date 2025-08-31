@@ -23,3 +23,13 @@ export const INDIAN_STATES = [
   "Andaman and Nicobar Islands", "Chandigarh", "Dadra and Nagar Haveli and Daman and Diu", 
   "Delhi", "Jammu and Kashmir", "Ladakh", "Lakshadweep", "Puducherry"
 ];
+
+export const NUTRIENT_TYPES = [
+    'Nitrogen (N)', 
+    'Phosphorus (P)', 
+    'Potassium (K)', 
+    'Sulphur (S)', 
+    'Zinc (Zn)', 
+    'NPK Complex', 
+    'Organic Manure'
+];

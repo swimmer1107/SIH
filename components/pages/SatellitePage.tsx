@@ -203,7 +203,7 @@ const SatellitePage: React.FC = () => {
           <div className="space-y-8">
               <Card>
                   <div className="relative aspect-video w-full rounded-lg overflow-hidden bg-gray-200 dark:bg-gray-700 shadow-inner">
-                        <div ref={mapContainerRef} className="w-full h-full" />
+                        <div ref={mapContainerRef} className="w-full h-full z-0" />
                         <div className={`absolute inset-0 transition-opacity duration-500 pointer-events-none ${mapOverlayClass[mapView]}`}></div>
                         <div className="absolute top-2 right-2 md:top-4 md:right-4 bg-white/70 dark:bg-gray-900/70 backdrop-blur-sm p-1.5 rounded-lg shadow-lg flex items-center space-x-1 z-[1000]">
                              {['natural', 'ndvi', 'moisture'].map(view => (
